@@ -1,0 +1,14 @@
+/*!
+Theme Name: BNH Core
+Theme URI: http://underscores.me/
+Author: Mosharaf Hossain
+Author URI: https://mosharafmanu.com/
+Description: A custom WordPress theme built for Bens Natural Health, designed for scalable content architecture, SEO-safe URL structures, and taxonomy-driven publishing.  The theme is structured around the `health_topic` taxonomy and supports parent/child topic archives, collision-safe routing, and clean permalink handling. It follows a modular approach using ACF Flexible Content, reusable sections, and optimized asset loading.  Built for performance, maintainability, and long-term content scalability.
+Version: 1.0.0
+Tested up to: 5.4
+Requires PHP: 5.6
+License: GNU General Public License v2 or later
+License URI: LICENSE
+Text Domain: bnh-core
+Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready
+*/
