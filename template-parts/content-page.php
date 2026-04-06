@@ -1,54 +1,48 @@
 <?php
 /**
- * Template part for displaying page content in page.php
- *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
+ * Page content template
  *
  * @package BNH_Core
  */
 
+$article_classes = 'layout-padding pt-50 pt-md-70 pt-lg-100';
 ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-	<header class="entry-header">
-		<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
-	</header><!-- .entry-header -->
+<article id="post-<?php the_ID(); ?>" <?php post_class( $article_classes ); ?>>
 
-	<?php bnh_core_post_thumbnail(); ?>
+	<?php
+	// Check if page title should be displayed (ACF field)
+	$show_title = true;
 
-	<div class="entry-content">
+	if ( function_exists( 'get_field' ) ) {
+		$show_title = get_field( 'show_page_title' );
+
+		// Default to true if not explicitly set to false
+		if ( ! isset( $show_title ) || $show_title === null ) {
+			$show_title = true;
+		}
+	}
+
+	// Display title if enabled
+	if ( $show_title ) :
+		?>
+		<header class="entry-header">
+			<?php the_title( '<h1 class="entry-title h2-style mb-15 mb-md-30">', '</h1>' ); ?>
+		</header>
+	<?php endif; ?>
+
+	<section class="entry-content">
 		<?php
 		the_content();
 
+		// Handle paginated posts
 		wp_link_pages(
-			array(
+			[
 				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'bnh-core' ),
 				'after'  => '</div>',
-			)
+			]
 		);
 		?>
-	</div><!-- .entry-content -->
+	</section>
 
-	<?php if ( get_edit_post_link() ) : ?>
-		<footer class="entry-footer">
-			<?php
-			edit_post_link(
-				sprintf(
-					wp_kses(
-						/* translators: %s: Name of current post. Only visible to screen readers */
-						__( 'Edit <span class="screen-reader-text">%s</span>', 'bnh-core' ),
-						array(
-							'span' => array(
-								'class' => array(),
-							),
-						)
-					),
-					wp_kses_post( get_the_title() )
-				),
-				'<span class="edit-link">',
-				'</span>'
-			);
-			?>
-		</footer><!-- .entry-footer -->
-	<?php endif; ?>
-</article><!-- #post-<?php the_ID(); ?> -->
+</article>

@@ -32,7 +32,13 @@ if ( ! ( $bnh_parent instanceof WP_Term ) || empty( $bnh_terms ) ) {
 			}
 			?>
 			<li class="topic-child-nav__item">
-				<a class="topic-child-nav__link<?php echo $is_active ? ' is-active' : ''; ?>" href="<?php echo esc_url( $topic_url ); ?>"<?php echo $is_active ? ' aria-current="page"' : ''; ?>>
+				<a
+					class="topic-child-nav__link<?php echo $is_active ? ' is-active' : ''; ?>"
+					href="<?php echo esc_url( $topic_url ); ?>"
+					data-parent-slug="<?php echo esc_attr( $bnh_parent->slug ); ?>"
+					data-child-slug="<?php echo esc_attr( $bnh_term->slug ); ?>"
+					<?php echo $is_active ? ' aria-current="page"' : ''; ?>
+				>
 					<?php echo esc_html( $bnh_term->name ); ?>
 				</a>
 			</li>
