@@ -4,7 +4,7 @@
  *
  * Renders ACF link field buttons with consistent styling across the site.
  *
- * @package purple-surgical
+ * @package BNH_Core
  */
 
 if ( ! function_exists( 'purple_surgical_render_button' ) ) {
@@ -78,6 +78,19 @@ if ( ! function_exists( 'purple_surgical_render_button' ) ) {
 	}
 }
 
+if ( ! function_exists( 'bnh_core_render_button' ) ) {
+	/**
+	 * BNH alias for the shared button renderer.
+	 *
+	 * @param array $button_link Button link data.
+	 * @param array $args Render arguments.
+	 * @return string|void
+	 */
+	function bnh_core_render_button( $button_link, $args = [] ) {
+		return purple_surgical_render_button( $button_link, $args );
+	}
+}
+
 if ( ! function_exists( 'purple_surgical_render_buttons' ) ) {
 	/**
 	 * Render multiple buttons from ACF repeater field
@@ -148,3 +161,15 @@ if ( ! function_exists( 'purple_surgical_render_buttons' ) ) {
 	}
 }
 
+if ( ! function_exists( 'bnh_core_render_buttons' ) ) {
+	/**
+	 * BNH alias for the shared multi-button renderer.
+	 *
+	 * @param array $buttons Button list.
+	 * @param array $args Render arguments.
+	 * @return string|void
+	 */
+	function bnh_core_render_buttons( $buttons, $args = [] ) {
+		return purple_surgical_render_buttons( $buttons, $args );
+	}
+}

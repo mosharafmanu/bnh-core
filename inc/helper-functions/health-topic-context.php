@@ -198,6 +198,9 @@ function bnh_get_health_topic_context() {
 	$context = array(
 		'active_parent'    => null,
 		'active_child'     => null,
+		'active_topic_color_key' => '',
+		'active_topic_color_css_var' => '',
+		'active_topic_color_value' => '',
 		'parent_terms'     => bnh_get_health_topic_parent_terms(),
 		'child_terms'      => array(),
 		'is_parent_archive'=> false,
@@ -244,6 +247,19 @@ function bnh_get_health_topic_context() {
 
 	if ( ! ( $context['active_child'] instanceof WP_Term ) && $context['active_parent'] instanceof WP_Term ) {
 		$context['active_child'] = bnh_core_get_first_health_topic_child_term( $context['active_parent'] );
+	}
+
+	if ( function_exists( 'bnh_core_get_health_topic_color_key' ) ) {
+		$color_term = $context['active_child'] instanceof WP_Term ? $context['active_child'] : $context['active_parent'];
+
+		if ( $color_term instanceof WP_Term ) {
+			$context['active_topic_color_key'] = bnh_core_get_health_topic_color_key( $color_term );
+		}
+	}
+
+	if ( $context['active_parent'] instanceof WP_Term && function_exists( 'bnh_core_get_health_topic_color_value' ) ) {
+		$color_term = $context['active_child'] instanceof WP_Term ? $context['active_child'] : $context['active_parent'];
+		$context['active_topic_color_value'] = bnh_core_get_health_topic_color_value( $color_term );
 	}
 
 	return $context;

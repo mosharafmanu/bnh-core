@@ -1,0 +1,81 @@
+{
+  "key": "group_health_topic_featured_content",
+  "title": "Health Topic Featured Content",
+  "fields": [
+    {
+      "key": "field_health_topic_featured_article",
+      "label": "Featured Article",
+      "name": "featured_article",
+      "aria-label": "",
+      "type": "post_object",
+      "instructions": "Select a featured article for this child topic. If empty, the theme falls back to the latest published post in the child topic.",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "post_type": [
+        "post"
+      ],
+      "post_status": [
+        "publish"
+      ],
+      "taxonomy": [
+        "health_topic"
+      ],
+      "return_format": "id",
+      "multiple": 0,
+      "allow_null": 1,
+      "ui": 1,
+      "bidirectional": 0
+    },
+    {
+      "key": "field_health_topic_featured_research",
+      "label": "Featured Research",
+      "name": "featured_research",
+      "aria-label": "",
+      "type": "post_object",
+      "instructions": "Select a featured research article for this parent topic.",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "post_type": [
+        "post"
+      ],
+      "post_status": [
+        "publish"
+      ],
+      "return_format": "id",
+      "multiple": 0,
+      "allow_null": 1,
+      "ui": 1,
+      "bidirectional": 0
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "taxonomy",
+        "operator": "==",
+        "value": "health_topic"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "acf_after_title",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": "Manual featured content controls for health_topic parent and child terms.",
+  "show_in_rest": 0,
+  "display_title": "",
+  "modified": 1775535984
+}

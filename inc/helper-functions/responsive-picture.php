@@ -1,16 +1,17 @@
 <?php
 /**
- * Responsive Picture Helper
+ * Responsive picture helper.
  *
  * Renders responsive picture elements with srcset and sizes. Supports both
- * predefined image tokens (for theme consistency) and WordPress-registered sizes.
+ * predefined image tokens (for theme consistency) and the approved shared
+ * image-size ladder from IMAGE_SIZE_POLICY.md.
  *
- * @package purple-surgical
+ * @package BNH_Core
  */
 
-if ( ! function_exists( 'purple_surgical_render_responsive_picture' ) ) {
+if ( ! function_exists( 'bnh_core_render_responsive_picture' ) ) {
 	/**
-	 * Render a responsive picture element
+	 * Render a responsive picture element.
 	 *
 	 * Generates optimized responsive images using either predefined size tokens
 	 * or WordPress-registered image sizes. Supports lazy loading and fetch priority.
@@ -29,7 +30,7 @@ if ( ! function_exists( 'purple_surgical_render_responsive_picture' ) ) {
 	 * }
 	 * @return string|void HTML or void if echo is true.
 	 */
-	function purple_surgical_render_responsive_picture( $image, $args = [] ) {
+	function bnh_core_render_responsive_picture( $image, $args = [] ) {
 		$defaults = [
 			'class'              => '',
 			'alt'                => '',
@@ -43,11 +44,10 @@ if ( ! function_exists( 'purple_surgical_render_responsive_picture' ) ) {
 		];
 		$args = wp_parse_args( $args, $defaults );
 
-		// Accept array or field name
+		// Accept array or field name.
 		if ( is_array( $image ) && isset( $image['ID'], $image['url'] ) ) {
 			$image_data = $image;
 		} else {
-			// CUSTOMIZE: If not using ACF, remove this block and require array input
 			$image_data = get_field( $image );
 			if ( ! $image_data ) {
 				$image_data = get_sub_field( $image );
@@ -63,35 +63,35 @@ if ( ! function_exists( 'purple_surgical_render_responsive_picture' ) ) {
 		$class   = esc_attr( $args['class'] );
 		$sizes   = esc_attr( $args['sizes'] );
 
-		// Use predefined size token if specified
+		// Use predefined size token if specified.
 		if ( ! empty( $args['size_group'] ) ) {
 			$token_map = [
-				'card-4col'         => 'ps-600',
-				'category-card'     => 'ps-600',
-				'blog-card'         => 'ps-600',
-				'product-card'      => 'ps-600',
-				'related-products'  => 'ps-600',
-				'card-5col'         => 'ps-300',
-				'features-benefits' => 'ps-300',
-				'half-col-sm'       => 'ps-750',
-				'media-content'     => 'ps-750',
-				'social-resp'       => 'ps-750',
-				'product-hero'      => 'ps-750',
-				'half-col-lg'       => 'ps-900',
-				'hero'              => 'ps-900',
-				'inner-hero'        => 'ps-900',
-				'brochure-thumb'    => 'ps-750',
-				'news-related'      => 'ps-600',
-				'full-width'        => 'ps-1200',
-				'team-card'         => 'ps-300',
-				'journey-item'      => 'ps-300',
+				'card-4col'         => 'bhn-600',
+				'category-card'     => 'bhn-600',
+				'blog-card'         => 'bhn-600',
+				'product-card'      => 'bhn-600',
+				'related-products'  => 'bhn-600',
+				'card-5col'         => 'bhn-300',
+				'features-benefits' => 'bhn-300',
+				'half-col-sm'       => 'bhn-750',
+				'media-content'     => 'bhn-750',
+				'social-resp'       => 'bhn-750',
+				'product-hero'      => 'bhn-750',
+				'half-col-lg'       => 'bhn-900',
+				'hero'              => 'bhn-900',
+				'inner-hero'        => 'bhn-900',
+				'brochure-thumb'    => 'bhn-750',
+				'news-related'      => 'bhn-600',
+				'full-width'        => 'bhn-1200',
+				'team-card'         => 'bhn-300',
+				'journey-item'      => 'bhn-300',
 			];
 			$variant_map = [
-				'ps-300'  => [ 'thumbnail', 'ps-100', 'ps-300' ],
-				'ps-600'  => [ 'thumbnail', 'ps-100', 'ps-300', 'ps-600' ],
-				'ps-750'  => [ 'ps-300', 'ps-600', 'ps-750' ],
-				'ps-900'  => [ 'ps-300', 'ps-600', 'ps-750', 'ps-900' ],
-				'ps-1200' => [ 'ps-300', 'ps-600', 'ps-750', 'ps-900', 'ps-1200' ],
+				'bhn-300'  => [ 'thumbnail', 'bhn-100', 'bhn-300' ],
+				'bhn-600'  => [ 'thumbnail', 'bhn-100', 'bhn-300', 'bhn-600' ],
+				'bhn-750'  => [ 'bhn-300', 'bhn-600', 'bhn-750' ],
+				'bhn-900'  => [ 'bhn-300', 'bhn-600', 'bhn-750', 'bhn-900' ],
+				'bhn-1200' => [ 'bhn-300', 'bhn-600', 'bhn-750', 'bhn-900', 'bhn-1200' ],
 			];
 
 			if ( isset( $token_map[ $args['size_group'] ] ) ) {
@@ -227,46 +227,28 @@ if ( ! function_exists( 'purple_surgical_render_responsive_picture' ) ) {
 				$original_width  = $image_meta['width'] ?? 0;
 				$original_height = $image_meta['height'] ?? 0;
 
-				// Add original size first
+				// Add original size first.
 				if ( $original_width > 0 ) {
 					$srcset_array[] = $image_data['url'] . ' ' . $original_width . 'w';
 				}
 
-				// Add registered image sizes
+				// Add only the approved shared registered sizes.
 				if ( isset( $image_meta['sizes'] ) && ! empty( $image_meta['sizes'] ) ) {
-					foreach ( $image_meta['sizes'] as $size_name => $size_data ) {
+					$approved_sizes = [ 'thumbnail', 'bhn-100', 'bhn-300', 'bhn-600', 'bhn-750', 'bhn-900', 'bhn-1200' ];
+
+					foreach ( $approved_sizes as $size_name ) {
+						if ( empty( $image_meta['sizes'][ $size_name ] ) ) {
+							continue;
+						}
+
 						$size_url = wp_get_attachment_image_src( $file_id, $size_name );
 						if ( $size_url && isset( $size_url[1] ) ) {
 							$srcset_array[] = $size_url[0] . ' ' . $size_url[1] . 'w';
 						}
 					}
 				}
-
-				// Generate scaled variants if we need more sizes
-				if ( count( $srcset_array ) < 4 && $original_width > 0 ) {
-					$scales = [ 0.5, 0.75, 1.5, 2 ];
-
-					foreach ( $scales as $scale ) {
-						$scaled_width = intval( $original_width * $scale );
-						$size_exists = false;
-
-						foreach ( $srcset_array as $srcset_item ) {
-							if ( strpos( $srcset_item, $scaled_width . 'w' ) !== false ) {
-								$size_exists = true;
-								break;
-							}
-						}
-
-						if ( ! $size_exists ) {
-							$scaled_image = wp_get_attachment_image_src( $file_id, [ $scaled_width, $original_height ] );
-							if ( $scaled_image ) {
-								$srcset_array[] = $scaled_image[0] . ' ' . $scaled_image[1] . 'w';
-							}
-						}
-					}
-				}
 			} else {
-				// Fallback to original
+				// Fallback to original.
 				$srcset_array[] = $image_data['url'] . ' 1920w';
 			}
 
@@ -281,7 +263,7 @@ if ( ! function_exists( 'purple_surgical_render_responsive_picture' ) ) {
 
 			$srcset = implode( ', ', $srcset_array );
 
-			// Build picture element
+			// Build picture element.
 			$html = '<picture>';
 			$html .= '<img ';
 			$html .= 'src="' . esc_url( $image_data['url'] ) . '" ';

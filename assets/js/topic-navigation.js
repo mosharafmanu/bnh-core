@@ -21,14 +21,22 @@
 	const latestContainerSelector = '[data-topic-latest]';
 
 	function updateActiveChildLinks(activeChildSlug) {
+		const activeColor = childNav.dataset.activeColor || '';
+
 		childNav.querySelectorAll('.topic-child-nav__link').forEach((link) => {
 			const isActive = link.dataset.childSlug === activeChildSlug;
 			link.classList.toggle('is-active', isActive);
 
 			if (isActive) {
 				link.setAttribute('aria-current', 'page');
+				if (activeColor) {
+					link.style.backgroundColor = activeColor;
+					link.style.color = 'var(--bhn-white)';
+				}
 			} else {
 				link.removeAttribute('aria-current');
+				link.style.backgroundColor = '';
+				link.style.color = '';
 			}
 		});
 	}

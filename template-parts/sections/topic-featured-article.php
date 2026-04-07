@@ -2,11 +2,15 @@
 /**
  * Featured article section.
  *
+ * Uses the manually selected child-term featured article when available,
+ * then falls back to the latest post in the active child term.
+ *
  * @package BNH_Core
  */
 
 $bnh_context      = isset( $args['context'] ) && is_array( $args['context'] ) ? $args['context'] : array();
 $featured_post_id = function_exists( 'bnh_core_get_topic_featured_post_id' ) ? bnh_core_get_topic_featured_post_id( $bnh_context ) : 0;
+$active_child     = $bnh_context['active_child'] ?? null;
 ?>
 
 <section class="topic-featured-article" data-topic-featured>
@@ -17,27 +21,25 @@ $featured_post_id = function_exists( 'bnh_core_get_topic_featured_post_id' ) ? b
 	<?php if ( $featured_post_id ) : ?>
 		<?php
 		$featured_post = get_post( $featured_post_id );
-		setup_postdata( $featured_post );
+		if ( ! ( $featured_post instanceof WP_Post ) ) {
+			$featured_post = null;
+		}
 		?>
-		<article class="topic-featured-article__item">
-			<?php if ( has_post_thumbnail( $featured_post ) ) : ?>
-				<a class="topic-featured-article__thumbnail" href="<?php echo esc_url( get_permalink( $featured_post ) ); ?>">
-					<?php echo get_the_post_thumbnail( $featured_post, 'large' ); ?>
-				</a>
-			<?php endif; ?>
-
-			<div class="topic-featured-article__content">
-				<h3 class="topic-featured-article__title">
-					<a href="<?php echo esc_url( get_permalink( $featured_post ) ); ?>">
-						<?php echo esc_html( get_the_title( $featured_post ) ); ?>
-					</a>
-				</h3>
-				<div class="topic-featured-article__excerpt">
-					<?php echo wp_kses_post( wpautop( get_the_excerpt( $featured_post ) ) ); ?>
-				</div>
-			</div>
-		</article>
-		<?php wp_reset_postdata(); ?>
+		<?php if ( $featured_post ) : ?>
+			<?php
+			get_template_part(
+				'inc/components/cards/topic-featured-card',
+				null,
+				array(
+					'post'       => $featured_post,
+					'label'      => $active_child instanceof WP_Term ? $active_child->name : '',
+					'show_label' => true,
+				)
+			);
+			?>
+		<?php else : ?>
+			<p><?php esc_html_e( 'No featured article found for this topic yet.', 'bnh-core' ); ?></p>
+		<?php endif; ?>
 	<?php else : ?>
 		<p><?php esc_html_e( 'No featured article found for this topic yet.', 'bnh-core' ); ?></p>
 	<?php endif; ?>

@@ -81,7 +81,7 @@ function purple_surgical_render_blog_card( $post, $args = [] ) {
 			<?php if ( $featured_image ) : ?>
 				<div class="blog-card__image media">
 					<?php
-					purple_surgical_render_responsive_picture(
+					bnh_core_render_responsive_picture(
 						$featured_image,
 						[
 							'class'         => 'blog-card-img',
@@ -134,4 +134,3 @@ function purple_surgical_render_blog_card( $post, $args = [] ) {
 
 	<?php
 }
-

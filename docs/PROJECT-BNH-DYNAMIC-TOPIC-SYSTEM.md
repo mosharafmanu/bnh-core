@@ -38,6 +38,16 @@ The shared topic templates render:
 - Featured Research placeholder
 - Community placeholder
 
+### Heading Hierarchy
+
+- Use one `<h1>` per page
+- Homepage topic hub uses the active parent topic as the page-level heading
+- Homepage `<h1>` uses only the active parent topic name
+- Topic archive pages use the queried topic term name as the page-level `<h1>`
+- Topic hub section titles use `<h2>`
+- Article/card titles inside those sections use `<h3>`
+- Topic navigation labels are not headings
+
 ### Pagination
 
 - Latest Articles pagination is AJAX/REST-driven
@@ -145,9 +155,22 @@ Defined in:
 
 - `inc/helper-functions/topic-content.php`
 
-Current rule for this phase:
+Current rule:
 
-- the Featured Article is the most recent published post in the active child term
+- if the active child term has a manually selected `featured_article`, use it
+- otherwise fall back to the most recent published post in the active child term
+
+## Featured Research Rule
+
+Defined in:
+
+- `inc/helper-functions/topic-content.php`
+- `template-parts/sections/topic-featured-research.php`
+
+Current rule:
+
+- if the active parent term has a manually selected `featured_research`, use it
+- otherwise no featured research item is rendered for that parent
 
 ## Latest Articles Rule
 
@@ -265,6 +288,17 @@ The theme only handles:
 - topic-aware rendering
 - partial output
 - front-end interaction
+
+Manual featured-content selection also stays in the theme:
+
+- child-term `featured_article`
+- parent-term `featured_research`
+
+Reason:
+
+- these are editorial and presentation-layer choices for the topic hub UI
+- they do not define permanent routing, redirect, canonical, or taxonomy architecture
+- if needed later, they can move to the plugin only if they become a permanent site-wide editorial model rather than theme behavior
 
 ## Testing Notes
 

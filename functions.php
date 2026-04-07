@@ -145,8 +145,15 @@ function bnh_core_scripts() {
 
 	wp_enqueue_style( 'bnh-core-style', get_stylesheet_uri(), array(), _S_VERSION );
 	wp_style_add_data( 'bnh-core-style', 'rtl', 'replace' );
+	wp_enqueue_style(
+		'bnh-core-font-oxanium',
+		'https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&display=swap',
+		array(),
+		null
+	);
 
 	$styles = array(
+		'bnh-core-fonts'        => '/assets/css/bnh-core-fonts.css',
 		'bnh-core-utilities'    => '/assets/css/utilities.css',
 		'bnh-core-spacer'       => '/assets/css/spacer.css',
 		'bnh-core-slick'        => '/assets/css/slick.css',
@@ -167,7 +174,7 @@ function bnh_core_scripts() {
 		wp_enqueue_style(
 			$handle,
 			$theme_uri . $relative_path,
-			array( 'bnh-core-style' ),
+			array( 'bnh-core-style', 'bnh-core-font-oxanium' ),
 			(string) filemtime( $file_path )
 		);
 	}

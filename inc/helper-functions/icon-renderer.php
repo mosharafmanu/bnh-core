@@ -5,7 +5,7 @@
  * Renders icons (SVG or raster images) for buttons, USPs, and UI elements.
  * Optimized for small icons with proper SVG inline rendering.
  *
- * @package purple-surgical
+ * @package BNH_Core
  */
 
 if ( ! function_exists( 'purple_surgical_render_icon' ) ) {
@@ -108,3 +108,15 @@ if ( ! function_exists( 'purple_surgical_render_icon' ) ) {
 	}
 }
 
+if ( ! function_exists( 'bnh_core_render_icon' ) ) {
+	/**
+	 * BNH alias for the shared icon renderer.
+	 *
+	 * @param array|int $icon Icon attachment data or ID.
+	 * @param array     $args Render arguments.
+	 * @return string|void
+	 */
+	function bnh_core_render_icon( $icon, $args = [] ) {
+		return purple_surgical_render_icon( $icon, $args );
+	}
+}

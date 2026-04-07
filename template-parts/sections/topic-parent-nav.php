@@ -18,13 +18,15 @@ if ( empty( $bnh_parents ) ) {
 }
 ?>
 
-<nav class="topic-parent-nav" aria-label="<?php esc_attr_e( 'Health topics', 'bnh-core' ); ?>">
+<nav class="topic-parent-nav layout-padding" aria-label="<?php esc_attr_e( 'Health topics', 'bnh-core' ); ?>">
 	<ul class="topic-parent-nav__list">
 		<?php foreach ( $bnh_parents as $bnh_parent ) : ?>
 			<?php
 			$is_active = isset( $bnh_context['active_parent'] ) && $bnh_context['active_parent'] instanceof WP_Term && (int) $bnh_context['active_parent']->term_id === (int) $bnh_parent->term_id;
 			$is_homepage_prostate = is_front_page() && 'prostate-health' === $bnh_parent->slug;
 			$topic_url = function_exists( 'bnh_get_health_topic_term_url' ) ? bnh_get_health_topic_term_url( $bnh_parent ) : get_term_link( $bnh_parent );
+			$parent_color_value = function_exists( 'bnh_core_get_health_topic_color_value' ) ? bnh_core_get_health_topic_color_value( $bnh_parent ) : '';
+			$active_style = $is_active && ! empty( $parent_color_value ) ? sprintf( ' style="background-color: %1$s; color: var(--bhn-white);"', esc_attr( $parent_color_value ) ) : '';
 
 			if ( ! is_front_page() && 'prostate-health' === $bnh_parent->slug ) {
 				$topic_url = home_url( '/' );
@@ -36,11 +38,11 @@ if ( empty( $bnh_parents ) ) {
 			?>
 			<li class="topic-parent-nav__item">
 				<?php if ( $is_homepage_prostate ) : ?>
-					<span class="topic-parent-nav__link<?php echo $is_active ? ' is-active' : ''; ?>"<?php echo $is_active ? ' aria-current="page"' : ''; ?>>
+					<span class="topic-parent-nav__link<?php echo $is_active ? ' is-active' : ''; ?>"<?php echo $is_active ? ' aria-current="page"' : ''; ?><?php echo $active_style; ?>>
 						<?php echo esc_html( $bnh_parent->name ); ?>
 					</span>
 				<?php else : ?>
-					<a class="topic-parent-nav__link<?php echo $is_active ? ' is-active' : ''; ?>" href="<?php echo esc_url( $topic_url ); ?>"<?php echo $is_active ? ' aria-current="page"' : ''; ?>>
+					<a class="topic-parent-nav__link<?php echo $is_active ? ' is-active' : ''; ?>" href="<?php echo esc_url( $topic_url ); ?>"<?php echo $is_active ? ' aria-current="page"' : ''; ?><?php echo $active_style; ?>>
 						<?php echo esc_html( $bnh_parent->name ); ?>
 					</a>
 				<?php endif; ?>

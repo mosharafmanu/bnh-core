@@ -23,18 +23,27 @@ $current_url   = remove_query_arg( 'topic-page' );
 	</header>
 
 	<?php if ( $latest_query instanceof WP_Query && $latest_query->have_posts() ) : ?>
-		<ul class="topic-latest-articles__items">
+		<div class="topic-latest-articles__items">
 			<?php
 			while ( $latest_query->have_posts() ) :
 				$latest_query->the_post();
 				?>
-				<li class="topic-latest-articles__item">
-					<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-				</li>
+				<div class="topic-latest-articles__item">
+					<?php
+					get_template_part(
+						'inc/components/cards/topic-latest-card',
+						null,
+						array(
+							'post'  => get_post(),
+							'label' => $active_child instanceof WP_Term ? $active_child->name : '',
+						)
+					);
+					?>
+				</div>
 				<?php
 			endwhile;
 			?>
-		</ul>
+		</div>
 
 		<?php
 		$pagination_links = paginate_links(

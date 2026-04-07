@@ -4,7 +4,7 @@
  *
  * Renders blog pagination with custom SVG arrows.
  *
- * @package purple-surgical
+ * @package BNH_Core
  */
 
 /**
@@ -67,7 +67,7 @@ function purple_surgical_render_pagination() {
 		],
 	];
 	?>
-	<nav class="blog-pagination pagination" aria-label="<?php esc_attr_e( 'Blog pagination', 'purple-surgical' ); ?>">
+	<nav class="blog-pagination pagination" aria-label="<?php esc_attr_e( 'Blog pagination', 'bnh-core' ); ?>">
 		<?php echo wp_kses( $pagination, $allowed_tags ); ?>
 	</nav>
 	<?php
@@ -143,8 +143,30 @@ function purple_surgical_render_woocommerce_pagination() {
 		],
 	];
 	?>
-	<nav class="woocommerce-pagination pagination layout-padding" aria-label="<?php esc_attr_e( 'Product pagination', 'purple-surgical' ); ?>">
+	<nav class="woocommerce-pagination pagination layout-padding" aria-label="<?php esc_attr_e( 'Product pagination', 'bnh-core' ); ?>">
 		<?php echo wp_kses( $pagination, $allowed_tags ); ?>
 	</nav>
 	<?php
+}
+
+if ( ! function_exists( 'bnh_core_render_pagination' ) ) {
+	/**
+	 * BNH alias for blog pagination.
+	 *
+	 * @return void
+	 */
+	function bnh_core_render_pagination() {
+		purple_surgical_render_pagination();
+	}
+}
+
+if ( ! function_exists( 'bnh_core_render_woocommerce_pagination' ) ) {
+	/**
+	 * BNH alias for WooCommerce pagination.
+	 *
+	 * @return void
+	 */
+	function bnh_core_render_woocommerce_pagination() {
+		purple_surgical_render_woocommerce_pagination();
+	}
 }

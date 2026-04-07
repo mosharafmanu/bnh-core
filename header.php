@@ -27,27 +27,14 @@ $bnh_context = function_exists( 'bnh_get_health_topic_context' ) ? bnh_get_healt
 
 	<header id="masthead" class="site-header">
 		<div class="site-branding">
-			<?php
-			the_custom_logo();
-			if ( is_front_page() && is_home() ) :
-				?>
-				<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
-				<?php
-			else :
-				?>
-				<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
-				<?php
-			endif;
-			$bnh_core_description = get_bloginfo( 'description', 'display' );
-			if ( $bnh_core_description || is_customize_preview() ) :
-				?>
-				<p class="site-description"><?php echo $bnh_core_description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
-			<?php endif; ?>
+
 		</div><!-- .site-branding -->
 
-		<div class="site-topic-navigation">
-			<?php get_template_part( 'template-parts/sections/topic', 'parent-nav', array( 'context' => $bnh_context ) ); ?>
-			<?php get_template_part( 'template-parts/sections/topic', 'child-nav', array( 'context' => $bnh_context ) ); ?>
+		<div class="site-header__topic-inner">
+			<div class="site-topic-navigation">
+				<?php get_template_part( 'template-parts/sections/topic', 'parent-nav', array( 'context' => $bnh_context ) ); ?>
+				<?php get_template_part( 'template-parts/sections/topic', 'child-nav', array( 'context' => $bnh_context ) ); ?>
+			</div>
 		</div>
 	</header><!-- #masthead -->
 	<div id="content" class="site-content">

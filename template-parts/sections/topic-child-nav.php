@@ -14,18 +14,20 @@ if ( empty( $bnh_context ) && function_exists( 'bnh_get_health_topic_context' ) 
 $bnh_parent  = isset( $bnh_context['active_parent'] ) && $bnh_context['active_parent'] instanceof WP_Term ? $bnh_context['active_parent'] : null;
 $bnh_child   = isset( $bnh_context['active_child'] ) && $bnh_context['active_child'] instanceof WP_Term ? $bnh_context['active_child'] : null;
 $bnh_terms   = isset( $bnh_context['child_terms'] ) && is_array( $bnh_context['child_terms'] ) ? $bnh_context['child_terms'] : array();
+$bnh_parent_color_value = function_exists( 'bnh_core_get_health_topic_color_value' ) ? bnh_core_get_health_topic_color_value( $bnh_parent ) : '';
 
 if ( ! ( $bnh_parent instanceof WP_Term ) || empty( $bnh_terms ) ) {
 	return;
 }
 ?>
 
-<nav class="topic-child-nav" aria-label="<?php esc_attr_e( 'Child topics', 'bnh-core' ); ?>">
+<nav class="topic-child-nav layout-padding" aria-label="<?php esc_attr_e( 'Child topics', 'bnh-core' ); ?>"<?php echo ! empty( $bnh_parent_color_value ) ? ' data-active-color="' . esc_attr( $bnh_parent_color_value ) . '"' : ''; ?>>
 	<ul class="topic-child-nav__list">
 		<?php foreach ( $bnh_terms as $bnh_term ) : ?>
 			<?php
 			$is_active = $bnh_child instanceof WP_Term && (int) $bnh_child->term_id === (int) $bnh_term->term_id;
 			$topic_url = function_exists( 'bnh_get_health_topic_term_url' ) ? bnh_get_health_topic_term_url( $bnh_term ) : get_term_link( $bnh_term );
+			$active_style = $is_active && ! empty( $bnh_parent_color_value ) ? sprintf( ' style="background-color: %1$s; color: var(--bhn-white);"', esc_attr( $bnh_parent_color_value ) ) : '';
 
 			if ( is_wp_error( $topic_url ) || empty( $topic_url ) ) {
 				continue;
@@ -38,6 +40,7 @@ if ( ! ( $bnh_parent instanceof WP_Term ) || empty( $bnh_terms ) ) {
 					data-parent-slug="<?php echo esc_attr( $bnh_parent->slug ); ?>"
 					data-child-slug="<?php echo esc_attr( $bnh_term->slug ); ?>"
 					<?php echo $is_active ? ' aria-current="page"' : ''; ?>
+					<?php echo $active_style; ?>
 				>
 					<?php echo esc_html( $bnh_term->name ); ?>
 				</a>

@@ -1,4 +1,9 @@
 <?php
+/**
+ * Post utility helpers.
+ *
+ * @package BNH_Core
+ */
 
 if ( ! function_exists( 'purple_surgical_render_back_to_blogs_button' ) ) {
 	/**
@@ -24,8 +29,8 @@ if ( ! function_exists( 'purple_surgical_render_back_to_blogs_button' ) ) {
 		}
 
 		$defaults = [
-			'url'           => get_permalink( get_option( 'page_for_posts' ) ) ?: home_url( '/blog/' ),
-			'text'          => __( 'Back to News & Events', 'purple-surgical' ),
+			'url'           => get_permalink( get_option( 'page_for_posts' ) ) ?: home_url( '/' ),
+			'text'          => __( 'Back to News & Events', 'bnh-core' ),
 			'class'         => 'site-btn pink-purple',
 			'wrapper_class' => 'back-to-blogs-button text-center layout-margin mt-50 mt-md-70 mt-lg-100 pt-50 pt-md-70 pt-lg-100',
 		];
@@ -42,3 +47,14 @@ if ( ! function_exists( 'purple_surgical_render_back_to_blogs_button' ) ) {
 	}
 }
 
+if ( ! function_exists( 'bnh_core_render_back_to_blogs_button' ) ) {
+	/**
+	 * BNH alias for the back-to-posts button helper.
+	 *
+	 * @param array $args Render arguments.
+	 * @return void
+	 */
+	function bnh_core_render_back_to_blogs_button( $args = [] ) {
+		purple_surgical_render_back_to_blogs_button( $args );
+	}
+}

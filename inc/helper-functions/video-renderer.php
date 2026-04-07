@@ -13,7 +13,7 @@
  * - hover: Play on hover, pause on leave
  * - onclick-popup: Click to open in modal
  *
- * @package purple-surgical
+ * @package BNH_Core
  */
 
 if ( ! function_exists( 'purple_surgical_render_video' ) ) {
@@ -112,7 +112,7 @@ if ( ! function_exists( 'purple_surgical_render_video' ) ) {
 		// Add play overlay for onclick-popup behavior
 		if ( 'onclick-popup' === $args['behavior'] ) {
 			$html .= '<div class="video-play-overlay">';
-			$html .= '<button class="video-play-button" aria-label="' . esc_attr__( 'Play Video', 'purple-surgical' ) . '">';
+			$html .= '<button class="video-play-button" aria-label="' . esc_attr__( 'Play Video', 'bnh-core' ) . '">';
 			$html .= '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="26" viewBox="0 0 22 26" fill="none">';
 			$html .= '<path d="M4.07991 0.394447C3.25275 -0.114144 2.21321 -0.130911 1.36928 0.344147C0.525358 0.819204 0 1.71343 0 2.6859V22.3589C0 23.3313 0.525358 24.2256 1.36928 24.7006C2.21321 25.1757 3.25275 25.1533 4.07991 24.6503L20.176 14.8138C20.9752 14.3276 21.4614 13.4613 21.4614 12.5224C21.4614 11.5835 20.9752 10.7228 20.176 10.2309L4.07991 0.394447Z" fill="#fff"/>';
 			$html .= '</svg>';
@@ -125,7 +125,7 @@ if ( ! function_exists( 'purple_surgical_render_video' ) ) {
 			// Add low power mode overlay (for autoplay-on-scroll or regular autoplay)
 			if ( $args['autoplay_on_scroll'] || $args['autoplay'] ) {
 				$html .= '<div class="video-low-power-overlay">';
-				$html .= '<button class="video-play-button low-power-play-btn" aria-label="' . esc_attr__( 'Play Video', 'purple-surgical' ) . '">';
+				$html .= '<button class="video-play-button low-power-play-btn" aria-label="' . esc_attr__( 'Play Video', 'bnh-core' ) . '">';
 				$html .= '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="26" viewBox="0 0 22 26" fill="none">';
 				$html .= '<path d="M4.07991 0.394447C3.25275 -0.114144 2.21321 -0.130911 1.36928 0.344147C0.525358 0.819204 0 1.71343 0 2.6859V22.3589C0 23.3313 0.525358 24.2256 1.36928 24.7006C2.21321 25.1757 3.25275 25.1533 4.07991 24.6503L20.176 14.8138C20.9752 14.3276 21.4614 13.4613 21.4614 12.5224C21.4614 11.5835 20.9752 10.7228 20.176 10.2309L4.07991 0.394447Z" fill="black"/>';
 				$html .= '</svg>';
@@ -258,7 +258,7 @@ if ( ! function_exists( 'purple_surgical_render_self_hosted_video' ) ) {
 		}
 		$html .= '>';
 		$html .= '<source src="' . $video_url . '" type="' . esc_attr( $video_file['mime_type'] ) . '">';
-		$html .= esc_html__( 'Your browser does not support the video tag.', 'purple-surgical' );
+		$html .= esc_html__( 'Your browser does not support the video tag.', 'bnh-core' );
 		$html .= '</video>';
 
 		return $html;
@@ -300,7 +300,7 @@ if ( ! function_exists( 'purple_surgical_render_youtube_video' ) ) {
 		// For onclick-popup, show thumbnail with play overlay
 		if ( 'onclick-popup' === $args['behavior'] ) {
 			$thumbnail_url = 'https://img.youtube.com/vi/' . $video_id . '/maxresdefault.jpg';
-			$html = '<img src="' . esc_url( $thumbnail_url ) . '" alt="' . esc_attr__( 'Video Thumbnail', 'purple-surgical' ) . '" ';
+			$html = '<img src="' . esc_url( $thumbnail_url ) . '" alt="' . esc_attr__( 'Video Thumbnail', 'bnh-core' ) . '" ';
 			$html .= 'data-youtube-id="' . esc_attr( $video_id ) . '" ';
 			if ( $args['class'] ) {
 				$html .= 'class="' . esc_attr( $args['class'] ) . '" ';
@@ -454,7 +454,7 @@ if ( ! function_exists( 'purple_surgical_render_vimeo_video' ) ) {
 		}
 		$html .= '>';
 		$html .= '<source src="' . esc_url( $vimeo_url ) . '" type="video/mp4">';
-		$html .= esc_html__( 'Your browser does not support the video tag.', 'purple-surgical' );
+		$html .= esc_html__( 'Your browser does not support the video tag.', 'bnh-core' );
 		$html .= '</video>';
 
 		return $html;
@@ -569,11 +569,22 @@ if ( ! function_exists( 'purple_surgical_render_cdn_video' ) ) {
 		}
 		$html .= '>';
 		$html .= '<source src="' . esc_url( $cdn_url ) . '" type="video/mp4">';
-		$html .= esc_html__( 'Your browser does not support the video tag.', 'purple-surgical' );
+		$html .= esc_html__( 'Your browser does not support the video tag.', 'bnh-core' );
 		$html .= '</video>';
 
 		return $html;
 	}
 }
 
-
+if ( ! function_exists( 'bnh_render_video' ) ) {
+	/**
+	 * Public BNH video renderer helper.
+	 *
+	 * @param string|array $video_field Video field or data.
+	 * @param array        $args Render arguments.
+	 * @return string|void
+	 */
+	function bnh_render_video( $video_field, $args = [] ) {
+		return purple_surgical_render_video( $video_field, $args );
+	}
+}

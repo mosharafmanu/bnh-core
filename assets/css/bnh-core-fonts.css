@@ -1,0 +1,35 @@
+@font-face {
+	font-family: 'Scandia';
+	src: url('../fonts/Scandia-Regular.woff2') format('woff2'),
+		url('../fonts/Scandia-Regular.woff') format('woff');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Scandia';
+	src: url('../fonts/Scandia-RegularItalic.woff2') format('woff2'),
+		url('../fonts/Scandia-RegularItalic.woff') format('woff');
+	font-weight: 400;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Scandia';
+	src: url('../fonts/Scandia-Medium.woff2') format('woff2'),
+		url('../fonts/Scandia-Medium.woff') format('woff');
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Scandia';
+	src: url('../fonts/Scandia-Bold.woff2') format('woff2'),
+		url('../fonts/Scandia-Bold.woff') format('woff');
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}

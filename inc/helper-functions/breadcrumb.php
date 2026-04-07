@@ -2,7 +2,7 @@
 /**
  * Breadcrumb Navigation
  *
- * @package purple-surgical
+ * @package BNH_Core
  */
 
 if ( ! function_exists( 'purple_surgical_breadcrumb' ) ) {
@@ -34,7 +34,7 @@ if ( ! function_exists( 'purple_surgical_breadcrumb' ) ) {
 
 		echo '<nav class="' . esc_attr( implode( ' ', $classes ) ) . '" role="navigation" aria-label="Breadcrumb navigation">';
 		echo '<h2 class="sr-only">Breadcrumb navigation</h2>';
-		echo '<a href="' . esc_url( home_url( '/' ) ) . '">' . esc_html__( 'Home', 'purple-surgical' ) . '</a>';
+		echo '<a href="' . esc_url( home_url( '/' ) ) . '">' . esc_html__( 'Home', 'bnh-core' ) . '</a>';
 		echo ' <span class="breadcrumb-separator">/</span> ';
 
 		// Blog archive
@@ -43,7 +43,7 @@ if ( ! function_exists( 'purple_surgical_breadcrumb' ) ) {
 			if ( $posts_page ) {
 				echo '<span class="current">' . esc_html( get_the_title( $posts_page ) ) . '</span>';
 			} else {
-				echo '<span class="current">' . esc_html__( 'Blog', 'purple-surgical' ) . '</span>';
+				echo '<span class="current">' . esc_html__( 'Blog', 'bnh-core' ) . '</span>';
 			}
 
 		// Single post
@@ -52,7 +52,7 @@ if ( ! function_exists( 'purple_surgical_breadcrumb' ) ) {
 			if ( $posts_page ) {
 				echo '<a href="' . esc_url( get_permalink( $posts_page ) ) . '">' . esc_html( get_the_title( $posts_page ) ) . '</a>';
 			} else {
-				echo '<a href="' . esc_url( home_url( '/blog/' ) ) . '">' . esc_html__( 'Blog', 'purple-surgical' ) . '</a>';
+				echo '<a href="' . esc_url( home_url( '/' ) ) . '">' . esc_html__( 'Blog', 'bnh-core' ) . '</a>';
 			}
 			echo ' <span class="breadcrumb-separator">/</span> ';
 			echo '<span class="current">' . esc_html( get_the_title() ) . '</span>';
@@ -134,11 +134,11 @@ if ( ! function_exists( 'purple_surgical_breadcrumb' ) ) {
 
 		// Search results
 		} elseif ( is_search() ) {
-			echo '<span class="current">' . sprintf( esc_html__( 'Search results for: %s', 'purple-surgical' ), get_search_query() ) . '</span>';
+			echo '<span class="current">' . sprintf( esc_html__( 'Search results for: %s', 'bnh-core' ), get_search_query() ) . '</span>';
 
 		// 404 page
 		} elseif ( is_404() ) {
-			echo '<span class="current">' . esc_html__( '404 Not Found', 'purple-surgical' ) . '</span>';
+			echo '<span class="current">' . esc_html__( '404 Not Found', 'bnh-core' ) . '</span>';
 
 		// Fallback
 		} else {
@@ -149,5 +149,19 @@ if ( ! function_exists( 'purple_surgical_breadcrumb' ) ) {
 		}
 
 		echo '</nav>';
+	}
+}
+
+if ( ! function_exists( 'bnh_core_breadcrumb' ) ) {
+	/**
+	 * BNH alias for breadcrumb rendering.
+	 *
+	 * @param bool   $layout_padding Add layout padding.
+	 * @param string $margin_top Margin top class.
+	 * @param string $margin_bottom Margin bottom class.
+	 * @return void
+	 */
+	function bnh_core_breadcrumb( $layout_padding = false, $margin_top = 'mt-30', $margin_bottom = '' ) {
+		purple_surgical_breadcrumb( $layout_padding, $margin_top, $margin_bottom );
 	}
 }

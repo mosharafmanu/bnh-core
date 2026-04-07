@@ -5,7 +5,7 @@
  * Easy access to site settings from ACF options. Includes header, footer,
  * and contact info with rendering functions for common components.
  *
- * @package purple-surgical
+ * @package BNH_Core
  */
 
 // Header Options
@@ -41,7 +41,7 @@ if ( ! function_exists( 'purple_surgical_render_site_logo' ) ) {
 	 * @return void
 	 */
 	function purple_surgical_render_site_logo( $args = [] ) {
-		if ( ! function_exists( 'purple_surgical_render_responsive_picture' ) ) {
+		if ( ! function_exists( 'bnh_core_render_responsive_picture' ) ) {
 			return;
 		}
 
@@ -62,7 +62,7 @@ if ( ! function_exists( 'purple_surgical_render_site_logo' ) ) {
 		?>
 		<a href="<?php echo esc_url( $home_url ); ?>" class="<?php echo esc_attr( $args['link_class'] ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
 			<?php
-			purple_surgical_render_responsive_picture(
+			bnh_core_render_responsive_picture(
 				$logo,
 				[
 					'class' => $args['class'],
@@ -160,10 +160,10 @@ if ( ! function_exists( 'purple_surgical_render_header_button' ) ) {
 			$target_attr = ' target="_blank" rel="noopener noreferrer"';
 			}
 
-			$desktop_aria_label = ! empty( $text ) ? $text : __( 'Contact Us', 'purple-surgical' );
+			$desktop_aria_label = ! empty( $text ) ? $text : __( 'Contact Us', 'bnh-core' );
 			$mobile_phone_clean = preg_replace( '/[^0-9+]/', '', $mobile_phone );
 			$mobile_phone_href  = ! empty( $mobile_phone_clean ) ? 'tel:' . $mobile_phone_clean : '';
-			$mobile_aria_label  = ! empty( $mobile_phone ) ? sprintf( __( 'Call %s', 'purple-surgical' ), $mobile_phone ) : __( 'Call Us', 'purple-surgical' );
+			$mobile_aria_label  = ! empty( $mobile_phone ) ? sprintf( __( 'Call %s', 'bnh-core' ), $mobile_phone ) : __( 'Call Us', 'bnh-core' );
 
 			ob_start();
 			?>
@@ -1036,7 +1036,7 @@ if ( ! function_exists( 'purple_surgical_render_footer_logo' ) ) {
 	 * @return void
 	 */
 	function purple_surgical_render_footer_logo( $args = [] ) {
-		if ( ! function_exists( 'purple_surgical_render_responsive_picture' ) ) {
+		if ( ! function_exists( 'bnh_core_render_responsive_picture' ) ) {
 			return;
 		}
 
@@ -1057,7 +1057,7 @@ if ( ! function_exists( 'purple_surgical_render_footer_logo' ) ) {
 		?>
 		<a href="<?php echo esc_url( $home_url ); ?>" class="<?php echo esc_attr( $args['link_class'] ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
 			<?php
-			purple_surgical_render_responsive_picture(
+			bnh_core_render_responsive_picture(
 				$logo,
 				[
 					'class' => $args['class'],
@@ -1241,17 +1241,17 @@ if ( ! function_exists( 'purple_surgical_render_social_medias' ) ) {
 					$filename_lower = strtolower( basename( $icon_url ) );
 
 					if ( strpos( $url_lower, 'facebook' ) !== false || strpos( $filename_lower, 'facebook' ) !== false ) {
-						$aria_label = __( 'Facebook', 'purple-surgical' );
+						$aria_label = __( 'Facebook', 'bnh-core' );
 					} elseif ( strpos( $url_lower, 'twitter' ) !== false || strpos( $url_lower, 'x.com' ) !== false || strpos( $filename_lower, 'twitter' ) !== false ) {
-						$aria_label = __( 'Twitter', 'purple-surgical' );
+						$aria_label = __( 'Twitter', 'bnh-core' );
 					} elseif ( strpos( $url_lower, 'linkedin' ) !== false || strpos( $url_lower, 'linkdin' ) !== false || strpos( $filename_lower, 'linkedin' ) !== false ) {
-						$aria_label = __( 'LinkedIn', 'purple-surgical' );
+						$aria_label = __( 'LinkedIn', 'bnh-core' );
 					} elseif ( strpos( $url_lower, 'instagram' ) !== false || strpos( $filename_lower, 'instagram' ) !== false ) {
-						$aria_label = __( 'Instagram', 'purple-surgical' );
+						$aria_label = __( 'Instagram', 'bnh-core' );
 					} elseif ( strpos( $url_lower, 'youtube' ) !== false || strpos( $filename_lower, 'youtube' ) !== false ) {
-						$aria_label = __( 'YouTube', 'purple-surgical' );
+						$aria_label = __( 'YouTube', 'bnh-core' );
 					} else {
-						$aria_label = __( 'Social Media', 'purple-surgical' );
+						$aria_label = __( 'Social Media', 'bnh-core' );
 					}
 				}
 				?>
@@ -1336,5 +1336,77 @@ if ( ! function_exists( 'purple_surgical_render_footer_copyright' ) ) {
 		} else {
 			return $output;
 		}
+	}
+}
+
+if ( ! function_exists( 'bnh_core_get_site_logo' ) ) {
+	function bnh_core_get_site_logo() {
+		return purple_surgical_get_site_logo();
+	}
+}
+
+if ( ! function_exists( 'bnh_core_render_site_logo' ) ) {
+	function bnh_core_render_site_logo( $args = [] ) {
+		return purple_surgical_render_site_logo( $args );
+	}
+}
+
+if ( ! function_exists( 'bnh_core_get_header_button' ) ) {
+	function bnh_core_get_header_button() {
+		return purple_surgical_get_header_button();
+	}
+}
+
+if ( ! function_exists( 'bnh_core_get_header_button_mobile_phone' ) ) {
+	function bnh_core_get_header_button_mobile_phone() {
+		return purple_surgical_get_header_button_mobile_phone();
+	}
+}
+
+if ( ! function_exists( 'bnh_core_render_header_button' ) ) {
+	function bnh_core_render_header_button( $args = [] ) {
+		return purple_surgical_render_header_button( $args );
+	}
+}
+
+if ( ! function_exists( 'bnh_core_get_footer_logo' ) ) {
+	function bnh_core_get_footer_logo() {
+		return purple_surgical_get_footer_logo();
+	}
+}
+
+if ( ! function_exists( 'bnh_core_render_footer_logo' ) ) {
+	function bnh_core_render_footer_logo( $args = [] ) {
+		return purple_surgical_render_footer_logo( $args );
+	}
+}
+
+if ( ! function_exists( 'bnh_core_get_social_medias' ) ) {
+	function bnh_core_get_social_medias() {
+		return purple_surgical_get_social_medias();
+	}
+}
+
+if ( ! function_exists( 'bnh_core_render_social_medias' ) ) {
+	function bnh_core_render_social_medias( $args = [] ) {
+		return purple_surgical_render_social_medias( $args );
+	}
+}
+
+if ( ! function_exists( 'bnh_core_get_footer_copyright' ) ) {
+	function bnh_core_get_footer_copyright() {
+		return purple_surgical_get_footer_copyright();
+	}
+}
+
+if ( ! function_exists( 'bnh_core_render_footer_copyright' ) ) {
+	function bnh_core_render_footer_copyright( $args = [] ) {
+		return purple_surgical_render_footer_copyright( $args );
+	}
+}
+
+if ( ! function_exists( 'bnh_core_render_footer_menu' ) ) {
+	function bnh_core_render_footer_menu( $args = [] ) {
+		return purple_surgical_render_footer_menu( $args );
 	}
 }

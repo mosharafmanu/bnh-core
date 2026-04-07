@@ -1,0 +1,44 @@
+{
+  "key": "group_health_topic_color",
+  "title": "Health Topic Color",
+  "fields": [
+    {
+      "key": "field_health_topic_color",
+      "label": "Topic Color",
+      "name": "topic_color",
+      "aria-label": "",
+      "type": "color_picker",
+      "instructions": "Enter a hex color for this parent health topic. Child topics automatically inherit the parent topic color. Current brand colors for reference: Prostate #0B3276, Diabetes #330C65, Hormone #560606, General #804103.",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "",
+      "enable_opacity": 0,
+      "return_format": "string"
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "taxonomy",
+        "operator": "==",
+        "value": "health_topic"
+      }
+    ]
+  ],
+  "menu_order": 1,
+  "position": "acf_after_title",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": "Parent topic color selection for theme presentation. Child topics inherit the selected parent color.",
+  "show_in_rest": 0,
+  "display_title": "",
+  "modified": 1775535984
+}
