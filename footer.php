@@ -15,34 +15,38 @@
 		<div class="site-footer__inner layout-padding">
 			<div class="site-footer__top">
 				<div class="site-footer__brand-column">
-					<?php
-					if ( function_exists( 'bnh_core_render_footer_logo' ) ) {
-						bnh_core_render_footer_logo(
-							array(
-								'class' => 'footer-logo-image',
-							)
-						);
-					}
-					?>
+					<div class="site-footer__brand-box">
+						<?php
+						if ( function_exists( 'bnh_core_render_footer_logo' ) ) {
+							bnh_core_render_footer_logo(
+								array(
+									'class' => 'footer-logo-image',
+								)
+							);
+						}
+						?>
 
-					<?php
-					if ( function_exists( 'bnh_core_render_footer_phone_rows' ) ) {
-						bnh_core_render_footer_phone_rows();
-					}
-					?>
+						<?php
+						if ( function_exists( 'bnh_core_render_footer_phone_rows' ) ) {
+							bnh_core_render_footer_phone_rows();
+						}
+						?>
+					</div>
 
-					<?php
-					$bnh_social_heading = function_exists( 'bnh_core_get_footer_social_heading' ) ? bnh_core_get_footer_social_heading() : '';
-					?>
-					<?php if ( '' !== $bnh_social_heading ) : ?>
-						<h3 class="site-footer__column-title footer-social-heading h5-style"><?php echo esc_html( $bnh_social_heading ); ?></h3>
-					<?php endif; ?>
+					<div class="site-footer__social-box">
+						<?php
+						$bnh_social_heading = function_exists( 'bnh_core_get_footer_social_heading' ) ? bnh_core_get_footer_social_heading() : '';
+						?>
+						<?php if ( '' !== $bnh_social_heading ) : ?>
+							<h3 class="site-footer__column-title footer-social-heading h5-style"><?php echo esc_html( $bnh_social_heading ); ?></h3>
+						<?php endif; ?>
 
-					<?php
-					if ( function_exists( 'bnh_core_render_social_medias' ) ) {
-						bnh_core_render_social_medias();
-					}
-					?>
+						<?php
+						if ( function_exists( 'bnh_core_render_social_medias' ) ) {
+							bnh_core_render_social_medias();
+						}
+						?>
+					</div>
 				</div>
 
 				<div class="site-footer__content-column">
