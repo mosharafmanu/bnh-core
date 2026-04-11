@@ -71,7 +71,7 @@ if ( 'dynamic' === $bnh_source ) {
 
 					<article class="leading-doctors__card">
 						<?php if ( ! empty( $bnh_image ) || '' !== $bnh_image_url ) : ?>
-							<div class="leading-doctors__media">
+							<div class="leading-doctors__media media">
 								<?php
 								if ( ! empty( $bnh_image ) && function_exists( 'bnh_core_render_responsive_picture' ) ) {
 									bnh_core_render_responsive_picture(

@@ -63,7 +63,7 @@ if ( '' === $bnh_heading ) {
 
 			<div class="book-consultation__media">
 				<?php if ( is_array( $bnh_image ) ) : ?>
-					<div class="book-consultation__image-frame">
+					<div class="book-consultation__image-frame media">
 						<?php
 						if ( function_exists( 'bnh_core_render_responsive_picture' ) ) {
 							bnh_core_render_responsive_picture(

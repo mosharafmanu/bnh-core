@@ -26,7 +26,7 @@ $bnh_arrow_icon = trim( ob_get_clean() );
 <article class="topic-card topic-card--featured">
 	<a class="topic-card__link" href="<?php echo esc_url( $bnh_link ); ?>">
 		<?php if ( $bnh_thumbnail_id ) : ?>
-			<div class="topic-card__media">
+			<div class="topic-card__media media">
 				<?php
 				if ( function_exists( 'bnh_core_render_responsive_picture' ) ) {
 					bnh_core_render_responsive_picture(
