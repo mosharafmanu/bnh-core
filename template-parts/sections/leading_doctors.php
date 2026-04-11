@@ -7,10 +7,39 @@
 
 $bnh_heading = (string) get_sub_field( 'heading' );
 $bnh_intro   = (string) get_sub_field( 'intro_content' );
-$bnh_items   = get_sub_field( 'doctor_items' );
+$bnh_source  = (string) get_sub_field( 'data_source' );
+$bnh_items   = array();
 
 if ( '' === $bnh_heading ) {
 	$bnh_heading = __( 'Built for Long-Term Health. Endorsed by Leading Doctors.', 'bnh-core' );
+}
+
+if ( 'dynamic' === $bnh_source ) {
+	$bnh_selected_users = get_sub_field( 'doctor_users' );
+
+	if ( is_array( $bnh_selected_users ) ) {
+		foreach ( $bnh_selected_users as $bnh_user ) {
+			if ( is_numeric( $bnh_user ) ) {
+				$bnh_user = get_user_by( 'id', (int) $bnh_user );
+			}
+
+			if ( ! ( $bnh_user instanceof WP_User ) ) {
+				continue;
+			}
+
+			$bnh_user_id  = (int) $bnh_user->ID;
+			$bnh_user_job = function_exists( 'get_field' ) ? (string) get_field( 'job_title', 'user_' . $bnh_user_id ) : '';
+			$bnh_avatar   = get_avatar_url( $bnh_user_id, array( 'size' => 480 ) );
+
+			$bnh_items[] = array(
+				'image_url' => $bnh_avatar,
+				'name'      => $bnh_user->display_name,
+				'role'      => $bnh_user_job,
+			);
+		}
+	}
+} else {
+	$bnh_items = get_sub_field( 'doctor_items' );
 }
 ?>
 
@@ -30,20 +59,21 @@ if ( '' === $bnh_heading ) {
 			<div class="leading-doctors__grid">
 				<?php foreach ( $bnh_items as $bnh_item ) : ?>
 					<?php
-					$bnh_image = isset( $bnh_item['image'] ) && is_array( $bnh_item['image'] ) ? $bnh_item['image'] : array();
-					$bnh_name  = isset( $bnh_item['name'] ) ? (string) $bnh_item['name'] : '';
-					$bnh_role  = isset( $bnh_item['role'] ) ? (string) $bnh_item['role'] : '';
+					$bnh_image     = isset( $bnh_item['image'] ) && is_array( $bnh_item['image'] ) ? $bnh_item['image'] : array();
+					$bnh_image_url = isset( $bnh_item['image_url'] ) ? (string) $bnh_item['image_url'] : '';
+					$bnh_name      = isset( $bnh_item['name'] ) ? (string) $bnh_item['name'] : '';
+					$bnh_role      = isset( $bnh_item['role'] ) ? (string) $bnh_item['role'] : '';
 
-					if ( '' === $bnh_name && empty( $bnh_image ) && '' === $bnh_role ) {
+					if ( '' === $bnh_name && empty( $bnh_image ) && '' === $bnh_image_url && '' === $bnh_role ) {
 						continue;
 					}
 					?>
 
 					<article class="leading-doctors__card">
-						<?php if ( ! empty( $bnh_image ) ) : ?>
+						<?php if ( ! empty( $bnh_image ) || '' !== $bnh_image_url ) : ?>
 							<div class="leading-doctors__media">
 								<?php
-								if ( function_exists( 'bnh_core_render_responsive_picture' ) ) {
+								if ( ! empty( $bnh_image ) && function_exists( 'bnh_core_render_responsive_picture' ) ) {
 									bnh_core_render_responsive_picture(
 										$bnh_image,
 										array(
@@ -53,6 +83,10 @@ if ( '' === $bnh_heading ) {
 											'size_group' => 'card-4col',
 										)
 									);
+								} elseif ( '' !== $bnh_image_url ) {
+									?>
+									<img class="leading-doctors__image" src="<?php echo esc_url( $bnh_image_url ); ?>" alt="<?php echo esc_attr( $bnh_name ); ?>">
+									<?php
 								}
 								?>
 							</div>

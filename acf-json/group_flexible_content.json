@@ -228,6 +228,59 @@
               "new_lines": "wpautop"
             },
             {
+              "key": "field_leading_doctors_data_source",
+              "label": "Data Source",
+              "name": "data_source",
+              "aria-label": "",
+              "type": "button_group",
+              "instructions": "Choose whether this section should use manually entered cards or selected users from the author list.",
+              "required": 1,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "choices": {
+                "manual": "Manual Input",
+                "dynamic": "Dynamic Authors"
+              },
+              "default_value": "manual",
+              "return_format": "value",
+              "allow_null": 0,
+              "layout": "horizontal"
+            },
+            {
+              "key": "field_leading_doctors_users",
+              "label": "Doctor Authors",
+              "name": "doctor_users",
+              "aria-label": "",
+              "type": "user",
+              "instructions": "Select the authors to show when using the dynamic source. Name and role will come from the user profile.",
+              "required": 0,
+              "conditional_logic": [
+                [
+                  {
+                    "field": "field_leading_doctors_data_source",
+                    "operator": "==",
+                    "value": "dynamic"
+                  }
+                ]
+              ],
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "role": [
+                "author"
+              ],
+              "return_format": "object",
+              "multiple": 1,
+              "allow_null": 0,
+              "bidirectional_target": []
+            },
+            {
               "key": "field_leading_doctors_items",
               "label": "Doctor Cards",
               "name": "doctor_items",
@@ -235,7 +288,15 @@
               "type": "repeater",
               "instructions": "Add the doctor profiles shown in this section.",
               "required": 0,
-              "conditional_logic": 0,
+              "conditional_logic": [
+                [
+                  {
+                    "field": "field_leading_doctors_data_source",
+                    "operator": "==",
+                    "value": "manual"
+                  }
+                ]
+              ],
               "wrapper": {
                 "width": "",
                 "class": "",
