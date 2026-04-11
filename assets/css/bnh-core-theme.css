@@ -488,16 +488,29 @@ Topic AJAX Loading States
 /* Button Base Styles */
 .site-btn {
 	display: inline-flex;
-	padding: .9375rem 1.5625rem; /* 15px 25px */
-	font-size: 1.125rem; /* 18px */
-	line-height: normal;
-	font-weight: 700;
+	padding: 1.563rem 5.375rem; /* 25px 86px */
 	text-decoration: none;
-	border-radius: 1.875rem;
 	transition: all 0.3s ease;
 	cursor: pointer;
 	text-align: center;
+	font-family: var(--bhn-font-body);
+	font-size: 1.688rem; /* 27px */
+	font-style: normal;
+	font-weight: 700;
+	line-height:  133.333%; /* 36px */
 }
+.btn-radius{
+	border-radius: .25rem; /* 4px */
+}
+.btn-primary {
+	background-color: #0A2B4F;
+	color: var(--bhn-white);
+}
+.btn-secondary{
+	background-color: var(--bhn-accent);
+	color: var(--bhn-white);
+}
+
 
 .error-404 .site-btn{
 	margin-left:auto;

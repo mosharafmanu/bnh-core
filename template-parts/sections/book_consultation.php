@@ -52,7 +52,7 @@ if ( '' === $bnh_heading ) {
 							bnh_core_render_button(
 								$bnh_button,
 								array(
-									'class' => 'book-consultation__button',
+									'class' => 'site-btn btn-secondary btn-radius book-consultation__button',
 								)
 							);
 						}

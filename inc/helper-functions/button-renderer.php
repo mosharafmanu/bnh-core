@@ -16,8 +16,6 @@ if ( ! function_exists( 'purple_surgical_render_button' ) ) {
 	 *     Optional customization.
 	 *
 	 *     @type string $style Button style class. Default 'pink-purple'.
-	 *                         Options: 'pink-purple', 'transparent-purple border-pink btn-border'.
-	 *     @type bool   $show_icon Show arrow icon. Default true.
 	 *     @type string $class Additional CSS classes. Default ''.
 	 *     @type bool   $echo Echo or return. Default true.
 	 * }
@@ -31,10 +29,9 @@ if ( ! function_exists( 'purple_surgical_render_button' ) ) {
 
 		// Default arguments
 		$defaults = [
-			'style'     => 'pink-purple',
-			'show_icon' => true,
-			'class'     => '',
-			'echo'      => true,
+			'style' => 'pink-purple',
+			'class' => '',
+			'echo'  => true,
 		];
 		$args = wp_parse_args( $args, $defaults );
 
@@ -60,12 +57,7 @@ if ( ! function_exists( 'purple_surgical_render_button' ) ) {
 		<a href="<?php echo esc_url( $link_url ); ?>"
 			class="<?php echo esc_attr( $button_classes ); ?>"
 			target="<?php echo esc_attr( $link_target ); ?>">
-			<span class="btn-text"><?php echo esc_html( $link_title ); ?></span>
-			<?php if ( $args['show_icon'] ) : ?>
-				<span class="btn-icon">
-					<?php get_template_part( 'assets/svgs/double-angle-right' ); ?>
-				</span>
-			<?php endif; ?>
+			<?php echo esc_html( $link_title ); ?>
 		</a>
 		<?php
 		$output = ob_get_clean();
@@ -102,7 +94,6 @@ if ( ! function_exists( 'purple_surgical_render_buttons' ) ) {
 	 *
 	 *     @type string $wrapper_class CSS classes for wrapper div. Default 'btns'.
 	 *     @type string $default_style Default button style if not specified. Default 'pink-purple'.
-	 *     @type bool   $show_icon Show arrow icon on buttons. Default true.
 	 *     @type bool   $echo Echo or return. Default true.
 	 * }
 	 * @return string|void
@@ -117,7 +108,6 @@ if ( ! function_exists( 'purple_surgical_render_buttons' ) ) {
 		$defaults = [
 			'wrapper_class' => 'btns',
 			'default_style' => 'pink-purple',
-			'show_icon'     => true,
 			'echo'          => true,
 		];
 		$args = wp_parse_args( $args, $defaults );
@@ -141,9 +131,8 @@ if ( ! function_exists( 'purple_surgical_render_buttons' ) ) {
 					purple_surgical_render_button(
 						$button_link,
 						[
-							'style'     => $button_style,
-							'show_icon' => $args['show_icon'],
-							'echo'      => true,
+							'style' => $button_style,
+							'echo'  => true,
 						]
 					);
 				}

@@ -28,7 +28,7 @@ if ( '' === $bnh_description ) {
 ?>
 
 <section class="topic-community mt-50 mt-md-70 mt-lg-100"<?php echo $bnh_section_style_attr; ?>>
-	<div class="topic-community__content">
+	<div class="topic-community__content layout-padding">
 		<div class="topic-community__copy">
 			<h2 class="section-title topic-community__title"><?php echo esc_html( $bnh_heading ); ?></h2>
 			<div class="topic-community__description">

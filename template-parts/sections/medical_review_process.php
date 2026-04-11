@@ -75,7 +75,7 @@ if ( '' === $bnh_heading ) {
 					bnh_core_render_button(
 						$bnh_button,
 						array(
-							'class' => 'medical-review-process__button',
+							'class' => 'site-btn btn-primary medical-review-process__button',
 						)
 					);
 				}
