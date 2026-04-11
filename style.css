@@ -466,7 +466,7 @@ Footer Style Start
 .site-footer {
 	background-color: var(--bhn-white);
 	padding-top: 4rem;
-	padding-bottom: 3rem;
+	padding-bottom: 2.5rem;
 }
 .site-footer__top {
 	display: flex;
@@ -485,6 +485,9 @@ Footer Style Start
 .footer-phone-list__item {
 	display: flex;
 	gap: .5rem;
+}
+.footer-phone-list__item img {
+	width: 2.75rem;
 }
 .footer-phone-list {
 	display: flex;
@@ -537,6 +540,11 @@ Footer Style Start
 }
 .site-footer__bottom {
 	text-align: right;
+}
+@media only screen and (max-width: 1399px) {
+.site-footer__brand-column {
+	width: 35%;
+}
 }
 /*
 ============================================================
