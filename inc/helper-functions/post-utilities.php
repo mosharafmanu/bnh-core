@@ -141,6 +141,28 @@ if ( ! function_exists( 'bnh_core_get_post_summary_markup' ) ) {
 
 if ( ! function_exists( 'bnh_core_get_post_table_of_contents' ) ) {
 	/**
+	 * Prepare UTF-8 HTML for DOMDocument parsing.
+	 *
+	 * @param string $content Raw HTML content.
+	 * @return string
+	 */
+	function bnh_core_prepare_html_for_dom_document( $content ) {
+		$content = (string) $content;
+
+		if ( '' === $content ) {
+			return '';
+		}
+
+		if ( function_exists( 'mb_encode_numericentity' ) ) {
+			return mb_encode_numericentity( $content, array( 0x80, 0x10FFFF, 0, 0x10FFFF ), 'UTF-8' );
+		}
+
+		return $content;
+	}
+}
+
+if ( ! function_exists( 'bnh_core_get_post_table_of_contents' ) ) {
+	/**
 	 * Build a table of contents from post H2 headings and inject matching IDs.
 	 *
 	 * @param WP_Post|int|null $post Post object or ID.
@@ -156,9 +178,8 @@ if ( ! function_exists( 'bnh_core_get_post_table_of_contents' ) ) {
 			);
 		}
 
-		$content = mb_convert_encoding( (string) $post->post_content, 'HTML-ENTITIES', 'UTF-8' );
-
-		libxml_use_internal_errors( true );
+		$content           = bnh_core_prepare_html_for_dom_document( (string) $post->post_content );
+		$previous_libxml   = libxml_use_internal_errors( true );
 
 		$document = new DOMDocument();
 		$loaded   = $document->loadHTML(
@@ -167,6 +188,7 @@ if ( ! function_exists( 'bnh_core_get_post_table_of_contents' ) ) {
 		);
 
 		libxml_clear_errors();
+		libxml_use_internal_errors( $previous_libxml );
 
 		if ( ! $loaded ) {
 			return array(
@@ -227,6 +249,6 @@ if ( ! function_exists( 'bnh_core_get_editorial_guidelines_url' ) ) {
 			return (string) get_permalink( $page );
 		}
 
-		return '';
+		return 'https://www.bensnaturalhealth.com/editorial-guidelines';
 	}
 }
