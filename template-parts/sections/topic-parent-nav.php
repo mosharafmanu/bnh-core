@@ -22,7 +22,7 @@ if ( empty( $bnh_parents ) ) {
 	<ul class="topic-parent-nav__list">
 		<?php foreach ( $bnh_parents as $bnh_parent ) : ?>
 			<?php
-			$is_active = isset( $bnh_context['active_parent'] ) && $bnh_context['active_parent'] instanceof WP_Term && (int) $bnh_context['active_parent']->term_id === (int) $bnh_parent->term_id;
+			$is_active = ! is_search() && ! is_author() && isset( $bnh_context['active_parent'] ) && $bnh_context['active_parent'] instanceof WP_Term && (int) $bnh_context['active_parent']->term_id === (int) $bnh_parent->term_id;
 			$is_homepage_prostate = is_front_page() && 'prostate-health' === $bnh_parent->slug;
 			$topic_url = function_exists( 'bnh_get_health_topic_term_url' ) ? bnh_get_health_topic_term_url( $bnh_parent ) : get_term_link( $bnh_parent );
 			$parent_color_value = function_exists( 'bnh_core_get_health_topic_color_value' ) ? bnh_core_get_health_topic_color_value( $bnh_parent ) : '';

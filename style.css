@@ -13,11 +13,133 @@ Text Domain: bnh-core
 Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready
 */
 
+
 /*
 ============================================================
 Header Topic Navigation
 ============================================================
 */
+
+.site-header{
+	border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+	background: var(--bhn-white);
+}
+
+.site-header__main{
+	display:grid;
+	grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+	align-items:center;
+	gap: 2rem;
+	padding-top: 1.5rem;
+	padding-bottom: 1.5rem;
+}
+
+.site-header__menu{
+	min-width: 0;
+}
+
+.main-navigation__menu{
+	display:flex;
+	flex-wrap:wrap;
+	align-items:center;
+	gap: 2rem;
+	margin: 0;
+	padding: 0;
+	list-style:none;
+}
+
+.main-navigation__menu a{
+	color: var(--bhn-heading);
+	font-family: var(--bhn-font-heading);
+	font-size: 1.5rem;
+	font-weight: 600;
+	line-height: 1.2;
+	text-decoration:none;
+}
+
+.site-branding{
+	display:flex;
+	justify-content:center;
+}
+
+.site-logo-link{
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+}
+
+.site-logo-image{
+	display:block;
+	width: auto;
+	max-width: 15rem;
+	height: auto;
+}
+
+.site-header__actions{
+	display:flex;
+	align-items:center;
+	justify-content:flex-end;
+	gap: 1.5rem;
+}
+
+.site-header__search{
+	position:relative;
+	display:flex;
+	align-items:center;
+	width: 100%;
+	max-width: 25.75rem;
+}
+
+.site-header__search-input{
+	width:100%;
+	height: 4rem;
+	padding: 0.75rem 4rem 0.75rem 1rem;
+	border: 1px solid rgba(0, 0, 0, 0.28);
+	background: var(--bhn-white);
+	color: var(--bhn-text);
+	font-family: var(--bhn-font-body);
+	font-size: 1rem;
+	line-height: 1.3;
+}
+
+.site-header__search-button{
+	position:absolute;
+	top:50%;
+	right: 1rem;
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	width: 1.75rem;
+	height: 1.75rem;
+	padding:0;
+	border:0;
+	background:transparent;
+	color: var(--bhn-heading);
+	transform: translateY(-50%);
+}
+
+.site-header__search-button svg,
+.header-action-link svg{
+	display:block;
+	width:100%;
+	height:100%;
+}
+
+.site-header__icon-links{
+	display:flex;
+	align-items:center;
+	gap: 1.25rem;
+}
+
+.header-action-link{
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	width: 2.5rem;
+	height: 2.5rem;
+	color: var(--bhn-heading);
+	text-decoration:none;
+}
 
 .site-topic-navigation{
 	display:flex;
@@ -37,6 +159,7 @@ Header Topic Navigation
 	margin-top: 1.5rem;
 	background: #0f1933;
 }
+
 .topic-parent-nav__list{
 	display:grid;
 	grid-template-columns:repeat(4, minmax(0, 1fr));
@@ -54,12 +177,16 @@ Header Topic Navigation
 	background: transparent;
 	color: var(--bhn-white);
 	font-family: var(--bhn-font-heading);
-	font-size: 1.5rem;	
+	font-size: 1.5rem;
 	font-weight: 600;
 	line-height: 1.2;
 	text-decoration:none;
 	transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
 	cursor: pointer;
+}
+
+.topic-child-nav__list{
+	flex-wrap:wrap;
 }
 
 .topic-parent-nav__link:hover{
@@ -69,20 +196,14 @@ Header Topic Navigation
 }
 
 .topic-child-nav{
-	background: var(--bhn-white);
-}
-
-.topic-child-nav__list{
-	flex-wrap:wrap;
-}
-.topic-child-nav {
 	background: #EEF1F5;
 }
+
 .topic-child-nav__link{
 	width: auto;
 	min-height: auto;
 	display: block;
-	padding: 1.875rem 1.25rem; /* 30px 36px */
+	padding: 1.875rem 1.25rem;
 	border: 0;
 	background: transparent;
 	color: var(--bhn-heading-blue);
@@ -91,9 +212,10 @@ Header Topic Navigation
 	font-weight: 500;
 	line-height: 1.3;
 }
+
 .topic-parent-nav__link.is-active,
 .topic-child-nav__link.is-active{
-	border-color: transparent;
+	background: var(--active-topic-color, transparent);
 }
 
 .topic-parent-nav__link[aria-current="page"],
@@ -156,10 +278,8 @@ Topic Hub Cards
 	margin-top: 3.75rem;
 }
 
-.topic-featured-article,
-.topic-featured-research,
-.topic-latest-articles{
-	width:100%;
+.topic-community{
+	background: linear-gradient(90deg, var(--topic-community-gradient-start, #0B3276) 0%, #030A16 100%);
 }
 
 .topic-latest-articles__items{
@@ -170,58 +290,6 @@ Topic Hub Cards
 
 .topic-latest-articles__item{
 	min-width: 0;
-}
-
-.topic-card{
-	display:flex;
-	flex-direction:column;
-	height:100%;
-	background: var(--bhn-white);
-}
-
-.topic-card__media{
-	display:block;
-	text-decoration:none;
-}
-
-.topic-card__media img{
-	display:block;
-	width:100%;
-	height:100%;
-	aspect-ratio: 16 / 10;
-	object-fit:cover;
-}
-
-.topic-card__content{
-	display:flex;
-	flex-direction:column;
-	flex:1 1 auto;
-	padding: 1.5rem;
-}
-
-.topic-card__label{
-	margin-bottom: 1rem;
-	color: var(--bhn-heading-blue);
-	font-size: 1rem;
-	font-weight: 700;
-	line-height: 1.3;
-}
-
-.topic-card__title{
-	margin-bottom: 1rem;
-}
-
-.topic-card__excerpt{
-	margin-bottom: 1.5rem;
-}
-
-.topic-card__author,
-.topic-card__date{
-	font-style: italic;
-}
-
-.topic-card__meta{
-	margin-top:auto;
 }
 
 @media only screen and (max-width:1199px) {
@@ -241,19 +309,164 @@ Topic Hub Cards
 	}
 }
 
-@media only screen and (max-width:991px) {
-	.topic-hub__featured-row{
-		grid-template-columns:1fr;
-	}
+/*
+============================================================
+Leading Doctors
+============================================================
+*/
+
+.leading-doctors__header{
+	max-width: 64rem;
+	margin: 0 auto 2rem;
+	text-align: center;
 }
 
-@media only screen and (max-width:767px) {
-	.topic-hub__latest-row,
-	.topic-hub__community-row{
-		margin-top: 2.5rem;
-	}
-
-	.topic-card__content{
-		padding: 1.25rem;
-	}
+.leading-doctors__grid{
+	display:grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 1rem;
 }
+
+.leading-doctors__card{
+	min-width: 0;
+}
+
+.leading-doctors__media img{
+	display:block;
+	width:100%;
+	height:100%;
+	object-fit:cover;
+}
+
+/*
+============================================================
+Medical Review Process
+============================================================
+*/
+
+.medical-review-process__header{
+	margin-bottom: 2rem;
+	text-align: center;
+}
+
+.medical-review-process__panel{
+	width:100%;
+}
+
+.medical-review-process__grid{
+	display:grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1.5rem;
+}
+
+.medical-review-process__item{
+	min-width: 0;
+	text-align: center;
+}
+
+.medical-review-process__icon img{
+	display:block;
+	width:auto;
+	max-width: 7.5rem;
+	height:auto;
+	margin: 0 auto 1rem;
+}
+
+.medical-review-process__cta{
+	margin-top: 1.5rem;
+	text-align:center;
+}
+
+/*
+============================================================
+Search Results
+============================================================
+*/
+
+.search-results__header{
+	margin-bottom: 2rem;
+}
+
+/*
+============================================================
+Author Archive
+============================================================
+*/
+
+.author-archive__grid{
+	display:grid;
+	grid-template-columns: minmax(18rem, 1fr) minmax(0, 1.1fr);
+	gap: 2.5rem;
+}
+
+.author-archive__profile,
+.author-archive__articles{
+	min-width: 0;
+}
+
+.author-archive__profile{
+	padding-right: 2.5rem;
+	border-right: 1px solid rgba(38, 38, 38, 0.16);
+}
+
+.author-archive__summary{
+	display:grid;
+	grid-template-columns: 16.3125rem minmax(0, 1fr);
+	gap: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+.author-archive__avatar{
+	display:block;
+	width:100%;
+	height:auto;
+}
+
+.author-archive__social{
+	display:flex;
+	align-items:center;
+	gap: 0.75rem;
+	margin-top: 0.75rem;
+}
+
+.author-archive__social-link{
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	width: 2rem;
+	height: 2rem;
+	color: var(--bhn-heading-blue);
+	text-decoration:none;
+}
+
+.author-archive__social-link svg{
+	display:block;
+	width:100%;
+	height:100%;
+}
+
+.author-archive__credential-block + .author-archive__credential-block,
+.author-archive__content-block + .author-archive__content-block{
+	margin-top: 1.5rem;
+}
+
+.author-archive__articles .topic-latest-articles__items{
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.author-archive__articles .pagination{
+	margin-top: 2rem;
+}
+
+/*
+============================================================
+Footer Style Start
+============================================================
+*/
+
+
+/*
+============================================================
+Footer Style End
+============================================================
+*/

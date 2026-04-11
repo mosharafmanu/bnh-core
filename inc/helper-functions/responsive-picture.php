@@ -66,32 +66,38 @@ if ( ! function_exists( 'bnh_core_render_responsive_picture' ) ) {
 		// Use predefined size token if specified.
 		if ( ! empty( $args['size_group'] ) ) {
 			$token_map = [
-				'card-4col'         => 'bhn-600',
-				'category-card'     => 'bhn-600',
-				'blog-card'         => 'bhn-600',
-				'product-card'      => 'bhn-600',
-				'related-products'  => 'bhn-600',
+				'card-4col'         => 'bhn-405',
+				'category-card'     => 'bhn-405',
+				'blog-card'         => 'bhn-405',
+				'product-card'      => 'bhn-405',
+				'related-products'  => 'bhn-405',
 				'card-5col'         => 'bhn-300',
 				'features-benefits' => 'bhn-300',
-				'half-col-sm'       => 'bhn-750',
-				'media-content'     => 'bhn-750',
-				'social-resp'       => 'bhn-750',
-				'product-hero'      => 'bhn-750',
-				'half-col-lg'       => 'bhn-900',
-				'hero'              => 'bhn-900',
-				'inner-hero'        => 'bhn-900',
-				'brochure-thumb'    => 'bhn-750',
-				'news-related'      => 'bhn-600',
-				'full-width'        => 'bhn-1200',
+				'half-col-sm'       => 'bhn-828',
+				'media-content'     => 'bhn-828',
+				'social-resp'       => 'bhn-828',
+				'product-hero'      => 'bhn-828',
+				'half-col-lg'       => 'bhn-828',
+				'hero'              => 'bhn-1200',
+				'inner-hero'        => 'bhn-1200',
+				'brochure-thumb'    => 'bhn-405',
+				'news-related'      => 'bhn-405',
+				'full-width'        => 'bhn-972',
 				'team-card'         => 'bhn-300',
 				'journey-item'      => 'bhn-300',
+				'topic-featured'    => 'bhn-688',
+				'topic-latest'      => 'bhn-405',
+				'author-profile'    => 'bhn-300',
+				'article-full'      => 'bhn-972',
+				'sidebar-card'      => 'bhn-405',
 			];
 			$variant_map = [
 				'bhn-300'  => [ 'thumbnail', 'bhn-100', 'bhn-300' ],
-				'bhn-600'  => [ 'thumbnail', 'bhn-100', 'bhn-300', 'bhn-600' ],
-				'bhn-750'  => [ 'bhn-300', 'bhn-600', 'bhn-750' ],
-				'bhn-900'  => [ 'bhn-300', 'bhn-600', 'bhn-750', 'bhn-900' ],
-				'bhn-1200' => [ 'bhn-300', 'bhn-600', 'bhn-750', 'bhn-900', 'bhn-1200' ],
+				'bhn-405'  => [ 'thumbnail', 'bhn-100', 'bhn-300', 'bhn-405' ],
+				'bhn-688'  => [ 'bhn-300', 'bhn-405', 'bhn-688' ],
+				'bhn-828'  => [ 'bhn-300', 'bhn-405', 'bhn-688', 'bhn-828' ],
+				'bhn-972'  => [ 'bhn-300', 'bhn-405', 'bhn-688', 'bhn-828', 'bhn-972' ],
+				'bhn-1200' => [ 'bhn-300', 'bhn-405', 'bhn-688', 'bhn-828', 'bhn-972', 'bhn-1200' ],
 			];
 
 			if ( isset( $token_map[ $args['size_group'] ] ) ) {
@@ -234,7 +240,7 @@ if ( ! function_exists( 'bnh_core_render_responsive_picture' ) ) {
 
 				// Add only the approved shared registered sizes.
 				if ( isset( $image_meta['sizes'] ) && ! empty( $image_meta['sizes'] ) ) {
-					$approved_sizes = [ 'thumbnail', 'bhn-100', 'bhn-300', 'bhn-600', 'bhn-750', 'bhn-900', 'bhn-1200' ];
+					$approved_sizes = [ 'thumbnail', 'bhn-100', 'bhn-300', 'bhn-405', 'bhn-688', 'bhn-828', 'bhn-972', 'bhn-1200' ];
 
 					foreach ( $approved_sizes as $size_name ) {
 						if ( empty( $image_meta['sizes'][ $size_name ] ) ) {

@@ -2,51 +2,60 @@
 
 ## Current State
 
-The theme image layer has been cleaned to use BNH naming:
+The theme image layer is already BNH-named and currently uses the shared generated size ladder from:
 
 - `inc/image-sizes.php`
 - `inc/helper-functions/responsive-picture.php`
+- `IMAGE_SIZE_POLICY.md`
 
-The shared generated size names now use the `bhn-*` prefix.
+Current generated sizes:
 
-## Important Decision Rule
+- `bhn-100`
+- `bhn-300`
+- `bhn-405`
+- `bhn-688`
+- `bhn-828`
+- `bhn-972`
+- `bhn-1200`
 
-Do not finalize the long-term image-size ladder yet based only on inherited structure from the previous project.
+## Final Figma Image Usage Map
 
-Before making further changes to the image-size system, collect the real BNH image usage requirements for:
+These are the confirmed BNH design targets that should drive the next image-size review.
 
-- section / component name
-- rendered width on desktop
-- rendered width on tablet
-- rendered width on mobile
-- whether the image needs fixed crop or flexible height
-- whether the same image pattern is reused elsewhere
+### Topic Hub
 
-## Why
+- Featured card media: `688 × 452`
+- Latest articles 4-column media: `405 × 248`
 
-The final decisions for:
+### Homepage
 
-- generated image sizes
-- token-to-size mapping
-- `size_group` usage
-- responsive `sizes` behavior
+- `Book Your 1-on-1` media/content 50/50 section: `827.59 × 824`
+- `Leading Doctor` 4-column media: `405 × 480`
 
-should be based on real BNH layouts, not previous-project assumptions.
+### Author Page
 
-## Next Review Inputs Needed
+- Author profile 50/50 media: `261 × 337`
 
-Before the next image-system refinement, provide:
+### Article Page
 
-1. image use cases by section/component
-2. approximate display widths by breakpoint
-3. crop vs flexible-height requirements
-4. which patterns are reused multiple times
+- Article full-width media type 1: `972 × 168`
+- Article full-width media type 2: `972 × 912`
 
-## Guidance
+### Article Sidebar
 
-Once the real BNH image usage map is available, refine:
+- Similar articles media: `405 × 144`
 
-- `inc/image-sizes.php`
-- `inc/helper-functions/responsive-picture.php`
+## Current Mapping Direction
 
-using the shared-size policy and the actual BNH design requirements.
+The current BNH implementation now uses these repeated widths as the shared project ladder:
+
+- `bhn-405` for 4-column card and sidebar-card media
+- `bhn-688` for topic featured card media
+- `bhn-828` for 50/50 media-content sections
+- `bhn-972` for article full-width media
+
+This keeps the image system aligned with the actual BNH layouts instead of previous-project assumptions.
+
+## Practical Note
+
+After changing the registered size ladder, regenerate thumbnails so existing uploads receive the new `bhn-*` derivatives.

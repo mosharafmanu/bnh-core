@@ -19,6 +19,8 @@
 
 	const featuredContainerSelector = '[data-topic-featured]';
 	const latestContainerSelector = '[data-topic-latest]';
+	const loadingClass = 'is-loading';
+	const updatingClass = 'is-updating';
 
 	function updateActiveChildLinks(activeChildSlug) {
 		const activeColor = childNav.dataset.activeColor || '';
@@ -63,6 +65,23 @@
 
 		currentNode.replaceWith(nextNode);
 		return nextNode;
+	}
+
+	function setLoadingState(nodes) {
+		nodes.filter(Boolean).forEach((node) => {
+			node.classList.add(loadingClass);
+		});
+	}
+
+	function clearLoadingState(nodes) {
+		nodes.filter(Boolean).forEach((node) => {
+			node.classList.remove(loadingClass);
+			node.classList.add(updatingClass);
+
+			window.setTimeout(() => {
+				node.classList.remove(updatingClass);
+			}, 220);
+		});
 	}
 
 	function buildRequestUrl(parentSlug, childSlug, paged, fragment) {
@@ -111,13 +130,24 @@
 		}
 
 		try {
+			const featuredContainer = document.querySelector(featuredContainerSelector);
+			const latestContainer = document.querySelector(latestContainerSelector);
+
+			setLoadingState([featuredContainer, latestContainer]);
+
 			const data = await fetchTopicContent(parentSlug, childSlug, 1, 'all');
 
-			replaceSection(featuredContainerSelector, data.featured_html || '');
-			replaceSection(latestContainerSelector, data.latest_html || '');
+			const nextFeaturedContainer = replaceSection(featuredContainerSelector, data.featured_html || '');
+			const nextLatestContainer = replaceSection(latestContainerSelector, data.latest_html || '');
 			updateActiveChildLinks(childSlug);
+			clearLoadingState([nextFeaturedContainer, nextLatestContainer]);
 		} catch (error) {
 			window.console.error(error);
+
+			const featuredContainer = document.querySelector(featuredContainerSelector);
+			const latestContainer = document.querySelector(latestContainerSelector);
+			featuredContainer?.classList.remove(loadingClass);
+			latestContainer?.classList.remove(loadingClass);
 		}
 	});
 
@@ -146,10 +176,13 @@
 		}
 
 		try {
+			latestContainer.classList.add(loadingClass);
 			const data = await fetchTopicContent(parentSlug, childSlug, paged, 'latest');
-			replaceSection(latestContainerSelector, data.latest_html || '');
+			const nextLatestContainer = replaceSection(latestContainerSelector, data.latest_html || '');
+			clearLoadingState([nextLatestContainer]);
 		} catch (error) {
 			window.console.error(error);
+			latestContainer.classList.remove(loadingClass);
 		}
 	});
 })();

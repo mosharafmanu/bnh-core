@@ -4,13 +4,14 @@
  *
  * Implements the shared image-size ladder from IMAGE_SIZE_POLICY.md.
  *
- * Approved generated widths:
+ * Approved generated widths for the current BNH design system:
  * - 100
  * - 150x150 thumbnail (kept from WordPress core)
  * - 300
- * - 600
- * - 750
- * - 900
+ * - 405
+ * - 688
+ * - 828
+ * - 972
  * - 1200
  *
  * These widths use flexible height and are reused across the theme. Section
@@ -24,9 +25,10 @@ add_action( 'after_setup_theme', 'bnh_core_register_image_sizes' );
 function bnh_core_register_image_sizes() {
 	add_image_size( 'bhn-100', 100, 9999, false );
 	add_image_size( 'bhn-300', 300, 9999, false );
-	add_image_size( 'bhn-600', 600, 9999, false );
-	add_image_size( 'bhn-750', 750, 9999, false );
-	add_image_size( 'bhn-900', 900, 9999, false );
+	add_image_size( 'bhn-405', 405, 9999, false );
+	add_image_size( 'bhn-688', 688, 9999, false );
+	add_image_size( 'bhn-828', 828, 9999, false );
+	add_image_size( 'bhn-972', 972, 9999, false );
 	add_image_size( 'bhn-1200', 1200, 9999, false );
 }
 
@@ -53,9 +55,10 @@ function bnh_core_custom_image_sizes_choose( $sizes ) {
 		array(
 			'bhn-100'  => __( 'Shared Width 100', 'bnh-core' ),
 			'bhn-300'  => __( 'Shared Width 300', 'bnh-core' ),
-			'bhn-600'  => __( 'Shared Width 600', 'bnh-core' ),
-			'bhn-750'  => __( 'Shared Width 750', 'bnh-core' ),
-			'bhn-900'  => __( 'Shared Width 900', 'bnh-core' ),
+			'bhn-405'  => __( 'Shared Width 405', 'bnh-core' ),
+			'bhn-688'  => __( 'Shared Width 688', 'bnh-core' ),
+			'bhn-828'  => __( 'Shared Width 828', 'bnh-core' ),
+			'bhn-972'  => __( 'Shared Width 972', 'bnh-core' ),
 			'bhn-1200' => __( 'Shared Width 1200', 'bnh-core' ),
 		)
 	);

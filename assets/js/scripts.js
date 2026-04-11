@@ -202,3 +202,41 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// Single article interactions
+jQuery(document).ready(function($) {
+	$('.single-article__summary-toggle').on('click', function() {
+		const $button = $(this);
+		const $summary = $button.closest('.single-article__summary');
+		const expanded = $summary.hasClass('is-expanded');
+
+		$summary.toggleClass('is-expanded', !expanded);
+		$button.attr('aria-expanded', String(!expanded));
+	});
+
+	$('.single-article__sources-toggle').on('click', function() {
+		const $button = $(this);
+		const $section = $button.closest('.single-article__sources');
+		const expanded = $section.hasClass('is-expanded');
+
+		$section.toggleClass('is-expanded', !expanded);
+		$button.attr('aria-expanded', String(!expanded));
+	});
+
+	$('.entry-meta__author-trigger').on('click', function() {
+		const $button = $(this);
+		const $item = $button.closest('.entry-meta__item--author');
+		const expanded = $item.hasClass('is-open');
+
+		$('.entry-meta__item--author').not($item).removeClass('is-open').find('.entry-meta__author-trigger').attr('aria-expanded', 'false');
+		$item.toggleClass('is-open', !expanded);
+		$button.attr('aria-expanded', String(!expanded));
+	});
+
+	$(document).on('click', function(event) {
+		const $target = $(event.target);
+
+		if (!$target.closest('.entry-meta__item--author').length) {
+			$('.entry-meta__item--author').removeClass('is-open').find('.entry-meta__author-trigger').attr('aria-expanded', 'false');
+		}
+	});
+});

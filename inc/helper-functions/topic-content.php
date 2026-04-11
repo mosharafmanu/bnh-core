@@ -219,6 +219,33 @@ function bnh_core_get_topic_post_date( $post ) {
 }
 
 /**
+ * Return a post's child health topic label when available.
+ *
+ * Search results can span multiple topics, so cards should show each post's own
+ * child-topic label instead of the page fallback topic context.
+ *
+ * @param WP_Post|int|null $post Post object or ID.
+ * @return string
+ */
+function bnh_core_get_topic_post_child_label( $post ) {
+	$post_obj = $post instanceof WP_Post ? $post : get_post( $post );
+
+	if ( ! ( $post_obj instanceof WP_Post ) ) {
+		return '';
+	}
+
+	$parent_term = function_exists( 'bnh_get_post_health_topic_parent_term' ) ? bnh_get_post_health_topic_parent_term( $post_obj->ID ) : null;
+
+	if ( ! ( $parent_term instanceof WP_Term ) || ! function_exists( 'bnh_core_get_post_health_topic_child_term' ) ) {
+		return '';
+	}
+
+	$child_term = bnh_core_get_post_health_topic_child_term( $post_obj->ID, $parent_term );
+
+	return $child_term instanceof WP_Term ? (string) $child_term->name : '';
+}
+
+/**
  * Render a template part and return the HTML.
  *
  * @param string               $slug Template slug.

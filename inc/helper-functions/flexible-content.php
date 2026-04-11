@@ -82,6 +82,58 @@ if ( ! function_exists( 'bnh_core_render_flexible_content' ) ) {
 	}
 }
 
+if ( ! function_exists( 'bnh_core_render_flexible_content_excluding_layouts' ) ) {
+	/**
+	 * Render flexible content rows while skipping selected layouts.
+	 *
+	 * This is useful when a template wants to reuse a source page's section stack
+	 * but omit layouts that are already rendered elsewhere in the template.
+	 *
+	 * @param string   $field_name       Flexible content field name.
+	 * @param int|null $post_id          Optional source post ID. Uses the current post if omitted.
+	 * @param string[] $excluded_layouts Layout names to skip.
+	 * @return void
+	 */
+	function bnh_core_render_flexible_content_excluding_layouts( $field_name = 'cms', $post_id = null, $excluded_layouts = array() ) {
+		if ( ! bnh_core_has_flexible_content( $field_name, $post_id ) ) {
+			return;
+		}
+
+		if ( null === $post_id ) {
+			$post_id = get_the_ID();
+		}
+
+		$excluded_layouts = array_filter( array_map( 'strval', (array) $excluded_layouts ) );
+
+		while ( have_rows( $field_name, $post_id ) ) {
+			the_row();
+
+			$layout = get_row_layout();
+
+			if ( empty( $layout ) || in_array( $layout, $excluded_layouts, true ) ) {
+				continue;
+			}
+
+			$template_slug = 'template-parts/sections/' . $layout . '/' . $layout;
+			$template_file = locate_template( $template_slug . '.php' );
+
+			if ( ! $template_file ) {
+				$template_slug = 'template-parts/sections/' . $layout;
+				$template_file = locate_template( $template_slug . '.php' );
+			}
+
+			if ( $template_file ) {
+				get_template_part( $template_slug );
+				continue;
+			}
+
+			if ( current_user_can( 'manage_options' ) && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				echo '<!-- Missing flexible content template: ' . esc_html( $template_slug ) . '.php -->';
+			}
+		}
+	}
+}
+
 if ( ! function_exists( 'purple_surgical_flexible_content' ) ) {
 	/**
 	 * Legacy alias for older theme calls.

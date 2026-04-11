@@ -10,6 +10,14 @@ $latest_query = function_exists( 'bnh_core_get_topic_latest_articles_query' ) ? 
 $active_parent = $bnh_context['active_parent'] ?? null;
 $active_child  = $bnh_context['active_child'] ?? null;
 $current_url   = remove_query_arg( 'topic-page' );
+
+ob_start();
+get_template_part( 'assets/svgs/arrow-left' );
+$bnh_prev_icon = trim( ob_get_clean() );
+
+ob_start();
+get_template_part( 'assets/svgs/arrow-right' );
+$bnh_next_icon = trim( ob_get_clean() );
 ?>
 
 <section
@@ -53,15 +61,15 @@ $current_url   = remove_query_arg( 'topic-page' );
 				'current'   => max( 1, absint( $bnh_context['paged'] ?? 1 ) ),
 				'total'     => max( 1, (int) $latest_query->max_num_pages ),
 				'type'      => 'list',
-				'prev_text' => esc_html__( 'Previous', 'bnh-core' ),
-				'next_text' => esc_html__( 'Next', 'bnh-core' ),
+				'prev_text' => '<span class="sr-only">' . esc_html__( 'Previous page', 'bnh-core' ) . '</span>' . $bnh_prev_icon,
+				'next_text' => '<span class="sr-only">' . esc_html__( 'Next page', 'bnh-core' ) . '</span>' . $bnh_next_icon,
 			)
 		);
 
 		if ( $pagination_links ) :
 			?>
 			<nav class="pagination" aria-label="<?php esc_attr_e( 'Latest articles pagination', 'bnh-core' ); ?>">
-				<?php echo wp_kses_post( $pagination_links ); ?>
+				<?php echo $pagination_links; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</nav>
 		<?php endif; ?>
 		<?php wp_reset_postdata(); ?>

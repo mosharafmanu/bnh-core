@@ -44,6 +44,422 @@
           ],
           "min": "",
           "max": ""
+        },
+        "layout_book_consultation": {
+          "key": "layout_book_consultation",
+          "name": "book_consultation",
+          "label": "Book Consultation",
+          "display": "block",
+          "sub_fields": [
+            {
+              "key": "field_book_consultation_heading",
+              "label": "Heading",
+              "name": "heading",
+              "aria-label": "",
+              "type": "text",
+              "instructions": "Main section heading.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "BOOK YOUR 1-ON-1 CONSULTATION TODAY",
+              "maxlength": "",
+              "placeholder": "BOOK YOUR 1-ON-1 CONSULTATION TODAY",
+              "prepend": "",
+              "append": ""
+            },
+            {
+              "key": "field_book_consultation_intro",
+              "label": "Intro Text",
+              "name": "intro_text",
+              "aria-label": "",
+              "type": "textarea",
+              "instructions": "Short introductory copy above the numbered list.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "maxlength": "",
+              "rows": 3,
+              "placeholder": "Want to talk to an expert about your health goals, lifestyle, or make sense of your symptoms? Book a call with our clinical nutrition team.",
+              "new_lines": "wpautop"
+            },
+            {
+              "key": "field_book_consultation_items",
+              "label": "Consultation Benefits",
+              "name": "consultation_items",
+              "aria-label": "",
+              "type": "repeater",
+              "instructions": "Add the numbered consultation benefit items.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "layout": "block",
+              "pagination": 0,
+              "min": 0,
+              "max": 0,
+              "collapsed": "field_book_consultation_item_text",
+              "button_label": "Add Benefit",
+              "rows_per_page": 20,
+              "sub_fields": [
+                {
+                  "key": "field_book_consultation_item_text",
+                  "label": "Item Text",
+                  "name": "item_text",
+                  "aria-label": "",
+                  "type": "textarea",
+                  "instructions": "",
+                  "required": 1,
+                  "conditional_logic": 0,
+                  "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                  },
+                  "default_value": "",
+                  "maxlength": "",
+                  "rows": 2,
+                  "placeholder": "Get personalized help with your urinary symptoms from an expert.",
+                  "new_lines": "wpautop",
+                  "parent_repeater": "field_book_consultation_items"
+                }
+              ]
+            },
+            {
+              "key": "field_book_consultation_button",
+              "label": "Button",
+              "name": "button",
+              "aria-label": "",
+              "type": "link",
+              "instructions": "Main consultation CTA button.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+              },
+              "return_format": "array"
+            },
+            {
+              "key": "field_book_consultation_image",
+              "label": "Image",
+              "name": "image",
+              "aria-label": "",
+              "type": "image",
+              "instructions": "Main consultation section image.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+              },
+              "return_format": "array",
+              "library": "all",
+              "min_width": "",
+              "min_height": "",
+              "min_size": "",
+              "max_width": "",
+              "max_height": "",
+              "max_size": "",
+              "mime_types": "jpg,jpeg,png,webp,svg",
+              "preview_size": "medium"
+            }
+          ],
+          "min": "",
+          "max": ""
+        },
+        "layout_leading_doctors": {
+          "key": "layout_leading_doctors",
+          "name": "leading_doctors",
+          "label": "Leading Doctors",
+          "display": "block",
+          "sub_fields": [
+            {
+              "key": "field_leading_doctors_heading",
+              "label": "Heading",
+              "name": "heading",
+              "aria-label": "",
+              "type": "text",
+              "instructions": "Main section heading.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "Built for Long-Term Health. Endorsed by Leading Doctors.",
+              "maxlength": "",
+              "placeholder": "Built for Long-Term Health. Endorsed by Leading Doctors.",
+              "prepend": "",
+              "append": ""
+            },
+            {
+              "key": "field_leading_doctors_intro",
+              "label": "Intro Content",
+              "name": "intro_content",
+              "aria-label": "",
+              "type": "textarea",
+              "instructions": "Short introductory copy above the doctor cards.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "maxlength": "",
+              "rows": 5,
+              "placeholder": "Our formulations are reviewed and endorsed by a large network of medical professionals, alongside researchers and dietitians, to ensure they reflect the latest clinical evidence.",
+              "new_lines": "wpautop"
+            },
+            {
+              "key": "field_leading_doctors_items",
+              "label": "Doctor Cards",
+              "name": "doctor_items",
+              "aria-label": "",
+              "type": "repeater",
+              "instructions": "Add the doctor profiles shown in this section.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "layout": "block",
+              "pagination": 0,
+              "min": 0,
+              "max": 0,
+              "collapsed": "field_leading_doctors_item_name",
+              "button_label": "Add Doctor",
+              "rows_per_page": 20,
+              "sub_fields": [
+                {
+                  "key": "field_leading_doctors_item_image",
+                  "label": "Image",
+                  "name": "image",
+                  "aria-label": "",
+                  "type": "image",
+                  "instructions": "",
+                  "required": 0,
+                  "conditional_logic": 0,
+                  "wrapper": {
+                    "width": "40",
+                    "class": "",
+                    "id": ""
+                  },
+                  "return_format": "array",
+                  "library": "all",
+                  "min_width": "",
+                  "min_height": "",
+                  "min_size": "",
+                  "max_width": "",
+                  "max_height": "",
+                  "max_size": "",
+                  "mime_types": "jpg,jpeg,png,webp,svg",
+                  "preview_size": "medium",
+                  "parent_repeater": "field_leading_doctors_items"
+                },
+                {
+                  "key": "field_leading_doctors_item_name",
+                  "label": "Name",
+                  "name": "name",
+                  "aria-label": "",
+                  "type": "text",
+                  "instructions": "",
+                  "required": 1,
+                  "conditional_logic": 0,
+                  "wrapper": {
+                    "width": "60",
+                    "class": "",
+                    "id": ""
+                  },
+                  "default_value": "",
+                  "maxlength": "",
+                  "placeholder": "Dr. Alberto Parra",
+                  "prepend": "",
+                  "append": "",
+                  "parent_repeater": "field_leading_doctors_items"
+                },
+                {
+                  "key": "field_leading_doctors_item_role",
+                  "label": "Role / Credentials",
+                  "name": "role",
+                  "aria-label": "",
+                  "type": "textarea",
+                  "instructions": "",
+                  "required": 0,
+                  "conditional_logic": 0,
+                  "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                  },
+                  "default_value": "",
+                  "maxlength": "",
+                  "rows": 3,
+                  "placeholder": "Head Diagnostic Medical Sonographer",
+                  "new_lines": "wpautop",
+                  "parent_repeater": "field_leading_doctors_items"
+                }
+              ]
+            }
+          ],
+          "min": "",
+          "max": ""
+        },
+        "layout_medical_review_process": {
+          "key": "layout_medical_review_process",
+          "name": "medical_review_process",
+          "label": "Medical Review Process",
+          "display": "block",
+          "sub_fields": [
+            {
+              "key": "field_medical_review_process_heading",
+              "label": "Heading",
+              "name": "heading",
+              "aria-label": "",
+              "type": "text",
+              "instructions": "Main section heading.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "How Our Medical Review Process Works",
+              "maxlength": "",
+              "placeholder": "How Our Medical Review Process Works",
+              "prepend": "",
+              "append": ""
+            },
+            {
+              "key": "field_medical_review_process_items",
+              "label": "Process Items",
+              "name": "process_items",
+              "aria-label": "",
+              "type": "repeater",
+              "instructions": "Add the process steps shown in this section.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "layout": "block",
+              "pagination": 0,
+              "min": 0,
+              "max": 0,
+              "collapsed": "field_medical_review_process_item_title",
+              "button_label": "Add Process Item",
+              "rows_per_page": 20,
+              "sub_fields": [
+                {
+                  "key": "field_medical_review_process_item_icon",
+                  "label": "Icon",
+                  "name": "icon",
+                  "aria-label": "",
+                  "type": "image",
+                  "instructions": "",
+                  "required": 0,
+                  "conditional_logic": 0,
+                  "wrapper": {
+                    "width": "35",
+                    "class": "",
+                    "id": ""
+                  },
+                  "return_format": "array",
+                  "library": "all",
+                  "min_width": "",
+                  "min_height": "",
+                  "min_size": "",
+                  "max_width": "",
+                  "max_height": "",
+                  "max_size": "",
+                  "mime_types": "jpg,jpeg,png,webp,svg",
+                  "preview_size": "medium",
+                  "parent_repeater": "field_medical_review_process_items"
+                },
+                {
+                  "key": "field_medical_review_process_item_title",
+                  "label": "Title",
+                  "name": "title",
+                  "aria-label": "",
+                  "type": "text",
+                  "instructions": "",
+                  "required": 1,
+                  "conditional_logic": 0,
+                  "wrapper": {
+                    "width": "65",
+                    "class": "",
+                    "id": ""
+                  },
+                  "default_value": "",
+                  "maxlength": "",
+                  "placeholder": "Research Review",
+                  "prepend": "",
+                  "append": "",
+                  "parent_repeater": "field_medical_review_process_items"
+                },
+                {
+                  "key": "field_medical_review_process_item_text",
+                  "label": "Description",
+                  "name": "description",
+                  "aria-label": "",
+                  "type": "textarea",
+                  "instructions": "",
+                  "required": 0,
+                  "conditional_logic": 0,
+                  "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                  },
+                  "default_value": "",
+                  "maxlength": "",
+                  "rows": 3,
+                  "placeholder": "Doctors analyze the clinical research",
+                  "new_lines": "wpautop",
+                  "parent_repeater": "field_medical_review_process_items"
+                }
+              ]
+            },
+            {
+              "key": "field_medical_review_process_button",
+              "label": "Button",
+              "name": "button",
+              "aria-label": "",
+              "type": "link",
+              "instructions": "Section CTA button.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "return_format": "array"
+            }
+          ],
+          "min": "",
+          "max": ""
         }
       },
       "min": "",
@@ -84,5 +500,5 @@
   "description": "Flexible content page builder for creating custom page layouts. Build pages using modular, reusable content sections that can be arranged in any order to create unique page designs.",
   "show_in_rest": 0,
   "display_title": "",
-  "modified": 1775498167
+  "modified": 1775620989
 }

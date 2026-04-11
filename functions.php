@@ -49,7 +49,10 @@ function bnh_core_setup() {
 	// This theme uses wp_nav_menu() in one location.
 	register_nav_menus(
 		array(
-			'menu-1' => esc_html__( 'Primary', 'bnh-core' ),
+			'mainMenu'              => esc_html__( 'Main Menu', 'bnh-core' ),
+			'footerHelpMenu'        => esc_html__( 'Footer Help Menu', 'bnh-core' ),
+			'footerInformationMenu' => esc_html__( 'Footer Information Menu', 'bnh-core' ),
+			'footerResearchMenu'    => esc_html__( 'Footer Research Menu', 'bnh-core' ),
 		)
 	);
 
@@ -179,6 +182,26 @@ function bnh_core_scripts() {
 		);
 	}
 
+	$temporary_styles = array(
+		'bnh-core-faisal-dev' => '/faisal.css',
+		'bnh-core-imran-dev'  => '/imran.css',
+	);
+
+	foreach ( $temporary_styles as $handle => $relative_path ) {
+		$file_path = $theme_dir . $relative_path;
+
+		if ( ! file_exists( $file_path ) ) {
+			continue;
+		}
+
+		wp_enqueue_style(
+			$handle,
+			$theme_uri . $relative_path,
+			array( 'bnh-core-style', 'bnh-core-font-oxanium' ),
+			(string) filemtime( $file_path )
+		);
+	}
+
 	$scripts = array(
 		'bnh-core-slick'        => array(
 			'path' => '/assets/js/slick.js',
@@ -245,6 +268,23 @@ function bnh_core_scripts() {
 add_action( 'wp_enqueue_scripts', 'bnh_core_scripts' );
 
 /**
+ * Keep search and author results aligned with the card-grid layouts.
+ *
+ * @param WP_Query $query Query instance.
+ * @return void
+ */
+function bnh_core_limit_archive_grid_results_per_page( $query ) {
+	if ( is_admin() || ! $query instanceof WP_Query || ! $query->is_main_query() ) {
+		return;
+	}
+
+	if ( $query->is_search() || $query->is_author() ) {
+		$query->set( 'posts_per_page', 4 );
+	}
+}
+add_action( 'pre_get_posts', 'bnh_core_limit_archive_grid_results_per_page' );
+
+/**
  * Load theme helper files.
  *
  * Keep theme-only utilities here. Permanent routing, redirects, canonicals,
@@ -285,18 +325,23 @@ bnh_core_load_theme_files();
 
 
 /**
- * Disable the block editor for all post types.
+ * Disable the block editor for pages only.
  *
- * The current theme workflow is based on classic editing plus ACF-driven
- * flexible content rather than Gutenberg block editing.
+ * The current page workflow is based on classic editing plus ACF-driven
+ * flexible content. Other post types keep the block editor enabled.
  *
- * @return void
+ * @param bool   $use_block_editor Whether to use the block editor.
+ * @param string $post_type        Current post type.
+ * @return bool
  */
-function bnh_core_disable_gutenberg() {
-	add_filter( 'use_block_editor_for_post_type', '__return_false' );
-	add_filter( 'use_block_editor_for_post', '__return_false' );
+function bnh_core_disable_gutenberg_for_pages( $use_block_editor, $post_type ) {
+	if ( 'page' === $post_type ) {
+		return false;
+	}
+
+	return $use_block_editor;
 }
-add_action( 'wp_loaded', 'bnh_core_disable_gutenberg' );
+add_filter( 'use_block_editor_for_post_type', 'bnh_core_disable_gutenberg_for_pages', 10, 2 );
 
 /**
  * Disable the block widget editor and restore classic widgets.

@@ -58,3 +58,175 @@ if ( ! function_exists( 'bnh_core_render_back_to_blogs_button' ) ) {
 		purple_surgical_render_back_to_blogs_button( $args );
 	}
 }
+
+if ( ! function_exists( 'bnh_core_get_post_reading_time' ) ) {
+	/**
+	 * Estimate post reading time in minutes.
+	 *
+	 * @param WP_Post|int|null $post Post object or ID.
+	 * @param int              $wpm  Words per minute.
+	 * @return string
+	 */
+	function bnh_core_get_post_reading_time( $post = null, $wpm = 200 ) {
+		$post = get_post( $post );
+
+		if ( ! $post instanceof WP_Post ) {
+			return '';
+		}
+
+		$word_count = str_word_count( wp_strip_all_tags( (string) $post->post_content ) );
+		$minutes    = max( 1, (int) ceil( $word_count / max( 1, (int) $wpm ) ) );
+
+		/* translators: %d: estimated reading time in minutes. */
+		return sprintf( _n( '%d minute', '%d minutes', $minutes, 'bnh-core' ), $minutes );
+	}
+}
+
+if ( ! function_exists( 'bnh_core_get_post_summary_text' ) ) {
+	/**
+	 * Get a short single-post summary.
+	 *
+	 * Uses the excerpt first, then falls back to trimmed content.
+	 *
+	 * @param WP_Post|int|null $post  Post object or ID.
+	 * @param int              $words Number of words.
+	 * @return string
+	 */
+	function bnh_core_get_post_summary_text( $post = null, $words = 26 ) {
+		$post = get_post( $post );
+
+		if ( ! $post instanceof WP_Post ) {
+			return '';
+		}
+
+		if ( has_excerpt( $post ) ) {
+			return wp_strip_all_tags( get_the_excerpt( $post ) );
+		}
+
+		return wp_trim_words( wp_strip_all_tags( (string) $post->post_content ), $words, '...' );
+	}
+}
+
+if ( ! function_exists( 'bnh_core_get_post_summary_markup' ) ) {
+	/**
+	 * Get post summary markup from ACF or excerpt fallback.
+	 *
+	 * @param WP_Post|int|null $post Post object or ID.
+	 * @return string
+	 */
+	function bnh_core_get_post_summary_markup( $post = null ) {
+		$post = get_post( $post );
+
+		if ( ! $post instanceof WP_Post ) {
+			return '';
+		}
+
+		if ( function_exists( 'get_field' ) ) {
+			$acf_summary = (string) get_field( 'article_summary', $post->ID );
+
+			if ( '' !== trim( $acf_summary ) ) {
+				return $acf_summary;
+			}
+		}
+
+		$fallback_summary = bnh_core_get_post_summary_text( $post );
+
+		if ( '' === $fallback_summary ) {
+			return '';
+		}
+
+		return '<p>' . esc_html( $fallback_summary ) . '</p>';
+	}
+}
+
+if ( ! function_exists( 'bnh_core_get_post_table_of_contents' ) ) {
+	/**
+	 * Build a table of contents from post H2 headings and inject matching IDs.
+	 *
+	 * @param WP_Post|int|null $post Post object or ID.
+	 * @return array{content:string,items:array<int,array{id:string,title:string}>}
+	 */
+	function bnh_core_get_post_table_of_contents( $post = null ) {
+		$post = get_post( $post );
+
+		if ( ! $post instanceof WP_Post || '' === trim( (string) $post->post_content ) ) {
+			return array(
+				'content' => '',
+				'items'   => array(),
+			);
+		}
+
+		$content = mb_convert_encoding( (string) $post->post_content, 'HTML-ENTITIES', 'UTF-8' );
+
+		libxml_use_internal_errors( true );
+
+		$document = new DOMDocument();
+		$loaded   = $document->loadHTML(
+			'<?xml encoding="utf-8" ?>' . $content,
+			LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD
+		);
+
+		libxml_clear_errors();
+
+		if ( ! $loaded ) {
+			return array(
+				'content' => apply_filters( 'the_content', (string) $post->post_content ),
+				'items'   => array(),
+			);
+		}
+
+		$items = array();
+		$index = 1;
+
+		foreach ( $document->getElementsByTagName( 'h2' ) as $heading ) {
+			$title = trim( preg_replace( '/\s+/', ' ', $heading->textContent ) );
+
+			if ( '' === $title ) {
+				continue;
+			}
+
+			$id = $heading->getAttribute( 'id' );
+
+			if ( '' === $id ) {
+				$id = sanitize_title( $title );
+			}
+
+			if ( '' === $id ) {
+				$id = 'section-' . $index;
+			}
+
+			$heading->setAttribute( 'id', $id );
+
+			$items[] = array(
+				'id'    => $id,
+				'title' => $title,
+			);
+
+			$index++;
+		}
+
+		$updated_content = $document->saveHTML();
+
+		return array(
+			'content' => apply_filters( 'the_content', $updated_content ),
+			'items'   => $items,
+		);
+	}
+}
+
+if ( ! function_exists( 'bnh_core_get_editorial_guidelines_url' ) ) {
+	/**
+	 * Resolve the editorial guidelines page URL when available.
+	 *
+	 * @return string
+	 */
+	function bnh_core_get_editorial_guidelines_url() {
+		$page = get_page_by_path( 'editorial-guidelines' );
+
+		if ( $page instanceof WP_Post ) {
+			return (string) get_permalink( $page );
+		}
+
+		return '';
+	}
+}

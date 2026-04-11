@@ -27,7 +27,7 @@ if ( ! empty( $bnh_context['active_parent'] ) && $bnh_context['active_parent'] i
 }
 ?>
 
-<section class="topic-hub mt-50 layout-padding">
+<section class="topic-hub">
 	<?php if ( is_tax( 'health_topic' ) && $bnh_term instanceof WP_Term ) : ?>
 		<h1 class="page-title sr-only"><?php echo esc_html( $bnh_term->name ); ?></h1>
 		<?php if ( term_description( $bnh_term ) ) : ?>
@@ -37,12 +37,12 @@ if ( ! empty( $bnh_context['active_parent'] ) && $bnh_context['active_parent'] i
 		<h1 class="page-title sr-only"><?php echo esc_html( $bnh_home_heading ); ?></h1>
 	<?php endif; ?>
 
-	<div class="topic-hub__featured-row">
+	<div class="topic-hub__featured-row layout-padding">
 		<?php get_template_part( 'template-parts/sections/topic-featured-article', null, array( 'context' => $bnh_context ) ); ?>
 		<?php get_template_part( 'template-parts/sections/topic-featured-research', null, array( 'context' => $bnh_context ) ); ?>
 	</div>
 
-	<div class="topic-hub__latest-row">
+	<div class="topic-hub__latest-row layout-padding">
 		<?php get_template_part( 'template-parts/sections/topic-latest-articles', null, array( 'context' => $bnh_context ) ); ?>
 	</div>
 

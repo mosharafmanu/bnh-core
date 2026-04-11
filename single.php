@@ -10,31 +10,43 @@
 get_header();
 ?>
 
-	<main id="primary" class="site-main">
+<main id="primary" class="site-main single-post-page">
+	<?php
+	if ( function_exists( 'bnh_core_breadcrumb' ) ) {
+		bnh_core_breadcrumb( true, 'mt-30', 'mt-30' );
+	}
+	?>
 
-		<?php
-		while ( have_posts() ) :
-			the_post();
+	<div class="single-post layout-padding mt-50 mt-md-70 mt-lg-100">
+		<div class="single-post__grid">
+			<div class="single-post__content">
+				<?php
+				while ( have_posts() ) :
+					the_post();
 
-			get_template_part( 'template-parts/content', get_post_type() );
+					get_template_part( 'template-parts/content', get_post_type() );
 
-			the_post_navigation(
-				array(
-					'prev_text' => '<span class="nav-subtitle">' . esc_html__( 'Previous:', 'bnh-core' ) . '</span> <span class="nav-title">%title</span>',
-					'next_text' => '<span class="nav-subtitle">' . esc_html__( 'Next:', 'bnh-core' ) . '</span> <span class="nav-title">%title</span>',
-				)
-			);
+					the_post_navigation(
+						array(
+							'prev_text' => '<span class="nav-subtitle">' . esc_html__( 'Previous:', 'bnh-core' ) . '</span> <span class="nav-title">%title</span>',
+							'next_text' => '<span class="nav-subtitle">' . esc_html__( 'Next:', 'bnh-core' ) . '</span> <span class="nav-title">%title</span>',
+						)
+					);
 
-			// If comments are open or we have at least one comment, load up the comment template.
-			if ( comments_open() || get_comments_number() ) :
-				comments_template();
-			endif;
+					if ( comments_open() || get_comments_number() ) :
+						comments_template();
+					endif;
 
-		endwhile; // End of the loop.
-		?>
+				endwhile;
+				?>
+			</div>
 
-	</main><!-- #main -->
+			<div class="single-post__sidebar">
+				<?php get_sidebar(); ?>
+			</div>
+		</div>
+	</div>
+</main>
 
 <?php
-get_sidebar();
 get_footer();
