@@ -1,3 +1,31 @@
+
+.medical-review-process__panel {
+	background-color: var(--bhn-white);
+	box-shadow: 0 .25rem .75rem .375rem rgba(0, 0, 0, 0.04);
+	padding: 2.5rem 5.4375rem 1.875rem 5.4375rem;
+}
+.medical-review-process__item {
+	position: relative;
+}
+.medical-review-process__grid .medical-review-process__item:not(:first-child)::before {
+	content: '';
+	position: absolute;
+	top: 70%;
+	left: -5.9375rem;
+	width: 100%;
+	max-width: 10.0625rem;
+	height: .3125rem;
+	background: #E9EFFA;
+}
+.medical-review-process__item-title {
+	margin-top: 1.5rem;
+}
+@media only screen and (max-width: 1899px) {
+.medical-review-process__grid .medical-review-process__item:not(:first-child)::before {
+	max-width: 8.125rem;
+	top: 62%;
+}
+}
 /*
 ============================================================
 Footer Style Start
@@ -7,6 +35,7 @@ Footer Style Start
 	background-color: var(--bhn-white);
 	padding-top: 4rem;
 	padding-bottom: 2.5rem;
+	margin-top: 4.625rem;
 }
 .site-footer__top {
 	display: flex;
@@ -28,14 +57,25 @@ Footer Style Start
 	gap: .5rem;
 	flex-wrap: wrap;
 }
+.footer-social-list__link .footer-social-list__icon {
+	width: 2.1875rem;
+	height: 2.1875rem;
+	transition: 0.3s all ease;
+}
+.footer-social-list__link:hover .footer-social-list__icon {
+	transform: scale(1.1);
+}
 .footer-phone-list__item img {
 	width: 2.75rem;
+}
+.footer-phone-list__item a {
+	text-decoration: underline;
 }
 .footer-phone-list {
 	display: flex;
 	flex-direction: column;
-	gap: 1.375rem;
-	margin-top: 1.25rem;
+	gap: 1.5rem;
+	margin-top: 1.875rem;
 }
 .site-footer__column-title {
     color: var(--bhn-heading-blue-alt) !important;
@@ -57,18 +97,16 @@ Footer Style Start
 .footer-menu li a:hover {
 	color: var(--bhn-heading-blue-alt);
 }
-
 .site-footer__brand-column .site-footer__column-title {
-	margin-top: 1.25rem;
+	margin-top: 1.5rem;
 }
 .footer-social-list {
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	margin-top: -.625rem;
 	display: flex;
 	flex-direction: column;
-	gap: 1.5rem;
+	gap: 1.625rem;
 }
 .footer-social-list a {
 	display: flex;
@@ -82,6 +120,7 @@ Footer Style Start
 }
 .site-footer__bottom {
 	text-align: right;
+	margin-top: -.3125rem;
 }
 @media only screen and (max-width: 1399px) {
 .site-footer__brand-column {
@@ -100,20 +139,70 @@ body {
 .site-footer__top {
 	display: block;
 }
+.site-footer__brand-column {
+	flex-direction: row;
+	gap: 1.875rem;
+	width: auto;
+}
+.site-footer__brand-column .site-footer__column-title {
+	margin-top: 0;
+}
+.footer-social-list {
+	flex-direction: row;
+	gap: 1.625rem;
+	flex-wrap: wrap;
+}
+.footer-phone-list {
+	margin-top: 2.8125rem;
+}
+.footer-phone-list__item:last-child {
+	display: none;
+}
+.footer-phone-list__item img {
+	display: none;
+}
+.site-footer__social-box {
+	width: 26.875rem;
+}
+.site-footer__content-column {
+	margin-top: 3.875rem;
+}
+.site-footer__disclaimer {
+	margin-top: 1.875rem;
+}
+.site-footer__bottom {
+	margin-top: 1.5rem;
+}
 }
 @media only screen and (max-width: 767px) {
+.site-footer {
+	padding-bottom: 1.5rem;
+}
 .site-footer__brand-column {
 	width: auto;
+	flex-direction: column;
 }
 .footer-social-list {
 	display: block;
 	column-count: 2;
 }
+.footer-phone-list__item:last-child {
+	display: inherit;
+}
+.footer-phone-list__item img {
+	display: block;
+}
+.footer-phone-list {
+	margin-top: 1.75rem;
+}
 .footer-social-list li:not(:last-of-type) {
 	margin-bottom: 1.375rem;
 }
 .site-footer__content-column {
-	margin-top: 1.25rem;
+	margin-top: 1.875rem;
+}
+.site-footer__menu-columns {
+	grid-template-columns: 1fr 1fr;
 }
 }
 /*
