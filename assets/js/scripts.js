@@ -222,12 +222,12 @@ jQuery(document).ready(function($) {
 		$button.attr('aria-expanded', String(!expanded));
 	});
 
-	$('.entry-meta__author-trigger').on('click', function() {
+	$('.entry-meta__person-trigger').on('click', function() {
 		const $button = $(this);
-		const $item = $button.closest('.entry-meta__item--author');
+		const $item = $button.closest('.entry-meta__item--person');
 		const expanded = $item.hasClass('is-open');
 
-		$('.entry-meta__item--author').not($item).removeClass('is-open').find('.entry-meta__author-trigger').attr('aria-expanded', 'false');
+		$('.entry-meta__item--person').not($item).removeClass('is-open').find('.entry-meta__person-trigger').attr('aria-expanded', 'false');
 		$item.toggleClass('is-open', !expanded);
 		$button.attr('aria-expanded', String(!expanded));
 	});
@@ -235,8 +235,8 @@ jQuery(document).ready(function($) {
 	$(document).on('click', function(event) {
 		const $target = $(event.target);
 
-		if (!$target.closest('.entry-meta__item--author').length) {
-			$('.entry-meta__item--author').removeClass('is-open').find('.entry-meta__author-trigger').attr('aria-expanded', 'false');
+		if (!$target.closest('.entry-meta__item--person').length) {
+			$('.entry-meta__item--person').removeClass('is-open').find('.entry-meta__person-trigger').attr('aria-expanded', 'false');
 		}
 	});
 });

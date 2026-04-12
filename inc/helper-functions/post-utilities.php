@@ -252,3 +252,53 @@ if ( ! function_exists( 'bnh_core_get_editorial_guidelines_url' ) ) {
 		return 'https://www.bensnaturalhealth.com/editorial-guidelines';
 	}
 }
+
+if ( ! function_exists( 'bnh_core_render_topic_community_section' ) ) {
+	/**
+	 * Render the reusable topic community section and return its markup.
+	 *
+	 * @param array $args Optional render arguments.
+	 * @return string
+	 */
+	function bnh_core_render_topic_community_section( $args = array() ) {
+		$args    = is_array( $args ) ? $args : array();
+		$context = array();
+
+		if ( isset( $args['context'] ) && is_array( $args['context'] ) ) {
+			$context = $args['context'];
+		} elseif ( function_exists( 'bnh_get_health_topic_context' ) ) {
+			$context = bnh_get_health_topic_context();
+		}
+
+		ob_start();
+		get_template_part(
+			'template-parts/sections/topic-community',
+			null,
+			array(
+				'context' => $context,
+			)
+		);
+
+		return (string) ob_get_clean();
+	}
+}
+
+if ( ! function_exists( 'bnh_core_topic_community_shortcode' ) ) {
+	/**
+	 * Shortcode renderer for the inline topic community section.
+	 *
+	 * Usage: [bnh_topic_community]
+	 *
+	 * @param array|string $atts Shortcode attributes.
+	 * @return string
+	 */
+	function bnh_core_topic_community_shortcode( $atts = array() ) {
+		$atts = shortcode_atts( array(), (array) $atts, 'bnh_topic_community' );
+
+		return bnh_core_render_topic_community_section();
+	}
+}
+
+if ( ! shortcode_exists( 'bnh_topic_community' ) ) {
+	add_shortcode( 'bnh_topic_community', 'bnh_core_topic_community_shortcode' );
+}

@@ -15,14 +15,96 @@ $bnh_toc              = function_exists( 'bnh_core_get_post_table_of_contents' )
 $bnh_thumbnail_id     = get_post_thumbnail_id();
 $bnh_author_id        = (int) get_the_author_meta( 'ID' );
 $bnh_author_name      = get_the_author();
-$bnh_published_date   = get_the_date( 'F j, Y' );
-$bnh_author_job       = function_exists( 'get_field' ) ? (string) get_field( 'job_title', 'user_' . $bnh_author_id ) : '';
-$bnh_author_popup     = function_exists( 'get_field' ) ? (string) get_field( 'popup_info', 'user_' . $bnh_author_id ) : '';
-$bnh_author_bio       = (string) get_the_author_meta( 'description', $bnh_author_id );
-$bnh_author_url       = get_author_posts_url( $bnh_author_id );
+$bnh_updated_date     = get_the_modified_date( 'F j, Y' );
 $bnh_editorial_url    = function_exists( 'bnh_core_get_editorial_guidelines_url' ) ? bnh_core_get_editorial_guidelines_url() : '';
 $bnh_sources          = function_exists( 'get_field' ) ? (string) get_field( 'sources', $bnh_post_id ) : '';
 $bnh_has_list_summary = false !== stripos( $bnh_summary_markup, '<li' );
+$bnh_reviewer_field   = function_exists( 'get_field' ) ? get_field( 'medically_reviewed_by', $bnh_post_id ) : null;
+
+$bnh_get_person_context = static function ( $user_reference ) {
+	$user_id = 0;
+
+	if ( is_array( $user_reference ) ) {
+		if ( isset( $user_reference['ID'] ) ) {
+			$user_id = (int) $user_reference['ID'];
+		} elseif ( isset( $user_reference['id'] ) ) {
+			$user_id = (int) $user_reference['id'];
+		}
+	} else {
+		$user_id = (int) $user_reference;
+	}
+
+	if ( $user_id <= 0 ) {
+		return null;
+	}
+
+	$user = get_userdata( $user_id );
+
+	if ( ! $user instanceof WP_User ) {
+		return null;
+	}
+
+	$job_title = function_exists( 'get_field' ) ? (string) get_field( 'job_title', 'user_' . $user_id ) : '';
+	$popup_info = function_exists( 'get_field' ) ? (string) get_field( 'popup_info', 'user_' . $user_id ) : '';
+
+	return array(
+		'id'        => $user_id,
+		'name'      => $user->display_name,
+		'job_title' => $job_title,
+		'popup'     => $popup_info,
+		'bio'       => (string) get_the_author_meta( 'description', $user_id ),
+		'url'       => get_author_posts_url( $user_id ),
+	);
+};
+
+$bnh_author_context   = $bnh_get_person_context( $bnh_author_id );
+$bnh_reviewer_context = $bnh_get_person_context( $bnh_reviewer_field );
+
+$bnh_render_person_meta = static function ( $label, $context ) use ( $bnh_editorial_url ) {
+	if ( ! is_array( $context ) || empty( $context['id'] ) || empty( $context['name'] ) ) {
+		return;
+	}
+	?>
+	<div class="entry-meta__item entry-meta__item--person">
+		<span class="entry-meta__label"><?php echo esc_html( $label ); ?>:</span>
+		<button class="entry-meta__person-trigger" type="button" aria-expanded="false">
+			<span class="entry-meta__text"><?php echo esc_html( $context['name'] ); ?></span>
+		</button>
+		<?php if ( ! empty( $context['job_title'] ) ) : ?>
+			<span class="entry-meta__suffix"> - <?php echo esc_html( $context['job_title'] ); ?></span>
+		<?php endif; ?>
+
+		<div class="entry-meta__person-popup" role="dialog" aria-label="<?php esc_attr_e( 'Person information', 'bnh-core' ); ?>">
+			<div class="entry-meta__person-popup-header">
+				<?php echo get_avatar( (int) $context['id'], 120, '', $context['name'], array( 'class' => 'entry-meta__person-popup-avatar' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<div class="entry-meta__person-popup-heading">
+					<h2 class="entry-meta__person-popup-title h4-style"><?php echo esc_html( $context['name'] ); ?></h2>
+					<?php if ( ! empty( $context['job_title'] ) ) : ?>
+						<p class="entry-meta__person-popup-job"><?php echo esc_html( $context['job_title'] ); ?></p>
+					<?php endif; ?>
+				</div>
+			</div>
+
+			<div class="entry-meta__person-popup-content">
+				<?php
+				if ( '' !== $context['popup'] ) {
+					echo wp_kses_post( $context['popup'] );
+				} elseif ( '' !== $context['bio'] ) {
+					echo wpautop( esc_html( wp_trim_words( $context['bio'], 40, '...' ) ) );
+				}
+				?>
+			</div>
+
+			<div class="entry-meta__person-popup-links">
+				<a class="entry-meta__person-popup-link entry-meta__person-popup-link--primary site-btn btn-secondary btn-radius" href="<?php echo esc_url( $context['url'] ); ?>"><?php esc_html_e( 'See Full Bio', 'bnh-core' ); ?></a>
+				<?php if ( '' !== $bnh_editorial_url ) : ?>
+					<a class="entry-meta__person-popup-link entry-meta__person-popup-link--secondary" href="<?php echo esc_url( $bnh_editorial_url ); ?>"><?php esc_html_e( 'Our Editorial Process', 'bnh-core' ); ?></a>
+				<?php endif; ?>
+			</div>
+		</div>
+	</div>
+	<?php
+};
 
 if ( '' !== $bnh_sources ) {
 	$bnh_toc['items'][] = array(
@@ -62,60 +144,23 @@ if ( '' !== $bnh_sources ) {
 		<?php endif; ?>
 
 		<div class="entry-meta" aria-label="<?php esc_attr_e( 'Article metadata', 'bnh-core' ); ?>">
-			<?php if ( $bnh_author_id ) : ?>
-				<div class="entry-meta__item entry-meta__item--author">
-					<button class="entry-meta__author-trigger" type="button" aria-expanded="false">
-						<?php echo get_avatar( $bnh_author_id, 40, '', $bnh_author_name, array( 'class' => 'entry-meta__avatar' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-						<span class="entry-meta__text">
-							<?php
-							printf(
-								/* translators: %s: author name. */
-								esc_html__( 'Written by %s', 'bnh-core' ),
-								esc_html( $bnh_author_name )
-							);
-							?>
-						</span>
-					</button>
-
-					<div class="entry-meta__author-popup" role="dialog" aria-label="<?php esc_attr_e( 'Author information', 'bnh-core' ); ?>">
-						<div class="entry-meta__author-popup-header">
-							<?php echo get_avatar( $bnh_author_id, 120, '', $bnh_author_name, array( 'class' => 'entry-meta__author-popup-avatar' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-							<div class="entry-meta__author-popup-heading">
-								<h2 class="entry-meta__author-popup-title h4-style"><?php echo esc_html( $bnh_author_name ); ?></h2>
-								<?php if ( '' !== $bnh_author_job ) : ?>
-									<p class="entry-meta__author-popup-job"><?php echo esc_html( $bnh_author_job ); ?></p>
-								<?php endif; ?>
-							</div>
-						</div>
-
-						<div class="entry-meta__author-popup-content">
-							<?php
-							if ( '' !== $bnh_author_popup ) {
-								echo wp_kses_post( $bnh_author_popup );
-							} elseif ( '' !== $bnh_author_bio ) {
-								echo wpautop( esc_html( wp_trim_words( $bnh_author_bio, 40, '...' ) ) );
-							}
-							?>
-						</div>
-
-						<div class="entry-meta__author-popup-links">
-							<a class="entry-meta__author-popup-link entry-meta__author-popup-link--primary site-btn btn-secondary btn-radius" href="<?php echo esc_url( $bnh_author_url ); ?>"><?php esc_html_e( 'See Full Bio', 'bnh-core' ); ?></a>
-							<?php if ( '' !== $bnh_editorial_url ) : ?>
-								<a class="entry-meta__author-popup-link entry-meta__author-popup-link--secondary" href="<?php echo esc_url( $bnh_editorial_url ); ?>"><?php esc_html_e( 'Our Editorial Process', 'bnh-core' ); ?></a>
-							<?php endif; ?>
-						</div>
-					</div>
-				</div>
-			<?php endif; ?>
-
-			<?php if ( '' !== $bnh_published_date ) : ?>
-				<div class="entry-meta__item">
-					<time datetime="<?php echo esc_attr( get_the_date( DATE_W3C ) ); ?>"><?php echo esc_html( $bnh_published_date ); ?></time>
-				</div>
-			<?php endif; ?>
+			<?php
+			$bnh_render_person_meta( __( 'Writer', 'bnh-core' ), $bnh_author_context );
+			$bnh_render_person_meta( __( 'Reviewer', 'bnh-core' ), $bnh_reviewer_context );
+			?>
 
 			<?php if ( '' !== $bnh_reading_time ) : ?>
-				<div class="entry-meta__item"><?php echo esc_html( $bnh_reading_time ); ?></div>
+				<div class="entry-meta__item">
+					<span class="entry-meta__label"><?php esc_html_e( 'Read in', 'bnh-core' ); ?>:</span>
+					<span class="entry-meta__text"><?php echo esc_html( $bnh_reading_time ); ?></span>
+				</div>
+			<?php endif; ?>
+
+			<?php if ( '' !== $bnh_updated_date ) : ?>
+				<div class="entry-meta__item">
+					<span class="entry-meta__label"><?php esc_html_e( 'Updated', 'bnh-core' ); ?>:</span>
+					<time class="entry-meta__text" datetime="<?php echo esc_attr( get_the_modified_date( DATE_W3C ) ); ?>"><?php echo esc_html( $bnh_updated_date ); ?></time>
+				</div>
 			<?php endif; ?>
 		</div>
 
