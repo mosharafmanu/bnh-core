@@ -289,7 +289,12 @@ Topic Hub Cards
 }
 
 .topic-latest-articles__item{
-	min-width: 0;
+	min-width: 0;.leading-doctors__grid {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 1rem;
+	margin-top: 40px;
+}
 }
 
 @media only screen and (max-width:1199px) {
@@ -309,34 +314,6 @@ Topic Hub Cards
 	}
 }
 
-/*
-============================================================
-Leading Doctors
-============================================================
-*/
-
-.leading-doctors__header{
-	max-width: 64rem;
-	margin: 0 auto 2rem;
-	text-align: center;
-}
-
-.leading-doctors__grid{
-	display:grid;
-	grid-template-columns: repeat(4, minmax(0, 1fr));
-	gap: 1rem;
-}
-
-.leading-doctors__card{
-	min-width: 0;
-}
-
-.leading-doctors__media img{
-	display:block;
-	width:100%;
-	height:100%;
-	object-fit:cover;
-}
 
 /*
 ============================================================
