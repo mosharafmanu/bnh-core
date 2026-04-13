@@ -470,3 +470,165 @@ form .topic-community__input {
 Topic Community Style End
 ============================================================
 */
+
+
+/*
+============================================================
+Author Archive Style Start
+============================================================
+*/
+.author-archive {
+	background: #FAFAFC;
+	margin-top: 0;
+	padding-top: 90px;
+}
+.author-archive__grid {
+    column-gap: 3.1875rem;
+	position: relative;
+	z-index: 10;
+}
+.author-archive__articles .author-archive__posts::after {
+    position: absolute;
+    content: "";
+    top: -170px;
+    left: -20px;
+    width: 1px;
+    height: 1616px;
+    background: #878787;
+    z-index: -2;
+    bottom: -20%;
+}
+.author-archive__posts {
+    position: relative;
+}
+.author-archive__job-title {
+	font-size: 20px;
+}
+.author-archive__name {
+    font-size: 31px;
+    font-weight: 700;
+    line-height: 135.484%;
+    margin-bottom: 3px;
+}
+.author-archive__summary {
+    margin-top: 39px;
+}
+.author-archive__credential-title {
+    margin-bottom: 4px;
+}
+.author-archive__credential-content > ul {
+    margin: 0;
+}
+.author-archive__credential-block + .author-archive__credential-block {
+	margin-top: 18px;
+}
+.author-archive__social {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	margin-top: 0.75rem;
+    justify-content: center;
+}
+.author-archive__social-link {
+	width: 24px;
+	height: 24px;
+}
+.author-archive__content-title {
+    margin-top: 40px;
+}
+.author-archive__content-block + .author-archive__content-block {
+	margin-top: 44px;
+}
+.author-archive__content-block .author-archive__content h2 {
+    margin-bottom: 5px;
+    margin-top: 48px;
+}
+.author-archive__articles .pagination {
+	margin-top: 2.5rem;
+}
+@media only screen and ( max-width: 1199px ) {
+    .author-archive__grid {
+        grid-template-columns: 1fr;
+        row-gap: 70px;
+    }
+    .author-archive__articles .author-archive__posts::after{
+        display: none;
+    }
+}
+@media only screen and ( max-width: 991px ) {
+    .author-archive {
+        padding-top: 50px;
+    }
+    .author-archive__articles .pagination {
+        margin-top: 22px;
+    }
+
+}
+@media only screen and ( max-width: 767px ) {
+    .author-archive__articles .pagination {
+        margin-top: 11px;
+    }
+    .author-archive__name {
+        font-size: 21px;
+        line-height: 146.667%;
+    }
+    .author-archive__summary {
+        grid-template-columns: 1fr;
+    }
+    .author-archive__media {
+       width: 111px;
+       position: relative;
+    }
+    .author-archive__profile-header {
+        width: 67%;
+        position: absolute;
+        top: 53px;
+        right: 0;
+    }
+    .page-title.author-archive__name {
+        font-size: 21px;
+        line-height: 146.667%;
+    }
+    .author-archive__job-title {
+        font-size: 18px;
+        line-height: 144.444%;
+    }
+    .author-archive__profile-column {
+        position: relative;
+    }
+    .author-archive__social {
+        position: absolute;
+        left: 124px;
+        bottom: -4px;
+    }
+    .author-archive__social-link {
+        width: 15px;
+        height: 15px;
+    }
+    .author-archive__credentials {
+        margin-top: 10px;
+    }
+    .author-archive__credential-title {
+        margin-bottom: 1px;
+    }
+    .author-archive__credential-block + .author-archive__credential-block {
+        margin-top: 14px;
+    }
+    .author-archive__content-title {
+        margin-top: 15px;
+    }
+    .author-archive__content-block + .author-archive__content-block {
+        margin-top: 15px;
+    }
+    .author-archive__content-block .author-archive__content h2 {
+        margin-bottom: 5px;
+        margin-top: 15px;
+    }
+}
+
+
+/*
+============================================================
+Author Archive Style End
+============================================================
+*/
