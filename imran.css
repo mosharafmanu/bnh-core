@@ -645,3 +645,17 @@ Author Archive Style Start
 Author Archive Style End
 ============================================================
 */
+
+.book-consultation__item-number {
+	width: 70px;
+	height: 70px;
+	background: url(./assets/svgs/bg-list.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(0, 0, 0, 0.85);
+    text-align: center;
+    margin-bottom: 0;
+}

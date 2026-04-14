@@ -39,7 +39,7 @@ if ( '' === $bnh_heading ) {
 								<?php continue; ?>
 							<?php endif; ?>
 							<li class="book-consultation__item">
-								<div class="book-consultation__item-number"><?php echo esc_html( $bnh_count ); ?></div>
+								<div class="book-consultation__item-number h3-style"><?php echo esc_html( $bnh_count ); ?></div>
 								<div class="book-consultation__item-text"><?php echo wp_kses_post( wpautop( $bnh_item_text ) ); ?></div>
 							</li>
 							<?php $bnh_count++; ?>

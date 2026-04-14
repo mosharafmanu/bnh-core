@@ -1,10 +1,11 @@
 .book-consultation {
-	padding-top: 4.375rem;
-	padding-bottom: 5rem;
+	padding-top: 60px;
+	padding-bottom: 67px;
 	background-image: url(assets/images/Group.png);
 	background-position: center;
 	background-size: cover;
 	background-repeat: no-repeat;
+	margin-top: 0;
 }
 .book-consultation__header {
 	text-align: center;
@@ -12,31 +13,140 @@
 	margin-left: auto;
 	margin-right: auto;
 }
+.book-consultation__title {
+	text-align: center;
+	font-size: 64px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 120.313%;
+}
 .book-consultation__grid {
 	display: grid;
 	grid-template-columns: 43rem 1fr;
 	gap: 10.125rem;
-	margin-top: 2.5rem;
-	align-items: center;
-}
-.book-consultation__list {
 	margin-top: 2.1875rem;
+}
+.book-consultation__content {
+	padding-top: 63px;
 }
 .book-consultation__list {
 	display: flex;
 	flex-direction: column;
 	gap: 3rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	padding-top: 63px;
+}
+.book-consultation__item {
+	display: flex;
+	column-gap: 23px;
+	align-items: center;
+}
+.book-consultation__item-number {
+	width: 70px;
+	height: 70px;
+	background: url(./assets/svgs/bg-list.svg);
+	background-repeat: no-repeat;
+	background-position: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: rgba(0, 0, 0, 0.85);
+	text-align: center;
+	margin-bottom: 0;
+	flex: 0 0 70px;
 }
 .book-consultation__cta {
 	margin-top: 3.125rem;
 }
 .book-consultation__image-frame {
-	height: 43.75rem;
-	border: 3px dashed rgba(21, 44, 84, 0.5); 
-	border-radius: .625rem;
+	min-height: 51.5rem;
 }
 .book-consultation__image-frame img {
 	border-radius: .625rem;
+}
+.book-consultation__cta .site-btn {
+	padding-top: 36px;
+	padding-right: 86px;
+	padding-bottom: 32px;
+	padding-left: 86px;
+}
+@media only screen and ( max-width: 1399px ) {
+	.book-consultation__grid {
+		display: grid;
+		grid-template-columns: 39rem 1fr;
+		gap: 3.125rem;
+		margin-top: 2.1875rem;
+	}
+	.book-consultation__content {
+		padding-top: 0;
+	}
+	.book-consultation__list {
+		gap: 2rem;
+		padding-top: 32px;
+	}
+}
+@media only screen and ( max-width: 991px ) {
+	.book-consultation__grid {
+		grid-template-columns: 1fr;
+		gap: 40px;
+		margin-top: 2.1875rem;
+	}
+	.book-consultation__list {
+		gap: 3rem;
+		padding-top: 3rem;
+	}
+	.book-consultation__cta {
+		margin-top: 44px;
+	}
+	.book-consultation__cta .site-btn {
+		width: 100%;
+		display: block;
+	}
+	.book-consultation__media {
+		order: -1;
+	}
+	.book-consultation__image-frame {
+		min-height: 769px;
+	}
+}
+@media only screen and ( max-width: 767px ) {
+	.book-consultation {
+		padding-top: 22px;
+		padding-bottom: 48px;
+	}
+	.book-consultation__list {
+		gap: 16px;
+		padding-top: 14px;
+	}
+	.book-consultation__title {
+		font-size: 26px;
+		line-height: 130%;
+	}
+	.book-consultation__image-frame {
+		min-height: 390px;
+	}
+	.book-consultation__media {
+		margin-left: -16px;
+		margin-right: -16px;
+	}
+	.book-consultation__content {
+		margin-top: -14px;
+	}
+	.book-consultation__cta {
+		margin-top: 39px;
+	}
+	.book-consultation__cta .book-consultation__button {
+		font-size: 18px;
+		padding-left: 0;
+		padding-right: 0;
+		padding-top: 18px;
+		padding-bottom: 18px;
+		line-height: 155.556%;
+		letter-spacing: -0.54px;
+	}
+
 }
 
 
