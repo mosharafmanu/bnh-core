@@ -100,7 +100,7 @@ Topic Hub Style Start
     transition: all .3s ease;
 }
 .topic-card__link:hover .topic-card__arrow {
-	transform: translateX(6px);
+	transform: translateX(.375rem);
 }
 
 @media only screen and ( max-width: 1599px ) {
@@ -246,7 +246,7 @@ Topic Latest Articles Style Start
 	margin-top: 3.625rem;
 }
 .pagination .page-numbers {
-	column-gap: 20px;
+	column-gap: 1.25rem;
 }
 .pagination .page-numbers .page-numbers, .pagination .page-numbers .page-numbers {
     font-family: var(--bhn-font-body);
@@ -289,7 +289,7 @@ Topic Latest Articles Style Start
 
 @media only screen and (max-width: 991px) {
     .pagination .page-numbers .prev {
-        margin-right: 10px;
+        margin-right: .625rem;
     }
     .pagination .page-numbers .next {
         margin-left: .625rem;
@@ -335,10 +335,10 @@ Topic Community Style Start
 .topic-community__content {
 	color: var(--bhn-white);
 	display: grid;
-	grid-template-columns: 1fr 545px;
-	column-gap: 161px;
-	padding-top: 88px;
-	padding-bottom: 93px;
+	grid-template-columns: 1fr 34.0625rem;
+	column-gap: 10.0625rem;
+	padding-top: 5.5rem;
+	padding-bottom: 5.8125rem;
 	align-items: center;
 }
 .topic-community__title {
@@ -346,120 +346,120 @@ Topic Community Style Start
 }
 form .topic-community__input {
 	background: #FFFFFF;
-	border: 1px solid #CFCFCF;
+	border: .0625rem solid #CFCFCF;
 	color: black;
-	font-size: 20px;
+	font-size: 1.25rem;
 	line-height: 150%;
 }
 .topic-community__button {
 	background: #D55918;
 	width: 100%;
-	border-radius: 4px;
+	border-radius: .25rem;
 	border: none;
-	padding-top: 11px;
-	padding-bottom: 11px;
+	padding-top: .6875rem;
+	padding-bottom: .6875rem;
 	color: #fff;
-	margin-top: 24px;
-	font-size: 18px;
+	margin-top: 1.5rem;
+	font-size: 1.125rem;
 	font-weight: 700;
 	line-height: 200%;
 	cursor: pointer;
 	font-family: var(--bhn-font-body);
 }
 .topic-community__title {
-    font-size: 64px;
+    font-size: 4rem;
     font-weight: 700;
     line-height: 120.313%;
 }
 .topic-community__description p {
-    font-size: 32px;
+    font-size: 2rem;
     font-weight: 400;
     line-height: 150%;
-    margin-top: 20px;
+    margin-top: 1.25rem;
 }
 @media only screen and ( max-width: 1599px ) {
         .topic-community__content {
-        grid-template-columns: 1fr 450px;
-        column-gap: 80px;
+        grid-template-columns: 1fr 28.125rem;
+        column-gap: 5rem;
     }
     .topic-community__title {
-        font-size: 48px;
+        font-size: 3rem;
     }
 }
 @media only screen and ( max-width: 1199px ) {
         .topic-community__content {
-        grid-template-columns: 1fr 350px;
-        column-gap: 50px;
-        padding-top: 46px;
-        padding-bottom: 46px;
+        grid-template-columns: 1fr 21.875rem;
+        column-gap: 3.125rem;
+        padding-top: 2.875rem;
+        padding-bottom: 2.875rem;
     }
     .topic-community__title {
-        font-size: 46px;
+        font-size: 2.875rem;
         line-height: 125.217%;
     }
     .topic-community__description p {
-        font-size: 24px;
+        font-size: 1.5rem;
         line-height: 150%;
-        margin-top: 20px;
+        margin-top: 1.25rem;
     }
 }
 @media only screen and ( max-width: 991px ) {
     .topic-hub__community-row {
-        margin-top: 83px;
+        margin-top: 5.1875rem;
     }
         .topic-community__content {
         grid-template-columns: 1fr;
-        column-gap: 50px;
-        padding-top: 46px;
-        padding-bottom: 46px;
+        column-gap: 3.125rem;
+        padding-top: 2.875rem;
+        padding-bottom: 2.875rem;
     }
     .topic-community__title {
-        font-size: 46px;
+        font-size: 2.875rem;
         line-height: 125.217%;
     }
     .topic-community__description p {
-        font-size: 24px;
+        font-size: 1.5rem;
         line-height: 150%;
-        margin-top: 20px;
+        margin-top: 1.25rem;
     }
     .topic-community__form-placeholder {
         display: grid;
-        grid-template-columns: 1fr 271px;
-        column-gap: 24px;
+        grid-template-columns: 1fr 16.9375rem;
+        column-gap: 1.5rem;
     }
     .topic-community__button {
         margin-top: 0;
     }
     .topic-community__form {
-       margin-top: 31px;
+       margin-top: 1.9375rem;
     }
 }
 @media only screen and ( max-width: 767px ) {
     .topic-hub__community-row {
-        margin-top: 64px;
+        margin-top: 4rem;
     }
     .topic-community__content {
-        padding-top: 39px;
-        padding-bottom: 48px;
+        padding-top: 2.4375rem;
+        padding-bottom: 3rem;
     }
     .topic-community__title {
-        font-size: 25px;
+        font-size: 1.5625rem;
         line-height: 145.6%;
         margin-bottom: 0;
     }
     .topic-community__description p {
-        font-size: 18px;
+        font-size: 1.125rem;
         line-height: 144.444%;
-        margin-top: 10px;
+        margin-top: .625rem;
     }
     .topic-community__form-placeholder {
         grid-template-columns: 1fr;
-        row-gap: 16px;
+        row-gap: 1rem;
     }
     form .topic-community__input {
-        font-size: 18px;
+        font-size: 1.125rem;
         line-height: 144.444%;
-        letter-spacing: -0.54px;;
+        letter-spacing: -0.0338rem;;
     }
     
 }
@@ -480,7 +480,8 @@ Author Archive Style Start
 .author-archive {
 	background: #FAFAFC;
 	margin-top: 0;
-	padding-top: 90px;
+	padding-top: 5.625rem;
+    padding-bottom: 5.625rem;
 }
 .author-archive__grid {
     column-gap: 3.1875rem;
@@ -490,10 +491,10 @@ Author Archive Style Start
 .author-archive__articles .author-archive__posts::after {
     position: absolute;
     content: "";
-    top: -170px;
-    left: -20px;
-    width: 1px;
-    height: 1616px;
+    top: -10.625rem;
+    left: -1.25rem;
+    width: .0625rem;
+    height: 101rem;
     background: #878787;
     z-index: -2;
     bottom: -20%;
@@ -502,25 +503,25 @@ Author Archive Style Start
     position: relative;
 }
 .author-archive__job-title {
-	font-size: 20px;
+	font-size: 1.25rem;
 }
 .author-archive__name {
-    font-size: 31px;
+    font-size: 1.9375rem;
     font-weight: 700;
     line-height: 135.484%;
-    margin-bottom: 3px;
+    margin-bottom: .1875rem;
 }
 .author-archive__summary {
-    margin-top: 39px;
+    margin-top: 2.4375rem;
 }
 .author-archive__credential-title {
-    margin-bottom: 4px;
+    margin-bottom: .25rem;
 }
 .author-archive__credential-content > ul {
     margin: 0;
 }
 .author-archive__credential-block + .author-archive__credential-block {
-	margin-top: 18px;
+	margin-top: 1.125rem;
 }
 .author-archive__social {
 	display: flex;
@@ -530,18 +531,18 @@ Author Archive Style Start
     justify-content: center;
 }
 .author-archive__social-link {
-	width: 24px;
-	height: 24px;
+	width: 1.5rem;
+	height: 1.5rem;
 }
 .author-archive__content-title {
-    margin-top: 40px;
+    margin-top: 2.5rem;
 }
 .author-archive__content-block + .author-archive__content-block {
-	margin-top: 44px;
+	margin-top: 2.75rem;
 }
 .author-archive__content-block .author-archive__content h2 {
-    margin-bottom: 5px;
-    margin-top: 48px;
+    margin-bottom: .3125rem;
+    margin-top: 3rem;
 }
 .author-archive__articles .pagination {
 	margin-top: 2.5rem;
@@ -549,80 +550,92 @@ Author Archive Style Start
 @media only screen and ( max-width: 1199px ) {
     .author-archive__grid {
         grid-template-columns: 1fr;
-        row-gap: 70px;
+        row-gap: 4.375rem;
     }
     .author-archive__articles .author-archive__posts::after{
         display: none;
     }
 }
 @media only screen and ( max-width: 991px ) {
+    .author-archive__grid {
+        row-gap: 3.3125rem;
+    }
     .author-archive {
-        padding-top: 50px;
+        padding-top: 3.4375rem;
+        padding-bottom: 6.5625rem;
     }
     .author-archive__articles .pagination {
-        margin-top: 22px;
+        margin-top: 1.375rem;
     }
 
 }
 @media only screen and ( max-width: 767px ) {
     .author-archive__articles .pagination {
-        margin-top: 11px;
+        margin-top: .6875rem;
+    }
+    .author-archive__grid {
+        row-gap: 2.6875rem;
     }
     .author-archive__name {
-        font-size: 21px;
+        font-size: 1.3125rem;
         line-height: 146.667%;
     }
     .author-archive__summary {
         grid-template-columns: 1fr;
     }
     .author-archive__media {
-       width: 111px;
+       width: 6.9375rem;
        position: relative;
     }
     .author-archive__profile-header {
         width: 67%;
         position: absolute;
-        top: 53px;
+        top: 3.3125rem;
         right: 0;
     }
+    .author-archive {
+        padding-top: 0;
+        padding-bottom: 3.125rem;
+    }
     .page-title.author-archive__name {
-        font-size: 21px;
+        font-size: 1.3125rem;
         line-height: 146.667%;
     }
     .author-archive__job-title {
-        font-size: 18px;
+        font-size: 1.125rem;
         line-height: 144.444%;
     }
     .author-archive__profile-column {
         position: relative;
+        margin-top: -0.625rem;
     }
     .author-archive__social {
         position: absolute;
-        left: 124px;
-        bottom: -4px;
+        left: 7.75rem;
+        bottom: -0.75rem;
     }
     .author-archive__social-link {
-        width: 15px;
-        height: 15px;
+        width: .9375rem;
+        height: .9375rem;
     }
     .author-archive__credentials {
-        margin-top: 10px;
+        margin-top: .625rem;
     }
     .author-archive__credential-title {
-        margin-bottom: 1px;
+        margin-bottom: .0625rem;
     }
     .author-archive__credential-block + .author-archive__credential-block {
-        margin-top: 14px;
+        margin-top: .875rem;
     }
     .author-archive__content-title {
-        margin-top: 15px;
+        margin-top: .9375rem;
     }
     .author-archive__content-block + .author-archive__content-block {
-        margin-top: 15px;
+        margin-top: .9375rem;
     }
     .author-archive__content-block .author-archive__content h2 {
-        margin-bottom: 5px;
-        margin-top: 15px;
+        margin-bottom: .3125rem;
+        margin-top: .9375rem;
     }
 }
 
