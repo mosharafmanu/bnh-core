@@ -31,18 +31,20 @@ if ( '' === $bnh_heading ) {
 				<?php endif; ?>
 
 				<?php if ( is_array( $bnh_items ) && ! empty( $bnh_items ) ) : ?>
-					<ol class="book-consultation__list">
+					<ul class="book-consultation__list">
+						<?php $bnh_count = 1; ?>
 						<?php foreach ( $bnh_items as $bnh_item ) : ?>
 							<?php $bnh_item_text = isset( $bnh_item['item_text'] ) ? (string) $bnh_item['item_text'] : ''; ?>
 							<?php if ( '' === $bnh_item_text ) : ?>
 								<?php continue; ?>
 							<?php endif; ?>
 							<li class="book-consultation__item">
-								<div class="book-consultation__item-number"></div>
+								<div class="book-consultation__item-number"><?php echo esc_html( $bnh_count ); ?></div>
 								<div class="book-consultation__item-text"><?php echo wp_kses_post( wpautop( $bnh_item_text ) ); ?></div>
 							</li>
+							<?php $bnh_count++; ?>
 						<?php endforeach; ?>
-					</ol>
+					</ul>
 				<?php endif; ?>
 
 				<?php if ( is_array( $bnh_button ) && ! empty( $bnh_button['url'] ) ) : ?>
