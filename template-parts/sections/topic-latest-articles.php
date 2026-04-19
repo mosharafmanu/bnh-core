@@ -52,6 +52,17 @@ $bnh_next_icon = trim( ob_get_clean() );
 			endwhile;
 			?>
 		</div>
+		<div class="topic-latest-articles__scroll-ui" aria-hidden="true">
+			<button class="topic-latest-articles__scroll-button topic-latest-articles__scroll-button--prev" type="button" aria-label="<?php esc_attr_e( 'Scroll latest articles left', 'bnh-core' ); ?>">
+				<?php echo $bnh_prev_icon; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			</button>
+			<div class="topic-latest-articles__scrollbar">
+				<div class="topic-latest-articles__scrollbar-progress"></div>
+			</div>
+			<button class="topic-latest-articles__scroll-button topic-latest-articles__scroll-button--next" type="button" aria-label="<?php esc_attr_e( 'Scroll latest articles right', 'bnh-core' ); ?>">
+				<?php echo $bnh_next_icon; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			</button>
+		</div>
 
 		<?php
 		$pagination_links = paginate_links(

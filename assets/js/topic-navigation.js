@@ -12,15 +12,185 @@
 
 	const config = window.bnhCoreTopicNavigation || {};
 	const childNav = document.querySelector('.topic-child-nav');
-
-	if (!childNav || !config.restUrl) {
-		return;
-	}
-
 	const featuredContainerSelector = '[data-topic-featured]';
 	const latestContainerSelector = '[data-topic-latest]';
 	const loadingClass = 'is-loading';
 	const updatingClass = 'is-updating';
+
+	function updateLatestScrollProgress(section) {
+		if (!section) {
+			return;
+		}
+
+		const scroller = section.querySelector('.topic-latest-articles__items');
+		const progress = section.querySelector('.topic-latest-articles__scrollbar-progress');
+		const scrollbar = section.querySelector('.topic-latest-articles__scrollbar');
+		const scrollUi = section.querySelector('.topic-latest-articles__scroll-ui');
+		const prevButton = section.querySelector('.topic-latest-articles__scroll-button--prev');
+		const nextButton = section.querySelector('.topic-latest-articles__scroll-button--next');
+
+		if (!scroller || !progress || !scrollbar) {
+			return;
+		}
+
+		const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+		const isScrollable = maxScroll > 0;
+
+		scrollbar.classList.toggle('is-visible', isScrollable);
+		if (scrollUi) {
+			scrollUi.classList.toggle('is-visible', isScrollable);
+		}
+
+		if (!isScrollable) {
+			progress.style.width = '0px';
+			progress.style.transform = 'translateX(0)';
+			return;
+		}
+
+		const visibleRatio = Math.min(1, scroller.clientWidth / scroller.scrollWidth);
+		const minThumbPercent = 24;
+		const thumbPercent = Math.max(minThumbPercent, visibleRatio * 100);
+		const scrollbarWidth = scrollbar.clientWidth;
+		const thumbWidth = scrollbarWidth * (thumbPercent / 100);
+		const maxThumbOffset = Math.max(0, scrollbarWidth - thumbWidth);
+		const progressOffset = maxScroll > 0 ? (scroller.scrollLeft / maxScroll) * maxThumbOffset : 0;
+
+		progress.style.width = `${thumbWidth}px`;
+		progress.style.transform = `translateX(${progressOffset}px)`;
+	}
+
+	function bindLatestScrollProgress(section) {
+		if (!section || section.dataset.scrollProgressBound === 'true') {
+			return;
+		}
+
+		const scroller = section.querySelector('.topic-latest-articles__items');
+		const progress = section.querySelector('.topic-latest-articles__scrollbar-progress');
+		const scrollbar = section.querySelector('.topic-latest-articles__scrollbar');
+		const prevButton = section.querySelector('.topic-latest-articles__scroll-button--prev');
+		const nextButton = section.querySelector('.topic-latest-articles__scroll-button--next');
+
+		if (!scroller || !progress || !scrollbar) {
+			return;
+		}
+
+		const refresh = () => updateLatestScrollProgress(section);
+		const pointerState = {
+			active: false,
+			dragOffsetX: 0
+		};
+
+		function moveScrollerFromClientX(clientX) {
+			const rect = scrollbar.getBoundingClientRect();
+			const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+
+			if (maxScroll <= 0 || rect.width <= 0) {
+				return;
+			}
+
+			const thumbWidth = progress.getBoundingClientRect().width;
+			const usableWidth = Math.max(1, rect.width - thumbWidth);
+			const offsetX = Math.min(Math.max(clientX - rect.left - pointerState.dragOffsetX, 0), usableWidth);
+			const scrollRatio = offsetX / usableWidth;
+
+			scroller.scrollLeft = maxScroll * scrollRatio;
+		}
+
+		scroller.addEventListener('scroll', refresh, { passive: true });
+		window.addEventListener('resize', refresh);
+
+		function getScrollStep() {
+			const firstItem = scroller.querySelector('.topic-latest-articles__item');
+
+			if (!firstItem) {
+				return Math.max(320, scroller.clientWidth * 0.8);
+			}
+
+			const itemRect = firstItem.getBoundingClientRect();
+			const scrollerStyles = window.getComputedStyle(scroller);
+			const gap = parseFloat(scrollerStyles.columnGap || scrollerStyles.gap || '0') || 0;
+
+			return itemRect.width + gap;
+		}
+
+		if (prevButton) {
+			prevButton.addEventListener('click', () => {
+				scroller.scrollBy({
+					left: -getScrollStep(),
+					behavior: 'smooth'
+				});
+			});
+		}
+
+		if (nextButton) {
+			nextButton.addEventListener('click', () => {
+				scroller.scrollBy({
+					left: getScrollStep(),
+					behavior: 'smooth'
+				});
+			});
+		}
+
+		scrollbar.addEventListener('click', (event) => {
+			if (event.target === progress || pointerState.active) {
+				return;
+			}
+
+			pointerState.dragOffsetX = progress.getBoundingClientRect().width / 2;
+			moveScrollerFromClientX(event.clientX);
+		});
+
+		progress.addEventListener('pointerdown', (event) => {
+			const thumbRect = progress.getBoundingClientRect();
+
+			pointerState.active = true;
+			pointerState.dragOffsetX = Math.min(Math.max(event.clientX - thumbRect.left, 0), thumbRect.width);
+			progress.classList.add('is-dragging');
+			progress.setPointerCapture(event.pointerId);
+			event.preventDefault();
+		});
+
+		progress.addEventListener('pointermove', (event) => {
+			if (!pointerState.active) {
+				return;
+			}
+
+			moveScrollerFromClientX(event.clientX);
+		});
+
+		const endDrag = (event) => {
+			if (!pointerState.active) {
+				return;
+			}
+
+			pointerState.active = false;
+			progress.classList.remove('is-dragging');
+
+			if (typeof event.pointerId !== 'undefined' && progress.hasPointerCapture(event.pointerId)) {
+				progress.releasePointerCapture(event.pointerId);
+			}
+		};
+
+		progress.addEventListener('pointerup', endDrag);
+		progress.addEventListener('pointercancel', endDrag);
+
+		section.dataset.scrollProgressBound = 'true';
+
+		window.requestAnimationFrame(refresh);
+	}
+
+	function initLatestScrollProgress(root = document) {
+		root.querySelectorAll('.topic-latest-articles').forEach((section) => {
+			bindLatestScrollProgress(section);
+			updateLatestScrollProgress(section);
+		});
+	}
+
+	initLatestScrollProgress();
+
+	if (!childNav || !config.restUrl) {
+		return;
+	}
 
 	function updateActiveChildLinks(activeChildSlug) {
 		const activeColor = childNav.dataset.activeColor || '';
@@ -77,6 +247,7 @@
 		nodes.filter(Boolean).forEach((node) => {
 			node.classList.remove(loadingClass);
 			node.classList.add(updatingClass);
+			initLatestScrollProgress(node);
 
 			window.setTimeout(() => {
 				node.classList.remove(updatingClass);
