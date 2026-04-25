@@ -18,10 +18,10 @@ $bnh_author_name      = get_the_author();
 $bnh_updated_date     = get_the_modified_date( 'F j, Y' );
 $bnh_editorial_url    = function_exists( 'bnh_core_get_editorial_guidelines_url' ) ? bnh_core_get_editorial_guidelines_url() : '';
 $bnh_sources          = function_exists( 'get_field' ) ? (string) get_field( 'sources', $bnh_post_id ) : '';
-$bnh_related_post     = function_exists( 'get_field' ) ? (string) get_field( 'related_post', $bnh_post_id ) : '';
 $bnh_has_list_summary = false !== stripos( $bnh_summary_markup, '<li' );
 $bnh_reviewer_field   = function_exists( 'get_field' ) ? get_field( 'medically_reviewed_by', $bnh_post_id ) : null;
 $bnh_update_history   = function_exists( 'bnh_core_get_post_update_history' ) ? bnh_core_get_post_update_history( $bnh_post_id ) : array();
+$bnh_related_post     = function_exists( 'get_field' ) ? (string) get_field( 'related_post', $bnh_post_id ) : '';
 
 $bnh_author_context   = function_exists( 'bnh_core_get_person_context' ) ? bnh_core_get_person_context( $bnh_author_id ) : null;
 $bnh_reviewer_context = function_exists( 'bnh_core_get_person_context' ) ? bnh_core_get_person_context( $bnh_reviewer_field ) : null;
@@ -181,7 +181,7 @@ if ( '' !== $bnh_sources ) {
 	?>
 
 	<?php if ( '' !== trim( $bnh_related_post ) ) : ?>
-		<section class="single-article__explore-more">
+		<section class="single-article__explore-more mt-50 mt-md-70 mt-lg-100">
 			<h2 class="single-article__explore-more-title"><?php esc_html_e( 'Explore More', 'bnh-core' ); ?></h2>
 			<div class="single-article__explore-more-content">
 				<?php echo wp_kses_post( $bnh_related_post ); ?>
