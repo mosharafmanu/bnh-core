@@ -368,6 +368,130 @@ if ( ! function_exists( 'bnh_core_get_topic_community_embed_code' ) ) {
 	}
 }
 
+if ( ! function_exists( 'bnh_core_get_book_consultation_heading' ) ) {
+	/**
+	 * Get reusable book consultation heading.
+	 *
+	 * @return string
+	 */
+	function bnh_core_get_book_consultation_heading() {
+		return (string) bnh_core_get_site_setting( 'book_consultation_heading' );
+	}
+}
+
+if ( ! function_exists( 'bnh_core_get_book_consultation_intro_text' ) ) {
+	/**
+	 * Get reusable book consultation intro text.
+	 *
+	 * @return string
+	 */
+	function bnh_core_get_book_consultation_intro_text() {
+		return (string) bnh_core_get_site_setting( 'book_consultation_intro_text' );
+	}
+}
+
+if ( ! function_exists( 'bnh_core_get_book_consultation_items' ) ) {
+	/**
+	 * Get reusable consultation benefit items.
+	 *
+	 * @return array
+	 */
+	function bnh_core_get_book_consultation_items() {
+		$items = bnh_core_get_site_setting( 'book_consultation_items' );
+		return is_array( $items ) ? $items : array();
+	}
+}
+
+if ( ! function_exists( 'bnh_core_get_book_consultation_button' ) ) {
+	/**
+	 * Get reusable consultation CTA button.
+	 *
+	 * @return array|false
+	 */
+	function bnh_core_get_book_consultation_button() {
+		$button = bnh_core_get_site_setting( 'book_consultation_button' );
+		return is_array( $button ) ? $button : false;
+	}
+}
+
+if ( ! function_exists( 'bnh_core_get_book_consultation_image' ) ) {
+	/**
+	 * Get reusable consultation image.
+	 *
+	 * @return array|false
+	 */
+	function bnh_core_get_book_consultation_image() {
+		$image = bnh_core_get_site_setting( 'book_consultation_image' );
+		return is_array( $image ) ? $image : false;
+	}
+}
+
+if ( ! function_exists( 'bnh_core_get_single_article_review_heading' ) ) {
+	/**
+	 * Get single article medical review heading.
+	 *
+	 * @return string
+	 */
+	function bnh_core_get_single_article_review_heading() {
+		return (string) bnh_core_get_site_setting( 'single_article_review_heading' );
+	}
+}
+
+if ( ! function_exists( 'bnh_core_get_single_article_review_content' ) ) {
+	/**
+	 * Get single article medical review content.
+	 *
+	 * @return string
+	 */
+	function bnh_core_get_single_article_review_content() {
+		return (string) bnh_core_get_site_setting( 'single_article_review_content' );
+	}
+}
+
+if ( ! function_exists( 'bnh_core_get_single_article_editorial_heading' ) ) {
+	/**
+	 * Get single article editorial heading.
+	 *
+	 * @return string
+	 */
+	function bnh_core_get_single_article_editorial_heading() {
+		return (string) bnh_core_get_site_setting( 'single_article_editorial_heading' );
+	}
+}
+
+if ( ! function_exists( 'bnh_core_get_single_article_editorial_content' ) ) {
+	/**
+	 * Get single article editorial content.
+	 *
+	 * @return string
+	 */
+	function bnh_core_get_single_article_editorial_content() {
+		return (string) bnh_core_get_site_setting( 'single_article_editorial_content' );
+	}
+}
+
+if ( ! function_exists( 'bnh_core_get_single_article_disclaimer_heading' ) ) {
+	/**
+	 * Get single article disclaimer heading.
+	 *
+	 * @return string
+	 */
+	function bnh_core_get_single_article_disclaimer_heading() {
+		return (string) bnh_core_get_site_setting( 'single_article_disclaimer_heading' );
+	}
+}
+
+if ( ! function_exists( 'bnh_core_get_single_article_disclaimer_content' ) ) {
+	/**
+	 * Get single article disclaimer content.
+	 *
+	 * @return string
+	 */
+	function bnh_core_get_single_article_disclaimer_content() {
+		return (string) bnh_core_get_site_setting( 'single_article_disclaimer_content' );
+	}
+}
+
 if ( ! function_exists( 'bnh_core_get_footer_social_links' ) ) {
 	/**
 	 * Get footer social links.

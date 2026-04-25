@@ -13,6 +13,7 @@ $bnh_heading            = function_exists( 'bnh_core_get_topic_community_heading
 $bnh_description        = function_exists( 'bnh_core_get_topic_community_description' ) ? bnh_core_get_topic_community_description() : '';
 $bnh_embed_code         = function_exists( 'bnh_core_get_topic_community_embed_code' ) ? bnh_core_get_topic_community_embed_code() : '';
 $bnh_gradient_start     = ! empty( $bnh_context['active_topic_color_value'] ) ? (string) $bnh_context['active_topic_color_value'] : '#0B3276';
+$bnh_context_class      = '';
 $bnh_section_style_attr = sprintf(
 	' style="%s"',
 	esc_attr( '--topic-community-gradient-start: ' . $bnh_gradient_start . ';' )
@@ -25,9 +26,15 @@ if ( '' === $bnh_heading ) {
 if ( '' === $bnh_description ) {
 	$bnh_description = __( 'Get daily tips and tricks on how to improve your quality of life, manage your symptoms and restore your health naturally.', 'bnh-core' );
 }
+
+if ( is_singular( 'post' ) ) {
+	$bnh_context_class = 'section-context--single';
+} elseif ( is_front_page() || is_home() ) {
+	$bnh_context_class = 'section-context--home';
+}
 ?>
 
-<section class="topic-community mt-50 mt-md-70 mt-lg-100"<?php echo $bnh_section_style_attr; ?>>
+<section class="topic-community mt-50 mt-md-70 mt-lg-100<?php echo '' !== $bnh_context_class ? ' ' . esc_attr( $bnh_context_class ) : ''; ?>"<?php echo $bnh_section_style_attr; ?>>
 	<div class="topic-community__content layout-padding">
 		<div class="topic-community__copy">
 			<h2 class="section-title topic-community__title"><?php echo esc_html( $bnh_heading ); ?></h2>
@@ -49,5 +56,4 @@ if ( '' === $bnh_description ) {
 		</div>
 	</div>
 </section>
-
 

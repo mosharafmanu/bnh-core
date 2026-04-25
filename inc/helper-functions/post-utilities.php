@@ -139,6 +139,135 @@ if ( ! function_exists( 'bnh_core_get_post_summary_markup' ) ) {
 	}
 }
 
+if ( ! function_exists( 'bnh_core_get_person_context' ) ) {
+	/**
+	 * Resolve a user/person context array for author, reviewer, and update history output.
+	 *
+	 * @param mixed $user_reference User ID, ACF user array, WP_User, or similar value.
+	 * @return array|null
+	 */
+	function bnh_core_get_person_context( $user_reference ) {
+		$user_id = 0;
+
+		if ( $user_reference instanceof WP_User ) {
+			$user_id = (int) $user_reference->ID;
+		} elseif ( is_array( $user_reference ) ) {
+			if ( isset( $user_reference['ID'] ) ) {
+				$user_id = (int) $user_reference['ID'];
+			} elseif ( isset( $user_reference['id'] ) ) {
+				$user_id = (int) $user_reference['id'];
+			}
+		} else {
+			$user_id = (int) $user_reference;
+		}
+
+		if ( $user_id <= 0 ) {
+			return null;
+		}
+
+		$user = get_userdata( $user_id );
+
+		if ( ! $user instanceof WP_User ) {
+			return null;
+		}
+
+		$job_title  = function_exists( 'get_field' ) ? (string) get_field( 'job_title', 'user_' . $user_id ) : '';
+		$popup_info = function_exists( 'get_field' ) ? (string) get_field( 'popup_info', 'user_' . $user_id ) : '';
+
+		return array(
+			'id'        => $user_id,
+			'name'      => $user->display_name,
+			'job_title' => $job_title,
+			'popup'     => $popup_info,
+			'bio'       => (string) get_the_author_meta( 'description', $user_id ),
+			'url'       => get_author_posts_url( $user_id ),
+		);
+	}
+}
+
+if ( ! function_exists( 'bnh_core_get_post_update_history' ) ) {
+	/**
+	 * Build dynamic created/updated history rows for a post.
+	 *
+	 * @param WP_Post|int|null $post Post object or ID.
+	 * @return array<int,array<string,mixed>>
+	 */
+	function bnh_core_get_post_update_history( $post = null ) {
+		$post = get_post( $post );
+
+		if ( ! $post instanceof WP_Post ) {
+			return array();
+		}
+
+		$created_person = bnh_core_get_person_context( (int) $post->post_author );
+		$created_stamp  = get_post_time( 'U', true, $post );
+		$modified_stamp = get_post_modified_time( 'U', true, $post );
+
+		$history = array(
+			array(
+				'type'    => 'created',
+				'heading' => sprintf(
+					/* translators: %s: created date. */
+					__( 'Created on %s', 'bnh-core' ),
+					get_the_date( 'j F, Y', $post )
+				),
+				'label'   => __( 'Created by', 'bnh-core' ),
+				'person'  => $created_person,
+			),
+		);
+
+		if ( $modified_stamp > $created_stamp ) {
+			$updated_person = null;
+			$revisions      = wp_get_post_revisions(
+				$post->ID,
+				array(
+					'posts_per_page' => 20,
+					'orderby'        => 'date',
+					'order'          => 'DESC',
+				)
+			);
+
+			if ( ! empty( $revisions ) ) {
+				foreach ( $revisions as $revision ) {
+					if ( ! $revision instanceof WP_Post ) {
+						continue;
+					}
+
+					if ( wp_is_post_autosave( $revision->ID ) ) {
+						continue;
+					}
+
+					$updated_person = bnh_core_get_person_context( (int) $revision->post_author );
+
+					if ( $updated_person ) {
+						break;
+					}
+				}
+			}
+
+			if ( ! $updated_person ) {
+				$updated_person = $created_person;
+			}
+
+			array_unshift(
+				$history,
+				array(
+					'type'    => 'updated',
+					'heading' => sprintf(
+						/* translators: %s: updated date. */
+						__( 'Updated on %s (Current Version)', 'bnh-core' ),
+						get_the_modified_date( 'j F, Y', $post )
+					),
+					'label'   => __( 'Updated by', 'bnh-core' ),
+					'person'  => $updated_person,
+				)
+			);
+		}
+
+		return $history;
+	}
+}
+
 if ( ! function_exists( 'bnh_core_get_post_table_of_contents' ) ) {
 	/**
 	 * Prepare UTF-8 HTML for DOMDocument parsing.
@@ -283,6 +412,28 @@ if ( ! function_exists( 'bnh_core_render_topic_community_section' ) ) {
 	}
 }
 
+if ( ! function_exists( 'bnh_core_get_editor_shortcodes' ) ) {
+	/**
+	 * Return the BNH shortcode registry used by editor UI controls.
+	 *
+	 * @return array<int,array{tag:string,label:string,description:string}>
+	 */
+	function bnh_core_get_editor_shortcodes() {
+		return array(
+			array(
+				'tag'         => 'bnh_topic_community',
+				'label'       => __( 'Topic Community', 'bnh-core' ),
+				'description' => __( 'Insert the reusable topic community signup section.', 'bnh-core' ),
+			),
+			array(
+				'tag'         => 'bnh_book_consultation',
+				'label'       => __( 'Book Consultation', 'bnh-core' ),
+				'description' => __( 'Insert the reusable book consultation section.', 'bnh-core' ),
+			),
+		);
+	}
+}
+
 if ( ! function_exists( 'bnh_core_topic_community_shortcode' ) ) {
 	/**
 	 * Shortcode renderer for the inline topic community section.
@@ -301,4 +452,74 @@ if ( ! function_exists( 'bnh_core_topic_community_shortcode' ) ) {
 
 if ( ! shortcode_exists( 'bnh_topic_community' ) ) {
 	add_shortcode( 'bnh_topic_community', 'bnh_core_topic_community_shortcode' );
+}
+
+if ( ! function_exists( 'bnh_core_render_book_consultation_section' ) ) {
+	/**
+	 * Render the reusable book consultation section and return its markup.
+	 *
+	 * @return string
+	 */
+	function bnh_core_render_book_consultation_section() {
+		ob_start();
+		get_template_part(
+			'template-parts/sections/book_consultation',
+			null,
+			array(
+				'source' => 'site_settings',
+			)
+		);
+
+		return (string) ob_get_clean();
+	}
+}
+
+if ( ! function_exists( 'bnh_core_book_consultation_shortcode' ) ) {
+	/**
+	 * Shortcode renderer for the reusable book consultation section.
+	 *
+	 * Usage: [bnh_book_consultation]
+	 *
+	 * @param array|string $atts Shortcode attributes.
+	 * @return string
+	 */
+	function bnh_core_book_consultation_shortcode( $atts = array() ) {
+		$atts = shortcode_atts( array(), (array) $atts, 'bnh_book_consultation' );
+
+		return bnh_core_render_book_consultation_section();
+	}
+}
+
+if ( ! shortcode_exists( 'bnh_book_consultation' ) ) {
+	add_shortcode( 'bnh_book_consultation', 'bnh_core_book_consultation_shortcode' );
+}
+
+if ( ! function_exists( 'bnh_core_render_topic_community_block' ) ) {
+	/**
+	 * Dynamic block renderer for the reusable topic community section.
+	 *
+	 * @param array  $attributes Block attributes.
+	 * @param string $content    Block content.
+	 * @return string
+	 */
+	function bnh_core_render_topic_community_block( $attributes = array(), $content = '' ) {
+		unset( $attributes, $content );
+
+		return bnh_core_render_topic_community_section();
+	}
+}
+
+if ( ! function_exists( 'bnh_core_render_book_consultation_block' ) ) {
+	/**
+	 * Dynamic block renderer for the reusable book consultation section.
+	 *
+	 * @param array  $attributes Block attributes.
+	 * @param string $content    Block content.
+	 * @return string
+	 */
+	function bnh_core_render_book_consultation_block( $attributes = array(), $content = '' ) {
+		unset( $attributes, $content );
+
+		return bnh_core_render_book_consultation_section();
+	}
 }

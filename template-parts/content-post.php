@@ -18,47 +18,13 @@ $bnh_author_name      = get_the_author();
 $bnh_updated_date     = get_the_modified_date( 'F j, Y' );
 $bnh_editorial_url    = function_exists( 'bnh_core_get_editorial_guidelines_url' ) ? bnh_core_get_editorial_guidelines_url() : '';
 $bnh_sources          = function_exists( 'get_field' ) ? (string) get_field( 'sources', $bnh_post_id ) : '';
+$bnh_related_post     = function_exists( 'get_field' ) ? (string) get_field( 'related_post', $bnh_post_id ) : '';
 $bnh_has_list_summary = false !== stripos( $bnh_summary_markup, '<li' );
 $bnh_reviewer_field   = function_exists( 'get_field' ) ? get_field( 'medically_reviewed_by', $bnh_post_id ) : null;
+$bnh_update_history   = function_exists( 'bnh_core_get_post_update_history' ) ? bnh_core_get_post_update_history( $bnh_post_id ) : array();
 
-$bnh_get_person_context = static function ( $user_reference ) {
-	$user_id = 0;
-
-	if ( is_array( $user_reference ) ) {
-		if ( isset( $user_reference['ID'] ) ) {
-			$user_id = (int) $user_reference['ID'];
-		} elseif ( isset( $user_reference['id'] ) ) {
-			$user_id = (int) $user_reference['id'];
-		}
-	} else {
-		$user_id = (int) $user_reference;
-	}
-
-	if ( $user_id <= 0 ) {
-		return null;
-	}
-
-	$user = get_userdata( $user_id );
-
-	if ( ! $user instanceof WP_User ) {
-		return null;
-	}
-
-	$job_title = function_exists( 'get_field' ) ? (string) get_field( 'job_title', 'user_' . $user_id ) : '';
-	$popup_info = function_exists( 'get_field' ) ? (string) get_field( 'popup_info', 'user_' . $user_id ) : '';
-
-	return array(
-		'id'        => $user_id,
-		'name'      => $user->display_name,
-		'job_title' => $job_title,
-		'popup'     => $popup_info,
-		'bio'       => (string) get_the_author_meta( 'description', $user_id ),
-		'url'       => get_author_posts_url( $user_id ),
-	);
-};
-
-$bnh_author_context   = $bnh_get_person_context( $bnh_author_id );
-$bnh_reviewer_context = $bnh_get_person_context( $bnh_reviewer_field );
+$bnh_author_context   = function_exists( 'bnh_core_get_person_context' ) ? bnh_core_get_person_context( $bnh_author_id ) : null;
+$bnh_reviewer_context = function_exists( 'bnh_core_get_person_context' ) ? bnh_core_get_person_context( $bnh_reviewer_field ) : null;
 
 $bnh_render_person_meta = static function ( $label, $context ) use ( $bnh_editorial_url ) {
 	if ( ! is_array( $context ) || empty( $context['id'] ) || empty( $context['name'] ) ) {
@@ -203,14 +169,22 @@ if ( '' !== $bnh_sources ) {
 		?>
 	</div>
 
-	<?php if ( '' !== $bnh_sources ) : ?>
-		<section id="article-sources" class="single-article__sources" aria-labelledby="article-sources-heading">
-			<h2 class="sr-only"><?php esc_html_e( 'Article Sources', 'bnh-core' ); ?></h2>
-			<button id="article-sources-heading" class="single-article__sources-toggle" type="button" aria-expanded="false">
-				<?php esc_html_e( 'Sources', 'bnh-core' ); ?>
-			</button>
-			<div class="single-article__sources-content">
-				<?php echo wp_kses_post( $bnh_sources ); ?>
+	<?php
+	get_template_part(
+		'template-parts/sections/single-post-trust',
+		null,
+		array(
+			'sources'        => $bnh_sources,
+			'update_history' => $bnh_update_history,
+		)
+	);
+	?>
+
+	<?php if ( '' !== trim( $bnh_related_post ) ) : ?>
+		<section class="single-article__explore-more">
+			<h2 class="single-article__explore-more-title"><?php esc_html_e( 'Explore More', 'bnh-core' ); ?></h2>
+			<div class="single-article__explore-more-content">
+				<?php echo wp_kses_post( $bnh_related_post ); ?>
 			</div>
 		</section>
 	<?php endif; ?>

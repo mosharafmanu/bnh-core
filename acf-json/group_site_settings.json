@@ -206,6 +206,288 @@
             "new_lines": ""
         },
         {
+            "key": "field_book_consultation_settings_tab",
+            "label": "Book Consultation Section",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_book_consultation_heading_option",
+            "label": "Consultation Heading",
+            "name": "book_consultation_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Main heading for the reusable book consultation section.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "BOOK YOUR 1-ON-1 CONSULTATION TODAY",
+            "maxlength": "",
+            "placeholder": "BOOK YOUR 1-ON-1 CONSULTATION TODAY",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_book_consultation_intro_option",
+            "label": "Consultation Intro Text",
+            "name": "book_consultation_intro_text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Intro copy for the reusable book consultation section.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 4,
+            "placeholder": "Want to talk to an expert about your health goals, lifestyle, or make sense of your symptoms? Book a call with our clinical nutrition team.",
+            "new_lines": "wpautop"
+        },
+        {
+            "key": "field_book_consultation_items_option",
+            "label": "Consultation Benefits",
+            "name": "book_consultation_items",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Add the numbered consultation benefits shown in the reusable section.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "field_book_consultation_item_text_option",
+            "button_label": "Add Benefit",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_book_consultation_item_text_option",
+                    "label": "Benefit Text",
+                    "name": "item_text",
+                    "aria-label": "",
+                    "type": "textarea",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "rows": 3,
+                    "placeholder": "Get personalized help with your urinary symptoms from an expert.",
+                    "new_lines": "wpautop",
+                    "parent_repeater": "field_book_consultation_items_option"
+                }
+            ]
+        },
+        {
+            "key": "field_book_consultation_button_option",
+            "label": "Consultation Button",
+            "name": "book_consultation_button",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "Main CTA button for the reusable consultation section.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array"
+        },
+        {
+            "key": "field_book_consultation_image_option",
+            "label": "Consultation Image",
+            "name": "book_consultation_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Main image for the reusable consultation section.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "jpg,jpeg,png,webp,svg",
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_single_article_trust_settings_tab",
+            "label": "Single Article Trust Section",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_single_article_review_heading",
+            "label": "Medical Review Heading",
+            "name": "single_article_review_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Our Medical Review Process",
+            "maxlength": "",
+            "placeholder": "Our Medical Review Process",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_single_article_review_content",
+            "label": "Medical Review Content",
+            "name": "single_article_review_content",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "Main copy shown in the single article trust section for medical review.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "At Ben’s Natural Health, we are committed to maintaining the highest standards of accuracy, transparency, and scientific integrity. Every piece of content is carefully developed by medical professionals and undergoes a thorough review every 12 to 24 months. This ensures that our information remains current, reliable, and rooted in credible, evidence-based research. We reference only peer-reviewed studies from reputable medical journals, providing full citations and direct links to enhance trust and confidence.",
+            "tabs": "all",
+            "toolbar": "basic",
+            "media_upload": 0,
+            "delay": 0
+        },
+        {
+            "key": "field_single_article_editorial_heading",
+            "label": "Editorial Guidelines Heading",
+            "name": "single_article_editorial_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Our Editorial Guidelines",
+            "maxlength": "",
+            "placeholder": "Our Editorial Guidelines",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_single_article_editorial_content",
+            "label": "Editorial Guidelines Content",
+            "name": "single_article_editorial_content",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "Main copy shown in the single article trust section for editorial guidelines.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "For over 25 years, Ben’s Natural Health has been a trusted source of scientifically backed, reliable health information. Our editorial guidelines uphold the highest quality and integrity for every article we publish. Each piece is written by qualified experts and undergoes independent quality checks. We prioritize transparency by clearly displaying contributor credentials and biographies at the beginning of every article.",
+            "tabs": "all",
+            "toolbar": "basic",
+            "media_upload": 0,
+            "delay": 0
+        },
+        {
+            "key": "field_single_article_disclaimer_heading",
+            "label": "Medical Disclaimer Heading",
+            "name": "single_article_disclaimer_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Medical Disclaimer",
+            "maxlength": "",
+            "placeholder": "Medical Disclaimer",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_single_article_disclaimer_content",
+            "label": "Medical Disclaimer Content",
+            "name": "single_article_disclaimer_content",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "Main copy shown in the single article trust section for the disclaimer.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "The content on this blog is for informational purposes only and should not be considered a substitute for professional medical advice, diagnosis, or treatment. While our articles are authored and reviewed by licensed medical professionals, they may not address your specific health concerns. Always consult a qualified healthcare provider before making any medical decisions.",
+            "tabs": "all",
+            "toolbar": "basic",
+            "media_upload": 0,
+            "delay": 0
+        },
+        {
             "key": "field_footer_settings_tab",
             "label": "Footer Settings",
             "name": "",

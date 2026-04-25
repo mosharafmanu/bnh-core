@@ -222,6 +222,15 @@ jQuery(document).ready(function($) {
 		$button.attr('aria-expanded', String(!expanded));
 	});
 
+	$('.single-article__update-history-toggle').on('click', function() {
+		const $button = $(this);
+		const $section = $button.closest('.single-article__update-history');
+		const expanded = $section.hasClass('is-expanded');
+
+		$section.toggleClass('is-expanded', !expanded);
+		$button.attr('aria-expanded', String(!expanded));
+	});
+
 	$('.entry-meta__person-trigger').on('click', function() {
 		const $button = $(this);
 		const $item = $button.closest('.entry-meta__item--person');

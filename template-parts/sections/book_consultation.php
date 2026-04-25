@@ -5,18 +5,25 @@
  * @package BNH_Core
  */
 
-$bnh_heading = (string) get_sub_field( 'heading' );
-$bnh_intro   = (string) get_sub_field( 'intro_text' );
-$bnh_items   = get_sub_field( 'consultation_items' );
-$bnh_button  = get_sub_field( 'button' );
-$bnh_image   = get_sub_field( 'image' );
+$bnh_heading = function_exists( 'bnh_core_get_book_consultation_heading' ) ? bnh_core_get_book_consultation_heading() : '';
+$bnh_intro   = function_exists( 'bnh_core_get_book_consultation_intro_text' ) ? bnh_core_get_book_consultation_intro_text() : '';
+$bnh_items   = function_exists( 'bnh_core_get_book_consultation_items' ) ? bnh_core_get_book_consultation_items() : array();
+$bnh_button  = function_exists( 'bnh_core_get_book_consultation_button' ) ? bnh_core_get_book_consultation_button() : array();
+$bnh_image   = function_exists( 'bnh_core_get_book_consultation_image' ) ? bnh_core_get_book_consultation_image() : array();
+$bnh_context_class = '';
 
 if ( '' === $bnh_heading ) {
 	$bnh_heading = __( 'BOOK YOUR 1-ON-1 CONSULTATION TODAY', 'bnh-core' );
 }
+
+if ( is_singular( 'post' ) ) {
+	$bnh_context_class = 'section-context--single';
+} elseif ( is_front_page() || is_home() ) {
+	$bnh_context_class = 'section-context--home';
+}
 ?>
 
-<section class="book-consultation mt-50 mt-md-70 layout-padding">
+<section class="book-consultation mt-50 mt-md-70 layout-padding<?php echo '' !== $bnh_context_class ? ' ' . esc_attr( $bnh_context_class ) : ''; ?>">
 	<div class="book-consultation__inner">
 		<header class="book-consultation__header">
 			<h2 class="section-title book-consultation__title"><?php echo esc_html( $bnh_heading ); ?></h2>

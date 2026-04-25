@@ -460,3 +460,125 @@ function bnh_core_disable_block_library_css_admin() {
 	wp_dequeue_style( 'wp-block-library-theme' );
 }
 add_action( 'admin_enqueue_scripts', 'bnh_core_disable_block_library_css_admin', 100 );
+
+/**
+ * Register the BNH shortcode picker button for TinyMCE/classic editing.
+ *
+ * @return void
+ */
+function bnh_core_register_editor_shortcode_picker() {
+	if ( ! is_admin() || ! current_user_can( 'edit_posts' ) ) {
+		return;
+	}
+
+	if ( 'true' !== get_user_option( 'rich_editing' ) ) {
+		return;
+	}
+
+	add_filter( 'mce_external_plugins', 'bnh_core_add_shortcode_picker_plugin' );
+	add_filter( 'mce_buttons', 'bnh_core_add_shortcode_picker_button' );
+}
+add_action( 'admin_init', 'bnh_core_register_editor_shortcode_picker' );
+
+/**
+ * Add the BNH shortcode picker plugin script to TinyMCE.
+ *
+ * @param array<string,string> $plugins TinyMCE plugins.
+ * @return array<string,string>
+ */
+function bnh_core_add_shortcode_picker_plugin( $plugins ) {
+	$plugins['bnh_shortcodes'] = get_template_directory_uri() . '/assets/js/admin-shortcode-picker.js';
+
+	return $plugins;
+}
+
+/**
+ * Add the BNH shortcode picker button to the TinyMCE toolbar.
+ *
+ * @param string[] $buttons Existing toolbar buttons.
+ * @return string[]
+ */
+function bnh_core_add_shortcode_picker_button( $buttons ) {
+	$buttons[] = 'bnh_shortcodes';
+
+	return $buttons;
+}
+
+/**
+ * Print the BNH shortcode registry for TinyMCE admin usage.
+ *
+ * @return void
+ */
+function bnh_core_print_editor_shortcode_registry() {
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+
+	if ( ! $screen instanceof WP_Screen ) {
+		return;
+	}
+
+	if ( ! in_array( $screen->base, array( 'post', 'post-new' ), true ) ) {
+		return;
+	}
+
+	$shortcodes = function_exists( 'bnh_core_get_editor_shortcodes' ) ? bnh_core_get_editor_shortcodes() : array();
+
+	if ( empty( $shortcodes ) ) {
+		return;
+	}
+	?>
+	<script>
+		window.bnhCoreEditorShortcodes = <?php echo wp_json_encode( array_values( $shortcodes ) ); ?>;
+	</script>
+	<?php
+}
+add_action( 'admin_head', 'bnh_core_print_editor_shortcode_registry' );
+
+/**
+ * Enqueue Gutenberg block scripts for reusable BNH editor blocks.
+ *
+ * @return void
+ */
+function bnh_core_enqueue_block_editor_assets() {
+	$script_path = get_template_directory() . '/assets/js/editor-topic-community-block.js';
+
+	if ( ! file_exists( $script_path ) ) {
+		return;
+	}
+
+	wp_enqueue_script(
+		'bnh-core-editor-topic-community-block',
+		get_template_directory_uri() . '/assets/js/editor-topic-community-block.js',
+		array( 'wp-blocks', 'wp-element', 'wp-block-editor', 'wp-server-side-render' ),
+		(string) filemtime( $script_path ),
+		true
+	);
+}
+add_action( 'enqueue_block_editor_assets', 'bnh_core_enqueue_block_editor_assets' );
+
+/**
+ * Register reusable dynamic Gutenberg blocks.
+ *
+ * @return void
+ */
+function bnh_core_register_blocks() {
+	if ( ! function_exists( 'register_block_type' ) ) {
+		return;
+	}
+
+	register_block_type(
+		'bnh-core/topic-community',
+		array(
+			'api_version'     => 2,
+			'render_callback' => 'bnh_core_render_topic_community_block',
+		)
+	);
+
+	register_block_type(
+		'bnh-core/book-consultation',
+		array(
+			'api_version'     => 2,
+			'render_callback' => 'bnh_core_render_book_consultation_block',
+		)
+	);
+}
+add_action( 'init', 'bnh_core_register_blocks' );

@@ -9,6 +9,7 @@ The `leading_doctors` flexible section supports two data modes.
     - image
     - name
     - role
+    - optional card link
 
 - `Dynamic Authors`
   - Uses selected WordPress users from the author list
@@ -17,6 +18,7 @@ The `leading_doctors` flexible section supports two data modes.
     - image: user avatar
     - name: `display_name`
     - role: ACF user field `job_title`
+    - link: author archive URL
 
 ## Editor UI
 
@@ -33,3 +35,6 @@ The `leading_doctors` flexible section supports two data modes.
 
 - Manual repeater remains intact.
 - Dynamic mode currently uses the user avatar, not a separate custom profile image field.
+- Cards only become clickable when a URL exists:
+  - manual mode: optional repeater link field
+  - dynamic mode: automatic author archive link

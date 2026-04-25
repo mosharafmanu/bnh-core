@@ -52,12 +52,13 @@
           "display": "block",
           "sub_fields": [
             {
-              "key": "field_book_consultation_heading",
-              "label": "Heading",
-              "name": "heading",
+              "key": "field_book_consultation_notice",
+              "label": "Section Content Source",
+              "name": "",
               "aria-label": "",
-              "type": "text",
-              "instructions": "Main section heading.",
+              "type": "message",
+              "instructions": "",
+              "message": "This section pulls the content from <strong>Site Settings → Book Consultation Section</strong>. Manage the heading, intro text, benefits, button, and image there.",
               "required": 0,
               "conditional_logic": 0,
               "wrapper": {
@@ -65,117 +66,8 @@
                 "class": "",
                 "id": ""
               },
-              "default_value": "BOOK YOUR 1-ON-1 CONSULTATION TODAY",
-              "maxlength": "",
-              "placeholder": "BOOK YOUR 1-ON-1 CONSULTATION TODAY",
-              "prepend": "",
-              "append": ""
-            },
-            {
-              "key": "field_book_consultation_intro",
-              "label": "Intro Text",
-              "name": "intro_text",
-              "aria-label": "",
-              "type": "textarea",
-              "instructions": "Short introductory copy above the numbered list.",
-              "required": 0,
-              "conditional_logic": 0,
-              "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-              },
-              "default_value": "",
-              "maxlength": "",
-              "rows": 3,
-              "placeholder": "Want to talk to an expert about your health goals, lifestyle, or make sense of your symptoms? Book a call with our clinical nutrition team.",
-              "new_lines": "wpautop"
-            },
-            {
-              "key": "field_book_consultation_items",
-              "label": "Consultation Benefits",
-              "name": "consultation_items",
-              "aria-label": "",
-              "type": "repeater",
-              "instructions": "Add the numbered consultation benefit items.",
-              "required": 0,
-              "conditional_logic": 0,
-              "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-              },
-              "layout": "block",
-              "pagination": 0,
-              "min": 0,
-              "max": 0,
-              "collapsed": "field_book_consultation_item_text",
-              "button_label": "Add Benefit",
-              "rows_per_page": 20,
-              "sub_fields": [
-                {
-                  "key": "field_book_consultation_item_text",
-                  "label": "Item Text",
-                  "name": "item_text",
-                  "aria-label": "",
-                  "type": "textarea",
-                  "instructions": "",
-                  "required": 1,
-                  "conditional_logic": 0,
-                  "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                  },
-                  "default_value": "",
-                  "maxlength": "",
-                  "rows": 2,
-                  "placeholder": "Get personalized help with your urinary symptoms from an expert.",
-                  "new_lines": "wpautop",
-                  "parent_repeater": "field_book_consultation_items"
-                }
-              ]
-            },
-            {
-              "key": "field_book_consultation_button",
-              "label": "Button",
-              "name": "button",
-              "aria-label": "",
-              "type": "link",
-              "instructions": "Main consultation CTA button.",
-              "required": 0,
-              "conditional_logic": 0,
-              "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-              },
-              "return_format": "array"
-            },
-            {
-              "key": "field_book_consultation_image",
-              "label": "Image",
-              "name": "image",
-              "aria-label": "",
-              "type": "image",
-              "instructions": "Main consultation section image.",
-              "required": 0,
-              "conditional_logic": 0,
-              "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-              },
-              "return_format": "array",
-              "library": "all",
-              "min_width": "",
-              "min_height": "",
-              "min_size": "",
-              "max_width": "",
-              "max_height": "",
-              "max_size": "",
-              "mime_types": "jpg,jpeg,png,webp,svg",
-              "preview_size": "medium"
+              "new_lines": "wpautop",
+              "esc_html": 0
             }
           ],
           "min": "",
@@ -376,6 +268,23 @@
                   "rows": 3,
                   "placeholder": "Head Diagnostic Medical Sonographer",
                   "new_lines": "wpautop",
+                  "parent_repeater": "field_leading_doctors_items"
+                },
+                {
+                  "key": "field_leading_doctors_item_link",
+                  "label": "Card Link",
+                  "name": "link",
+                  "aria-label": "",
+                  "type": "link",
+                  "instructions": "Optional. If set, the manual doctor card will link to this URL.",
+                  "required": 0,
+                  "conditional_logic": 0,
+                  "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                  },
+                  "return_format": "array",
                   "parent_repeater": "field_leading_doctors_items"
                 }
               ]

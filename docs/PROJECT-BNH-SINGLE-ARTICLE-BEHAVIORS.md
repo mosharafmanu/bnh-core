@@ -120,7 +120,7 @@ Single posts now use a post-specific template flow in `bnh-core`.
 ## Sources
 
 ### Markup
-- [template-parts/content-post.php](/Applications/AMPPS/www/ClientProjects/WordPress/2026/bensnaturalhealth/wp-content/themes/bnh-core/template-parts/content-post.php)
+- [template-parts/sections/single-post-trust.php](/Applications/AMPPS/www/ClientProjects/WordPress/2026/bensnaturalhealth/wp-content/themes/bnh-core/template-parts/sections/single-post-trust.php)
 
 ### Data Source
 - ACF post field:
@@ -136,6 +136,155 @@ Single posts now use a post-specific template flow in `bnh-core`.
 
 ### TOC Integration
 - if `sources` has content, `Source` is appended to the TOC automatically
+
+## Update History
+
+### Markup
+- [template-parts/sections/single-post-trust.php](/Applications/AMPPS/www/ClientProjects/WordPress/2026/bensnaturalhealth/wp-content/themes/bnh-core/template-parts/sections/single-post-trust.php)
+
+### Data Source
+- dynamic WordPress post data
+- helper:
+  - `bnh_core_get_post_update_history()`
+  - [inc/helper-functions/post-utilities.php](/Applications/AMPPS/www/ClientProjects/WordPress/2026/bensnaturalhealth/wp-content/themes/bnh-core/inc/helper-functions/post-utilities.php)
+
+### Behavior
+- `Created on`
+  - from post publish date
+- `Created by`
+  - from `post_author`
+- `Updated on`
+  - from post modified date
+- `Updated by`
+  - from the latest non-autosave revision author when available
+  - falls back to post author if no usable revision exists
+- user job title is pulled from ACF user field:
+  - `job_title`
+
+### Interaction
+- [assets/js/scripts.js](/Applications/AMPPS/www/ClientProjects/WordPress/2026/bensnaturalhealth/wp-content/themes/bnh-core/assets/js/scripts.js)
+- selector:
+  - `.single-article__update-history-toggle`
+- behavior:
+  - toggles `.is-expanded`
+  - updates `aria-expanded`
+
+## Single Article Trust Section
+
+- Markup:
+  - [template-parts/sections/single-post-trust.php](/Applications/AMPPS/www/ClientProjects/WordPress/2026/bensnaturalhealth/wp-content/themes/bnh-core/template-parts/sections/single-post-trust.php)
+- Purpose:
+  - renders the post-bottom trust content area before `Explore More`
+- Site Settings fields used:
+  - `single_article_review_heading`
+  - `single_article_review_content`
+  - `single_article_editorial_heading`
+  - `single_article_editorial_content`
+  - `single_article_disclaimer_heading`
+  - `single_article_disclaimer_content`
+
+## Explore More
+
+### Markup
+- [template-parts/content-post.php](/Applications/AMPPS/www/ClientProjects/WordPress/2026/bensnaturalhealth/wp-content/themes/bnh-core/template-parts/content-post.php)
+
+### Data Source
+- ACF post field:
+  - `related_post`
+
+### Behavior
+- if `related_post` contains content, it is rendered below the trust section under the `Explore More` heading
+
+## Previous / Next Navigation
+
+- default WordPress post navigation is no longer rendered on single posts
+- removed from:
+  - [single.php](/Applications/AMPPS/www/ClientProjects/WordPress/2026/bensnaturalhealth/wp-content/themes/bnh-core/single.php)
+
+## Inline Topic Community
+
+- Shortcode:
+  - `[bnh_topic_community]`
+- Renderer:
+  - `bnh_core_topic_community_shortcode()`
+  - [inc/helper-functions/post-utilities.php](/Applications/AMPPS/www/ClientProjects/WordPress/2026/bensnaturalhealth/wp-content/themes/bnh-core/inc/helper-functions/post-utilities.php)
+- Rendered section template:
+  - [template-parts/sections/topic-community.php](/Applications/AMPPS/www/ClientProjects/WordPress/2026/bensnaturalhealth/wp-content/themes/bnh-core/template-parts/sections/topic-community.php)
+- Purpose:
+  - lets editors place the reusable topic community section inside article body content
+
+## Inline Book Consultation
+
+- Shortcode:
+  - `[bnh_book_consultation]`
+- Renderer:
+  - `bnh_core_book_consultation_shortcode()`
+  - [inc/helper-functions/post-utilities.php](/Applications/AMPPS/www/ClientProjects/WordPress/2026/bensnaturalhealth/wp-content/themes/bnh-core/inc/helper-functions/post-utilities.php)
+- Rendered section template:
+  - [template-parts/sections/book_consultation.php](/Applications/AMPPS/www/ClientProjects/WordPress/2026/bensnaturalhealth/wp-content/themes/bnh-core/template-parts/sections/book_consultation.php)
+- Content source:
+  - Site Settings ACF
+  - same source is used on the homepage flexible section and in single-post insertions
+  - not post-specific fields
+- Site Settings fields used:
+  - `book_consultation_heading`
+  - `book_consultation_intro_text`
+  - `book_consultation_items`
+  - `book_consultation_button`
+  - `book_consultation_image`
+- Homepage flexible layout note:
+  - the `Book Consultation` flexible section is now only a placement hook
+  - its content is managed in `Site Settings → Book Consultation Section`
+
+## Shortcode Picker
+
+- TinyMCE / Classic editor toolbar button:
+  - `BNH Shortcodes`
+- Registration:
+  - [functions.php](/Applications/AMPPS/www/ClientProjects/WordPress/2026/bensnaturalhealth/wp-content/themes/bnh-core/functions.php)
+- Editor button script:
+  - [assets/js/admin-shortcode-picker.js](/Applications/AMPPS/www/ClientProjects/WordPress/2026/bensnaturalhealth/wp-content/themes/bnh-core/assets/js/admin-shortcode-picker.js)
+- Shortcode registry source:
+  - `bnh_core_get_editor_shortcodes()`
+  - [inc/helper-functions/post-utilities.php](/Applications/AMPPS/www/ClientProjects/WordPress/2026/bensnaturalhealth/wp-content/themes/bnh-core/inc/helper-functions/post-utilities.php)
+- Current insert option:
+  - `Topic Community` → `[bnh_topic_community]`
+  - `Book Consultation` → `[bnh_book_consultation]`
+- Future shortcode additions should be added to the PHP registry so the editor menu stays in sync
+
+## Gutenberg Block
+
+- Block name:
+  - `bnh-core/topic-community`
+- Inserter label:
+  - `Topic Community`
+- Registration:
+  - [functions.php](/Applications/AMPPS/www/ClientProjects/WordPress/2026/bensnaturalhealth/wp-content/themes/bnh-core/functions.php)
+- Editor script:
+  - [assets/js/editor-topic-community-block.js](/Applications/AMPPS/www/ClientProjects/WordPress/2026/bensnaturalhealth/wp-content/themes/bnh-core/assets/js/editor-topic-community-block.js)
+- Render callback:
+  - `bnh_core_render_topic_community_block()`
+  - [inc/helper-functions/post-utilities.php](/Applications/AMPPS/www/ClientProjects/WordPress/2026/bensnaturalhealth/wp-content/themes/bnh-core/inc/helper-functions/post-utilities.php)
+- Runtime output:
+  - same reusable section renderer as the shortcode
+  - no duplicate markup path
+
+## Gutenberg Block: Book Consultation
+
+- Block name:
+  - `bnh-core/book-consultation`
+- Inserter label:
+  - `Book Consultation`
+- Registration:
+  - [functions.php](/Applications/AMPPS/www/ClientProjects/WordPress/2026/bensnaturalhealth/wp-content/themes/bnh-core/functions.php)
+- Editor script:
+  - [assets/js/editor-topic-community-block.js](/Applications/AMPPS/www/ClientProjects/WordPress/2026/bensnaturalhealth/wp-content/themes/bnh-core/assets/js/editor-topic-community-block.js)
+- Render callback:
+  - `bnh_core_render_book_consultation_block()`
+  - [inc/helper-functions/post-utilities.php](/Applications/AMPPS/www/ClientProjects/WordPress/2026/bensnaturalhealth/wp-content/themes/bnh-core/inc/helper-functions/post-utilities.php)
+- Runtime output:
+  - same reusable section renderer as the shortcode
+  - no duplicate markup path
 
 ## Comments
 
