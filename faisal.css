@@ -1,6 +1,6 @@
 .book-consultation {
-	padding-top: 60px;
-	padding-bottom: 67px;
+	padding-top: 3.75rem;
+	padding-bottom: 4.1875rem;
 	background-image: url(assets/images/Group.png);
 	background-position: center;
 	background-size: cover;
@@ -15,7 +15,7 @@
 }
 .book-consultation__title {
 	text-align: center;
-	font-size: 64px;
+	font-size: 4rem;
 	font-style: normal;
 	font-weight: 700;
 	line-height: 120.313%;
@@ -27,7 +27,7 @@
 	margin-top: 2.1875rem;
 }
 .book-consultation__content {
-	padding-top: 63px;
+	padding-top: 3.9375rem;
 }
 .book-consultation__list {
 	display: flex;
@@ -36,16 +36,16 @@
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	padding-top: 63px;
+	padding-top: 3.9375rem;
 }
 .book-consultation__item {
 	display: flex;
-	column-gap: 23px;
+	column-gap: 1.4375rem;
 	align-items: center;
 }
 .book-consultation__item-number {
-	width: 70px;
-	height: 70px;
+	width: 4.375rem;
+	height: 4.375rem;
 	background: url(./assets/svgs/bg-list.svg);
 	background-repeat: no-repeat;
 	background-position: center;
@@ -55,7 +55,7 @@
 	color: rgba(0, 0, 0, 0.85);
 	text-align: center;
 	margin-bottom: 0;
-	flex: 0 0 70px;
+	flex: 0 0 4.375rem;
 }
 .book-consultation__cta {
 	margin-top: 3.125rem;
@@ -67,10 +67,10 @@
 	border-radius: .625rem;
 }
 .book-consultation__cta .site-btn {
-	padding-top: 36px;
-	padding-right: 86px;
-	padding-bottom: 32px;
-	padding-left: 86px;
+	padding-top: 2.25rem;
+	padding-right: 5.375rem;
+	padding-bottom: 2rem;
+	padding-left: 5.375rem;
 }
 @media only screen and ( max-width: 1399px ) {
 	.book-consultation__grid {
@@ -84,13 +84,13 @@
 	}
 	.book-consultation__list {
 		gap: 2rem;
-		padding-top: 32px;
+		padding-top: 2rem;
 	}
 }
 @media only screen and ( max-width: 991px ) {
 	.book-consultation__grid {
 		grid-template-columns: 1fr;
-		gap: 40px;
+		gap: 2.5rem;
 		margin-top: 2.1875rem;
 	}
 	.book-consultation__list {
@@ -98,7 +98,7 @@
 		padding-top: 3rem;
 	}
 	.book-consultation__cta {
-		margin-top: 44px;
+		margin-top: 2.75rem;
 	}
 	.book-consultation__cta .site-btn {
 		width: 100%;
@@ -108,41 +108,41 @@
 		order: -1;
 	}
 	.book-consultation__image-frame {
-		min-height: 769px;
+		min-height: 48.0625rem;
 	}
 }
 @media only screen and ( max-width: 767px ) {
 	.book-consultation {
-		padding-top: 22px;
-		padding-bottom: 48px;
+		padding-top: 1.375rem;
+		padding-bottom: 3rem;
 	}
 	.book-consultation__list {
-		gap: 16px;
-		padding-top: 14px;
+		gap: 1rem;
+		padding-top: .875rem;
 	}
 	.book-consultation__title {
-		font-size: 26px;
+		font-size: 1.625rem;
 		line-height: 130%;
 	}
 	.book-consultation__image-frame {
-		min-height: 390px;
+		min-height: 24.375rem;
 	}
 	.book-consultation__media {
-		margin-left: -16px;
-		margin-right: -16px;
+		margin-left: -1rem;
+		margin-right: -1rem;
 	}
 	.book-consultation__content {
-		margin-top: -14px;
+		margin-top: -.875rem;
 	}
 	.book-consultation__cta {
-		margin-top: 39px;
+		margin-top: 2.4375rem;
 	}
 	.book-consultation__cta .book-consultation__button {
-		font-size: 18px;
+		font-size: 1.125rem;
 		padding-left: 0;
 		padding-right: 0;
-		padding-top: 18px;
-		padding-bottom: 18px;
+		padding-top: 1.125rem;
+		padding-bottom: 1.125rem;
 		line-height: 155.556%;
 		letter-spacing: -0.54px;
 	}
@@ -172,12 +172,19 @@ Leading Doctors Style Start
 	margin-top: 2.5rem;
 	gap: 1.25rem;
 }
+.leading-doctors__link {
+	text-decoration: none;
+}
 .leading-doctors__card {
 	min-width: 0;
 	background: linear-gradient(180deg, #E0E9F8 55.29%, #F7F9FB 100%);
 }
 .leading-doctors__content {
 	padding: 1.5rem 1.25rem;
+}
+.leading-doctors__role {
+  font-style: italic;
+  color: #262626;
 }
 .leading-doctors__role p {
   font-style: italic;
