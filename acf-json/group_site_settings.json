@@ -326,15 +326,40 @@
         },
         {
             "key": "field_book_consultation_image_option",
-            "label": "Consultation Image",
+            "label": "Homepage Consultation Image",
             "name": "book_consultation_image",
             "aria-label": "",
             "type": "image",
-            "instructions": "Main image for the reusable consultation section.",
+            "instructions": "Image used by the reusable consultation section on the homepage and other regular placements.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "jpg,jpeg,png,webp,svg",
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_book_consultation_single_post_image_option",
+            "label": "Single Post Consultation Image",
+            "name": "book_consultation_single_post_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Image used by the reusable consultation section inside single blog posts. Falls back to the homepage image when empty.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
                 "class": "",
                 "id": ""
             },

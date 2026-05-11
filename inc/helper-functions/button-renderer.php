@@ -15,7 +15,7 @@ if ( ! function_exists( 'purple_surgical_render_button' ) ) {
 	 * @param array $args {
 	 *     Optional customization.
 	 *
-	 *     @type string $style Button style class. Default 'pink-purple'.
+	 *     @type string $style Button style class. Default 'bnh-button'.
 	 *     @type string $class Additional CSS classes. Default ''.
 	 *     @type bool   $echo Echo or return. Default true.
 	 * }
@@ -29,7 +29,7 @@ if ( ! function_exists( 'purple_surgical_render_button' ) ) {
 
 		// Default arguments
 		$defaults = [
-			'style' => 'pink-purple',
+			'style' => 'bnh-button',
 			'class' => '',
 			'echo'  => true,
 		];

@@ -21,7 +21,37 @@
             "tabs": "all",
             "toolbar": "full",
             "media_upload": 1,
-            "delay": 0
+            "delay": 1
+        },
+        {
+            "key": "field_680f7c1d2f901",
+            "label": "Explore More Post",
+            "name": "explore_more_post",
+            "aria-label": "",
+            "type": "post_object",
+            "instructions": "Select one manual post for the Explore More section. If empty, the theme will automatically choose a related post.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "post"
+            ],
+            "post_status": [
+                "publish"
+            ],
+            "taxonomy": "",
+            "return_format": "object",
+            "multiple": 0,
+            "allow_null": 1,
+            "bidirectional": 0,
+            "ui": 1,
+            "bidirectional_target": [],
+            "default_value": "",
+            "allow_in_bindings": 1
         },
         {
             "key": "field_5cc6eca2a042d",
@@ -41,7 +71,7 @@
             "tabs": "all",
             "toolbar": "full",
             "media_upload": 1,
-            "delay": 0
+            "delay": 1
         },
         {
             "key": "field_5d9b0b4386379",
@@ -83,27 +113,7 @@
             "tabs": "all",
             "toolbar": "full",
             "media_upload": 1,
-            "delay": 0
-        },
-        {
-            "key": "field_5f7c72505fd67",
-            "label": "Exclude Klaviyo",
-            "name": "exclude_klaviyo",
-            "aria-label": "",
-            "type": "true_false",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "message": "",
-            "default_value": 0,
-            "ui": 0,
-            "ui_on_text": "",
-            "ui_off_text": ""
+            "delay": 1
         },
         {
             "key": "field_6707cf50df203",

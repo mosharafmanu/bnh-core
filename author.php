@@ -35,31 +35,75 @@ $bnh_next_icon = trim( ob_get_clean() );
 
 if ( ! function_exists( 'bnh_core_render_author_inline_icon' ) ) {
 	/**
-	 * Render simple inline social icons for author profile links.
+	 * Render social icons for author profile links.
 	 *
 	 * @param string $icon Icon slug.
 	 * @return string
 	 */
 	function bnh_core_render_author_inline_icon( $icon ) {
-		$icons = array(
-			'linkedin' => '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M4.98 3.5C4.98 4.88 3.87 6 2.49 6S0 4.88 0 3.5 1.11 1 2.49 1s2.49 1.12 2.49 2.5ZM.5 8h4V23h-4V8Zm7 0h3.83v2.05h.05c.53-1.01 1.83-2.08 3.77-2.08 4.03 0 4.77 2.65 4.77 6.09V23h-4v-6.13c0-1.46-.03-3.34-2.03-3.34-2.03 0-2.34 1.59-2.34 3.23V23h-4V8Z"/></svg>',
-			'youtube'  => '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M23.5 6.2a3.02 3.02 0 0 0-2.12-2.14C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.38.56A3.02 3.02 0 0 0 .5 6.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .5 5.8 3.02 3.02 0 0 0 2.12 2.14c1.88.56 9.38.56 9.38.56s7.5 0 9.38-.56a3.02 3.02 0 0 0 2.12-2.14A31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-5.8ZM9.6 15.7V8.3L16 12l-6.4 3.7Z"/></svg>',
+		$template_parts = array(
+			'linkedin' => 'assets/svgs/linkedin',
+			'youtube'  => 'assets/svgs/youtube',
 		);
 
-		return $icons[ $icon ] ?? '';
+		if ( ! isset( $template_parts[ $icon ] ) ) {
+			return '';
+		}
+
+		ob_start();
+		get_template_part( $template_parts[ $icon ] );
+
+		return trim( ob_get_clean() );
+	}
+}
+
+if ( ! function_exists( 'bnh_core_render_author_social_links' ) ) {
+	/**
+	 * Render social links for author profile.
+	 *
+	 * @param string $linkedin_url LinkedIn profile URL.
+	 * @param string $youtube_url  YouTube profile URL.
+	 * @param string $modifier     Optional BEM modifier.
+	 * @return void
+	 */
+	function bnh_core_render_author_social_links( $linkedin_url, $youtube_url, $modifier = '' ) {
+		if ( '' === $linkedin_url && '' === $youtube_url ) {
+			return;
+		}
+
+		$class_name = 'author-archive__social';
+
+		if ( '' !== $modifier ) {
+			$class_name .= ' author-archive__social--' . sanitize_html_class( $modifier );
+		}
+		?>
+		<div class="<?php echo esc_attr( $class_name ); ?>">
+			<?php if ( '' !== $linkedin_url ) : ?>
+				<a class="author-archive__social-link author-archive__social-link--linkedin" href="<?php echo esc_url( $linkedin_url ); ?>" target="_blank" rel="noopener noreferrer" aria-label="<?php esc_attr_e( 'LinkedIn', 'bnh-core' ); ?>">
+					<?php echo bnh_core_render_author_inline_icon( 'linkedin' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				</a>
+			<?php endif; ?>
+			<?php if ( '' !== $youtube_url ) : ?>
+				<a class="author-archive__social-link author-archive__social-link--youtube" href="<?php echo esc_url( $youtube_url ); ?>" target="_blank" rel="noopener noreferrer" aria-label="<?php esc_attr_e( 'YouTube', 'bnh-core' ); ?>">
+					<?php echo bnh_core_render_author_inline_icon( 'youtube' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				</a>
+			<?php endif; ?>
+		</div>
+		<?php
 	}
 }
 ?>
 
 <main id="primary" class="site-main author-archive-page">
 	<div class="author-archive layout-padding mt-50 mt-md-70 mt-lg-100">
-		<div class="author-archive__grid">
+		<div class="author-archive__grid bens-container">
 			<div class="author-archive__profile-column">
 				<header class="author-archive__profile-header">
 					<h1 class="page-title author-archive__name"><?php echo esc_html( $bnh_display_name ); ?></h1>
 					<?php if ( '' !== $bnh_job_title ) : ?>
 						<p class="author-archive__job-title"><?php echo esc_html( $bnh_job_title ); ?></p>
 					<?php endif; ?>
+					<?php bnh_core_render_author_social_links( $bnh_linkedin_url, $bnh_youtube_url, 'mobile' ); ?>
 				</header>
 
 				<section class="author-archive__summary" aria-labelledby="author-profile-heading">
@@ -67,20 +111,7 @@ if ( ! function_exists( 'bnh_core_render_author_inline_icon' ) ) {
 					<div class="author-archive__media">
 						<?php echo get_avatar( $bnh_author_id, 337, '', $bnh_display_name, array( 'class' => 'author-archive__avatar' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
-						<?php if ( '' !== $bnh_linkedin_url || '' !== $bnh_youtube_url ) : ?>
-							<div class="author-archive__social">
-								<?php if ( '' !== $bnh_linkedin_url ) : ?>
-									<a class="author-archive__social-link" href="<?php echo esc_url( $bnh_linkedin_url ); ?>" target="_blank" rel="noopener noreferrer" aria-label="<?php esc_attr_e( 'LinkedIn', 'bnh-core' ); ?>">
-										<?php echo bnh_core_render_author_inline_icon( 'linkedin' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-									</a>
-								<?php endif; ?>
-								<?php if ( '' !== $bnh_youtube_url ) : ?>
-									<a class="author-archive__social-link" href="<?php echo esc_url( $bnh_youtube_url ); ?>" target="_blank" rel="noopener noreferrer" aria-label="<?php esc_attr_e( 'YouTube', 'bnh-core' ); ?>">
-										<?php echo bnh_core_render_author_inline_icon( 'youtube' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-									</a>
-								<?php endif; ?>
-							</div>
-						<?php endif; ?>
+						<?php bnh_core_render_author_social_links( $bnh_linkedin_url, $bnh_youtube_url, 'desktop' ); ?>
 					</div>
 
 					<div class="author-archive__credentials">
@@ -121,7 +152,7 @@ if ( ! function_exists( 'bnh_core_render_author_inline_icon' ) ) {
 				<?php endif; ?>
 			</div>
 
-			<section class="author-archive__articles" aria-labelledby="author-articles-heading">
+			<section class="author-archive__articles topic-latest-articles" aria-labelledby="author-articles-heading">
 				<header class="author-archive__articles-header">
 					<h2 id="author-articles-heading" class="page-title"><?php echo esc_html( $bnh_display_name . ' ' . __( 'Articles', 'bnh-core' ) ); ?></h2>
 				</header>
@@ -147,6 +178,18 @@ if ( ! function_exists( 'bnh_core_render_author_inline_icon' ) ) {
 							<?php
 						endwhile;
 						?>
+					</div>
+
+					<div class="topic-latest-articles__scroll-ui" aria-hidden="true">
+						<button class="topic-latest-articles__scroll-button topic-latest-articles__scroll-button--prev" type="button" aria-label="<?php esc_attr_e( 'Scroll author articles left', 'bnh-core' ); ?>">
+							<?php echo $bnh_prev_icon; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						</button>
+						<div class="topic-latest-articles__scrollbar">
+							<div class="topic-latest-articles__scrollbar-progress"></div>
+						</div>
+						<button class="topic-latest-articles__scroll-button topic-latest-articles__scroll-button--next" type="button" aria-label="<?php esc_attr_e( 'Scroll author articles right', 'bnh-core' ); ?>">
+							<?php echo $bnh_next_icon; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						</button>
 					</div>
 
 					<?php

@@ -416,11 +416,24 @@ if ( ! function_exists( 'bnh_core_get_book_consultation_button' ) ) {
 
 if ( ! function_exists( 'bnh_core_get_book_consultation_image' ) ) {
 	/**
-	 * Get reusable consultation image.
+	 * Get reusable consultation image for the requested template context.
 	 *
+	 * @param string $context Template context. Accepts single, home, or empty for current query context.
 	 * @return array|false
 	 */
-	function bnh_core_get_book_consultation_image() {
+	function bnh_core_get_book_consultation_image( $context = '' ) {
+		if ( '' === $context && is_singular( 'post' ) ) {
+			$context = 'single';
+		}
+
+		if ( 'single' === $context ) {
+			$single_post_image = bnh_core_get_site_setting( 'book_consultation_single_post_image' );
+
+			if ( is_array( $single_post_image ) ) {
+				return $single_post_image;
+			}
+		}
+
 		$image = bnh_core_get_site_setting( 'book_consultation_image' );
 		return is_array( $image ) ? $image : false;
 	}

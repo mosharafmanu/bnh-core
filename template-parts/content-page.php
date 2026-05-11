@@ -9,6 +9,7 @@ $article_classes = 'layout-padding pt-50 pt-md-70 pt-lg-100';
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class( $article_classes ); ?>>
+	<div class="bens-container">
 
 	<?php
 	// Check if page title should be displayed (ACF field)
@@ -45,4 +46,5 @@ $article_classes = 'layout-padding pt-50 pt-md-70 pt-lg-100';
 		?>
 	</section>
 
+	</div>
 </article>

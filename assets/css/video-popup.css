@@ -116,8 +116,8 @@
 /* Position controls absolutely within the content container */
 .video-popup-content .video-autoplay-controls {
     position: absolute;
-    bottom: 1.5625rem;
-    right: 1.5625rem;
+    bottom: 25px;
+    right: 25px;
     z-index: 20;
 }
 

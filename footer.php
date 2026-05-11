@@ -12,7 +12,8 @@
 ?>
 	</div><!-- #content -->
 	<footer id="colophon" class="site-footer">
-		<div class="site-footer__inner layout-padding">
+		<div class="layout-padding">
+		<div class="site-footer__inner bens-container">
 			<div class="site-footer__top">
 				<div class="site-footer__brand-column">
 					<div class="site-footer__brand-box">
@@ -128,6 +129,7 @@
 					?>
 				</div>
 			</div>
+		</div>
 		</div>
 	</footer><!-- #colophon -->
 </div><!-- #page -->

@@ -14,8 +14,171 @@
 	const childNav = document.querySelector('.topic-child-nav');
 	const featuredContainerSelector = '[data-topic-featured]';
 	const latestContainerSelector = '[data-topic-latest]';
+	const hasDynamicTopicSections = Boolean(
+		document.querySelector(featuredContainerSelector) && document.querySelector(latestContainerSelector)
+	);
 	const loadingClass = 'is-loading';
 	const updatingClass = 'is-updating';
+
+	function initChildNavScrolling() {
+		document.querySelectorAll('.topic-child-nav').forEach((navWrapper) => {
+			const nav = navWrapper.querySelector('.topic-child-nav__list');
+			const scrollbar = navWrapper.querySelector('.topic-child-nav__scrollbar');
+			const thumb = navWrapper.querySelector('.topic-child-nav__scrollbar-thumb');
+
+			if (!nav || nav.dataset.scrollableChildNavBound === 'true') {
+				return;
+			}
+
+			let isDown = false;
+			let isDragging = false;
+			let startX = 0;
+			let scrollLeft = 0;
+			let hasMoved = false;
+			const dragThreshold = 5;
+
+			function updateScrollbar() {
+				if (!scrollbar || !thumb) {
+					return;
+				}
+
+				const maxScroll = nav.scrollWidth - nav.clientWidth;
+
+				if (maxScroll <= 0) {
+					scrollbar.classList.remove('is-visible');
+					thumb.style.width = '0%';
+					return;
+				}
+
+				const scrollProgress = nav.scrollLeft / maxScroll;
+				const visiblePercent = (nav.clientWidth / nav.scrollWidth) * 100;
+				const progressPercent = visiblePercent + (scrollProgress * (100 - visiblePercent));
+
+				scrollbar.classList.add('is-visible');
+				thumb.style.width = `${progressPercent}%`;
+			}
+
+			nav.querySelectorAll('a, button').forEach((item) => {
+				item.setAttribute('draggable', 'false');
+			});
+
+			nav.addEventListener('pointerdown', (event) => {
+				if (event.button !== 0) {
+					return;
+				}
+
+				isDown = true;
+				isDragging = false;
+				hasMoved = false;
+				startX = event.clientX;
+				scrollLeft = nav.scrollLeft;
+			});
+
+			function endDrag(event) {
+				if (!isDown) {
+					return;
+				}
+
+				isDown = false;
+				isDragging = false;
+				nav.classList.remove('is-dragging');
+
+				if (typeof event.pointerId !== 'undefined' && nav.hasPointerCapture(event.pointerId)) {
+					nav.releasePointerCapture(event.pointerId);
+				}
+
+				window.setTimeout(() => {
+					hasMoved = false;
+				}, 50);
+			}
+
+			nav.addEventListener('pointermove', (event) => {
+				if (!isDown) {
+					return;
+				}
+
+				const distance = Math.abs(event.clientX - startX);
+
+				if (distance > dragThreshold) {
+					event.preventDefault();
+					hasMoved = true;
+
+					if (!isDragging) {
+						isDragging = true;
+						nav.classList.add('is-dragging');
+						nav.setPointerCapture(event.pointerId);
+					}
+
+					nav.scrollLeft = scrollLeft - ((event.clientX - startX) * 1.5);
+				}
+			});
+
+			nav.addEventListener('pointerup', endDrag);
+			nav.addEventListener('pointercancel', endDrag);
+
+			nav.addEventListener('click', (event) => {
+				const link = event.target.closest('a, button');
+
+				if (!link || !hasMoved) {
+					return;
+				}
+
+				event.preventDefault();
+				event.stopPropagation();
+			});
+
+			nav.addEventListener('scroll', updateScrollbar, { passive: true });
+			window.addEventListener('resize', () => {
+				window.clearTimeout(nav.scrollableChildNavResizeTimeout);
+				nav.scrollableChildNavResizeTimeout = window.setTimeout(updateScrollbar, 100);
+			});
+
+			nav.dataset.scrollableChildNavBound = 'true';
+
+			window.setTimeout(updateScrollbar, 100);
+			window.setTimeout(updateScrollbar, 500);
+		});
+	}
+
+	initChildNavScrolling();
+
+	function initMobileParentNav() {
+		document.querySelectorAll('.topic-parent-nav').forEach((nav) => {
+			const toggle = nav.querySelector('.topic-parent-nav__mobile-toggle');
+
+			if (!toggle || nav.dataset.mobileParentNavBound === 'true') {
+				return;
+			}
+
+			function close() {
+				nav.classList.remove('is-mobile-open');
+				toggle.setAttribute('aria-expanded', 'false');
+			}
+
+			toggle.addEventListener('click', () => {
+				const isOpen = nav.classList.toggle('is-mobile-open');
+				toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+			});
+
+			document.addEventListener('click', (event) => {
+				if (!nav.classList.contains('is-mobile-open') || nav.contains(event.target)) {
+					return;
+				}
+
+				close();
+			});
+
+			window.addEventListener('resize', () => {
+				if (window.innerWidth > 767) {
+					close();
+				}
+			});
+
+			nav.dataset.mobileParentNavBound = 'true';
+		});
+	}
+
+	initMobileParentNav();
 
 	function updateLatestScrollProgress(section) {
 		if (!section) {
@@ -288,6 +451,10 @@
 		const link = event.target.closest('.topic-child-nav__link');
 
 		if (!link) {
+			return;
+		}
+
+		if (!hasDynamicTopicSections) {
 			return;
 		}
 

@@ -42,11 +42,18 @@ if ( ! function_exists( 'bnh_core_render_header_inline_icon' ) ) {
 	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'bnh-core' ); ?></a>
 
 	<header id="masthead" class="site-header">
-		<div class="site-header__main layout-padding">
-			<div class="site-header__menu">
-				<nav class="main-navigation" aria-label="<?php esc_attr_e( 'Primary menu', 'bnh-core' ); ?>">
-					<?php
-					wp_nav_menu(
+			<div class="layout-padding">
+			<div class="site-header__main bens-container">
+				<div class="site-header__menu">
+					<button class="menu-trigger" type="button" aria-label="<?php esc_attr_e( 'Open menu', 'bnh-core' ); ?>">
+						<span class="menu-trigger__line"></span>
+						<span class="menu-trigger__line"></span>
+						<span class="menu-trigger__line"></span>
+					</button>
+
+					<nav class="main-navigation" aria-label="<?php esc_attr_e( 'Primary menu', 'bnh-core' ); ?>">
+						<?php
+						wp_nav_menu(
 						array(
 							'theme_location' => 'mainMenu',
 							'container'      => false,
@@ -71,7 +78,7 @@ if ( ! function_exists( 'bnh_core_render_header_inline_icon' ) ) {
 				<form role="search" method="get" class="site-header__search" action="<?php echo esc_url( home_url( '/' ) ); ?>">
 					<label class="sr-only" for="site-header-search"><?php esc_html_e( 'Search for:', 'bnh-core' ); ?></label>
 					<input id="site-header-search" class="site-header__search-input" type="search" value="<?php echo esc_attr( get_search_query() ); ?>" name="s" />
-					<button class="site-header__search-button" type="submit" aria-label="<?php esc_attr_e( 'Search', 'bnh-core' ); ?>">
+					<button class="site-header__search-button" type="submit" aria-label="<?php esc_attr_e( 'Search', 'bnh-core' ); ?>" aria-expanded="false">
 						<?php echo bnh_core_render_header_inline_icon( 'search' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					</button>
 				</form>
@@ -96,9 +103,42 @@ if ( ! function_exists( 'bnh_core_render_header_inline_icon' ) ) {
 						);
 					}
 					?>
+					</div>
 				</div>
 			</div>
-		</div>
+			</div>
+
+			<div class="hamburger-overlay" aria-hidden="true"></div>
+			<div class="hamburger-wrapper" aria-hidden="true">
+				<button class="hamburger-close" type="button" aria-label="<?php esc_attr_e( 'Close menu', 'bnh-core' ); ?>">
+					<span class="hamburger-close__line"></span>
+					<span class="hamburger-close__line"></span>
+				</button>
+
+				<nav class="mobile-navigation" aria-label="<?php esc_attr_e( 'Mobile menu', 'bnh-core' ); ?>">
+					<?php
+					wp_nav_menu(
+						array(
+							'theme_location' => 'mainMenu',
+							'container'      => false,
+							'menu_class'     => 'mobile-menu',
+							'fallback_cb'    => false,
+							'depth'          => 2,
+						)
+					);
+					?>
+				</nav>
+			</div>
+
+			<div class="site-header__search-popup" aria-hidden="true">
+				<form role="search" method="get" class="site-header__search-popup-form" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+					<label class="sr-only" for="site-header-search-popup"><?php esc_html_e( 'Search for:', 'bnh-core' ); ?></label>
+					<input id="site-header-search-popup" class="site-header__search-popup-input" type="search" value="<?php echo esc_attr( get_search_query() ); ?>" name="s" placeholder="<?php esc_attr_e( 'Search', 'bnh-core' ); ?>" />
+					<button class="site-header__search-popup-submit" type="submit" aria-label="<?php esc_attr_e( 'Submit search', 'bnh-core' ); ?>">
+						<?php echo bnh_core_render_header_inline_icon( 'search' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					</button>
+				</form>
+			</div>
 
 		<div class="site-header__topic-inner">
 			<div class="site-topic-navigation">

@@ -9,10 +9,20 @@ $bnh_heading = (string) get_sub_field( 'heading' );
 $bnh_intro   = (string) get_sub_field( 'intro_content' );
 $bnh_source  = (string) get_sub_field( 'data_source' );
 $bnh_items   = array();
+$bnh_prev_icon = '';
+$bnh_next_icon = '';
 
 if ( '' === $bnh_heading ) {
 	$bnh_heading = __( 'Built for Long-Term Health. Endorsed by Leading Doctors.', 'bnh-core' );
 }
+
+ob_start();
+get_template_part( 'assets/svgs/arrow-left' );
+$bnh_prev_icon = trim( ob_get_clean() );
+
+ob_start();
+get_template_part( 'assets/svgs/arrow-right' );
+$bnh_next_icon = trim( ob_get_clean() );
 
 if ( 'dynamic' === $bnh_source ) {
 	$bnh_selected_users = get_sub_field( 'doctor_users' );
@@ -46,9 +56,9 @@ if ( 'dynamic' === $bnh_source ) {
 ?>
 
 <section class="leading-doctors mt-50 mt-md-70 mt-lg-100 layout-padding">
-	<div class="leading-doctors__inner">
+	<div class="leading-doctors__inner bens-container">
 		<header class="leading-doctors__header">
-			<h2 class="section-title leading-doctors__title"><?php echo esc_html( $bnh_heading ); ?></h2>
+			<h2 class="section-title leading-doctors__title"><?php echo wp_kses( nl2br( esc_html( $bnh_heading ) ), array( 'br' => array() ) ); ?></h2>
 
 			<?php if ( '' !== $bnh_intro ) : ?>
 				<div class="leading-doctors__intro">
@@ -142,6 +152,15 @@ if ( 'dynamic' === $bnh_source ) {
 						<?php endif; ?>
 					</article>
 				<?php endforeach; ?>
+			</div>
+
+			<div class="leading-doctors__controls">
+				<button class="leading-doctors__arrow leading-doctors__arrow--prev" type="button" aria-label="<?php esc_attr_e( 'Previous doctor', 'bnh-core' ); ?>">
+					<?php echo $bnh_prev_icon; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				</button>
+				<button class="leading-doctors__arrow leading-doctors__arrow--next" type="button" aria-label="<?php esc_attr_e( 'Next doctor', 'bnh-core' ); ?>">
+					<?php echo $bnh_next_icon; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				</button>
 			</div>
 		<?php endif; ?>
 	</div>

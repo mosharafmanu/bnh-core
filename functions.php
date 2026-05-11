@@ -9,7 +9,7 @@
 
 if ( ! defined( '_S_VERSION' ) ) {
 	// Replace the version number of the theme on each release.
-	define( '_S_VERSION', '1.0.0' );
+	define( '_S_VERSION', '1.0.3' );
 }
 
 /**
@@ -146,8 +146,6 @@ function bnh_core_scripts() {
 	$theme_uri = get_template_directory_uri();
 	$theme_dir = get_template_directory();
 
-	wp_enqueue_style( 'bnh-core-style', get_stylesheet_uri(), array(), _S_VERSION );
-	wp_style_add_data( 'bnh-core-style', 'rtl', 'replace' );
 	wp_enqueue_style(
 		'bnh-core-font-oxanium',
 		'https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&display=swap',
@@ -156,6 +154,7 @@ function bnh_core_scripts() {
 	);
 
 	$styles = array(
+		'bnh-core-theme'        => '/assets/css/bnh-core-theme.css',
 		'bnh-core-fonts'        => '/assets/css/bnh-core-fonts.css',
 		'bnh-core-utilities'    => '/assets/css/utilities.css',
 		'bnh-core-spacer'       => '/assets/css/spacer.css',
@@ -164,8 +163,8 @@ function bnh_core_scripts() {
 		'bnh-core-form'         => '/assets/css/bnh-core-form.css',
 		'bnh-core-video-popup'  => '/assets/css/video-popup.css',
 		'bnh-core-video-ui'     => '/assets/css/video-behaviors.css',
-		'bnh-core-theme'        => '/assets/css/bnh-core-theme.css',
 	);
+	$enqueued_style_handles = array( 'bnh-core-font-oxanium' );
 
 	foreach ( $styles as $handle => $relative_path ) {
 		$file_path = $theme_dir . $relative_path;
@@ -177,35 +176,35 @@ function bnh_core_scripts() {
 		wp_enqueue_style(
 			$handle,
 			$theme_uri . $relative_path,
-			array( 'bnh-core-style', 'bnh-core-font-oxanium' ),
+			array( 'bnh-core-font-oxanium' ),
 			(string) filemtime( $file_path )
 		);
+
+		$enqueued_style_handles[] = $handle;
 	}
 
-	$temporary_styles = array(
-		'bnh-core-faisal-dev' => '/faisal.css',
-		'bnh-core-imran-dev'  => '/imran.css',
-	);
-
-	foreach ( $temporary_styles as $handle => $relative_path ) {
-		$file_path = $theme_dir . $relative_path;
-
-		if ( ! file_exists( $file_path ) ) {
-			continue;
-		}
+		wp_enqueue_style( 'bnh-core-style', get_stylesheet_uri(), $enqueued_style_handles, (string) filemtime( get_stylesheet_directory() . '/style.css' ) );
+		wp_style_add_data( 'bnh-core-style', 'rtl', 'replace' );
 
 		wp_enqueue_style(
-			$handle,
-			$theme_uri . $relative_path,
-			array( 'bnh-core-style', 'bnh-core-font-oxanium' ),
-			(string) filemtime( $file_path )
+			'bnh-core-calendly-widget',
+			'https://assets.calendly.com/assets/external/widget.css',
+			array(),
+			null
 		);
-	}
 
-	$scripts = array(
-		'bnh-core-slick'        => array(
-			'path' => '/assets/js/slick.js',
-			'deps' => array( 'jquery' ),
+		wp_enqueue_script(
+			'bnh-core-calendly-widget',
+			'https://assets.calendly.com/assets/external/widget.js',
+			array(),
+			null,
+			true
+		);
+
+		$scripts = array(
+			'bnh-core-slick'        => array(
+				'path' => '/assets/js/slick.js',
+				'deps' => array( 'jquery' ),
 		),
 		'bnh-core-vimeo-player' => array(
 			'path' => '/assets/js/jquery.mb.vimeo_player.min.js',
@@ -218,11 +217,11 @@ function bnh_core_scripts() {
 		'bnh-core-carousel'     => array(
 			'path' => '/assets/js/bnh-core-carousels.js',
 			'deps' => array( 'jquery', 'bnh-core-slick' ),
-		),
-		'bnh-core-scripts'      => array(
-			'path' => '/assets/js/scripts.js',
-			'deps' => array( 'jquery', 'bnh-core-slick' ),
-		),
+			),
+			'bnh-core-scripts'      => array(
+				'path' => '/assets/js/scripts.js',
+				'deps' => array( 'jquery', 'bnh-core-slick', 'bnh-core-calendly-widget' ),
+			),
 		'bnh-core-video-popup'  => array(
 			'path' => '/assets/js/video-popup.js',
 			'deps' => array( 'jquery' ),
@@ -354,6 +353,21 @@ function bnh_core_disable_block_widgets() {
 add_action( 'after_setup_theme', 'bnh_core_disable_block_widgets' );
 
 /**
+ * Disable WordPress generated global styles on the frontend.
+ *
+ * The theme owns its frontend CSS, and the generated global styles include rem
+ * spacing presets that the project no longer wants in rendered markup.
+ *
+ * @return void
+ */
+function bnh_core_disable_frontend_global_styles_output() {
+	remove_action( 'wp_enqueue_scripts', 'wp_enqueue_global_styles' );
+	remove_action( 'wp_footer', 'wp_enqueue_global_styles', 1 );
+	remove_action( 'wp_body_open', 'wp_global_styles_render_svg_filters' );
+}
+add_action( 'init', 'bnh_core_disable_frontend_global_styles_output' );
+
+/**
  * Return frontend block-style handles that should be removed.
  *
  * @return string[]
@@ -456,6 +470,12 @@ add_filter( 'style_loader_tag', 'bnh_core_block_wc_blocks_style_tag', 10, 4 );
  * @return void
  */
 function bnh_core_disable_block_library_css_admin() {
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+
+	if ( $screen && 'post' === $screen->base ) {
+		return;
+	}
+
 	wp_dequeue_style( 'wp-block-library' );
 	wp_dequeue_style( 'wp-block-library-theme' );
 }

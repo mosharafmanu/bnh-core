@@ -13,6 +13,8 @@ $bnh_excerpt     = $bnh_post && function_exists( 'bnh_core_get_topic_post_excerp
 $bnh_author_name = $bnh_post && function_exists( 'bnh_core_get_topic_post_author_name' ) ? bnh_core_get_topic_post_author_name( $bnh_post ) : '';
 $bnh_date        = $bnh_post && function_exists( 'bnh_core_get_topic_post_date' ) ? bnh_core_get_topic_post_date( $bnh_post ) : '';
 $bnh_thumbnail_id = $bnh_post ? get_post_thumbnail_id( $bnh_post ) : 0;
+$bnh_parent_term  = $bnh_post && function_exists( 'bnh_get_post_health_topic_parent_term' ) ? bnh_get_post_health_topic_parent_term( $bnh_post->ID ) : null;
+$bnh_topic_color  = $bnh_parent_term instanceof WP_Term && function_exists( 'bnh_core_get_health_topic_color_value' ) ? bnh_core_get_health_topic_color_value( $bnh_parent_term ) : '';
 
 if ( ! $bnh_post ) {
 	return;
@@ -23,7 +25,7 @@ get_template_part( 'assets/svgs/long-arrow-right' );
 $bnh_arrow_icon = trim( ob_get_clean() );
 ?>
 
-<article class="topic-card topic-card--featured">
+<article class="topic-card topic-card--featured"<?php echo '' !== $bnh_topic_color ? ' style="' . esc_attr( '--topic-card-label-color: ' . $bnh_topic_color . ';' ) . '"' : ''; ?>>
 	<a class="topic-card__link" href="<?php echo esc_url( $bnh_link ); ?>">
 		<?php if ( $bnh_thumbnail_id ) : ?>
 			<div class="topic-card__media media">

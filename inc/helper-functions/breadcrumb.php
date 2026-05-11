@@ -207,8 +207,20 @@ if ( ! function_exists( 'bnh_core_breadcrumb' ) ) {
 			return;
 		}
 
-		echo '<nav class="' . esc_attr( implode( ' ', bnh_core_breadcrumb_get_classes( $layout_padding, $margin_top, $margin_bottom ) ) ) . '" aria-label="' . esc_attr__( 'Breadcrumb navigation', 'bnh-core' ) . '">';
+		if ( $layout_padding ) {
+			$nav_classes   = array_filter( array( 'layout-padding', $margin_top, $margin_bottom ) );
+			$inner_classes = array( 'bhn-breadcrumb', 'bens-container' );
+		} else {
+			$nav_classes   = bnh_core_breadcrumb_get_classes( false, $margin_top, $margin_bottom );
+			$inner_classes = array();
+		}
+
+		echo '<nav class="' . esc_attr( implode( ' ', $nav_classes ) ) . '" aria-label="' . esc_attr__( 'Breadcrumb navigation', 'bnh-core' ) . '">';
 		echo '<h2 class="sr-only">' . esc_html__( 'Breadcrumb navigation', 'bnh-core' ) . '</h2>';
+
+		if ( ! empty( $inner_classes ) ) {
+			echo '<div class="' . esc_attr( implode( ' ', $inner_classes ) ) . '">';
+		}
 
 		foreach ( $items as $index => $item ) {
 			if ( 0 !== $index ) {
@@ -216,6 +228,10 @@ if ( ! function_exists( 'bnh_core_breadcrumb' ) ) {
 			}
 
 			echo $item; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		}
+
+		if ( ! empty( $inner_classes ) ) {
+			echo '</div>';
 		}
 
 		echo '</nav>';

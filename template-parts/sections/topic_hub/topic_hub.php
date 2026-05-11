@@ -37,13 +37,17 @@ if ( ! empty( $bnh_context['active_parent'] ) && $bnh_context['active_parent'] i
 		<h1 class="page-title sr-only"><?php echo esc_html( $bnh_home_heading ); ?></h1>
 	<?php endif; ?>
 
-	<div class="topic-hub__featured-row layout-padding">
-		<?php get_template_part( 'template-parts/sections/topic-featured-article', null, array( 'context' => $bnh_context ) ); ?>
-		<?php get_template_part( 'template-parts/sections/topic-featured-research', null, array( 'context' => $bnh_context ) ); ?>
+	<div class="layout-padding">
+		<div class="topic-hub__featured-row bens-container">
+			<?php get_template_part( 'template-parts/sections/topic-featured-article', null, array( 'context' => $bnh_context ) ); ?>
+			<?php get_template_part( 'template-parts/sections/topic-featured-research', null, array( 'context' => $bnh_context ) ); ?>
+		</div>
 	</div>
 
-	<div class="topic-hub__latest-row layout-padding">
-		<?php get_template_part( 'template-parts/sections/topic-latest-articles', null, array( 'context' => $bnh_context ) ); ?>
+	<div class="layout-padding">
+		<div class="topic-hub__latest-row bens-container">
+			<?php get_template_part( 'template-parts/sections/topic-latest-articles', null, array( 'context' => $bnh_context ) ); ?>
+		</div>
 	</div>
 
 	<div class="topic-hub__community-row">

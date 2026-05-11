@@ -37,19 +37,19 @@ label,
 .form-label,
 .wpcf7-form-control-wrap label,
 form label {
-	font-size: 1.125rem; /* 18px */
+	font-size: 18px;
 	font-weight: 400;
 	line-height: 165%;
 	letter-spacing: normal;
 	color: var(--ps-white);
 	display: block;
-	margin-bottom: .3125rem; /* 5px */
+	margin-bottom: 5px;
 }
 /* Form Field Container */
 .field,
 .form-field,
 .wpcf7-form-control-wrap {
-	margin-bottom: 1.563rem; /* 25px */
+	margin-bottom: 25.008px;
 }
 
 /* Universal Input & Textarea Styles */
@@ -63,35 +63,35 @@ input[type="time"],
 input[type="password"],
 select,
 textarea {
-	font-size: 1.125rem; /* 18px */
+	font-size: 18px;
 	font-weight: 400;
 	line-height: 165%;
 	font-family: var(--font-inter);
-	border-radius: 0.625rem; /* 10px */
+	border-radius: 10px;
 	background: transparent;
 	border: none;
 	color: var(--ps-black);
 	background-color: var(--ps-white);
 	width: 100%;
-	padding: 0.938rem 1.25rem; /* 15px 20px */
+	padding: 15.008px 20px; /* 15px 20px */
 	transition: 0.3s all ease;
 }
 
 /* Textarea Specific */
 textarea {
-	height: 7.5rem;
+	height: 120px;
 	resize: vertical;
-	min-height: 7.5rem;
+	min-height: 120px;
 	resize: none;
 }
 /* Checkbox Styles - Universal */
 input[type="checkbox"] {
-	width: 1.5625rem; /* 25px */
-	height: 1.5625rem; /* 25px */
+	width: 25px;
+	height: 25px;
 	margin: 0;
-	margin-right: 0.75rem; /* 12px */
+	margin-right: 12px;
 	position: relative;
-	border-radius: 0.3125rem; /* 5px */
+	border-radius: 5px;
 	border: none;
 	appearance: none;
 	-webkit-appearance: none;
@@ -114,7 +114,7 @@ input[type="checkbox"]:checked::after {
 	border: solid var(--ps-purple);
 	border-width: 0 2px 2px 0;
 	transform: translate(-50%, -50%) rotate(45deg);
-	top: .625rem; /* 10px */
+	top: 10px;
 }
 
 /* Checkbox/Radio Label Wrapper - Universal */
@@ -125,10 +125,10 @@ label:has(input[type="radio"]),
 .radio-label {
 	display: flex;
 	align-items: flex-start;
-	column-gap: 0.75rem; /* 12px */
+	column-gap: 12px;
 	margin: 0;
 	cursor: pointer;
-	font-size: 1.0625rem; /* 17px */
+	font-size: 17px;
 	font-weight: 450;
 	line-height: 175%;
 	letter-spacing: 0.85px;
@@ -141,7 +141,7 @@ label:has(input[type="radio"]),
 .checkbox-text,
 .radio-text {
 	color: var(--ps-white);
-	font-size: 1rem; /* 16px */
+	font-size: 16px;
 	font-weight: 400;
 	line-height: 150%;
 	letter-spacing: 0.85px;
@@ -165,7 +165,7 @@ label a:hover,
 .wpcf7-list-item,
 .form-list-item {
 	margin: 0;
-	margin-bottom: 0.75rem; /* 12px */
+	margin-bottom: 12px;
 }
 
 /* Hide unnecessary breaks */
@@ -183,11 +183,11 @@ input[type="radio"] {
 	appearance: none;
 	background-color: var(--ps-white);
 	margin: 0;
-	margin-right: 0.75rem; /* 12px */
+	margin-right: 12px;
 	font: inherit;
-	width: 1.75rem; /* 28px */
-	height: 1.75rem; /* 28px */
-	border: 0.125rem solid var(--ps-white); /* 2px */
+	width: 28px;
+	height: 28px;
+	border: 2px solid var(--ps-white);
 	border-radius: 50%;
 	display: grid;
 	place-content: center;
@@ -200,8 +200,8 @@ input[type="radio"]:hover {
 }
 input[type="radio"]::before {
 	content: '';
-	width: 0.75rem; /* 12px */
-	height: 0.75rem; /* 12px */
+	width: 12px;
+	height: 12px;
 	border-radius: 50%;
 	transform: scale(0);
 	transition: 120ms transform ease-in-out;
@@ -228,8 +228,8 @@ button[type="submit"],
 	background: var(--ps-purple);
 	color: var(--ps-white);
 	border: none;
-	padding: 0.9375rem 2.5rem; 
-	font-size: 1rem; 
+	padding: 15px 40px; 
+	font-size: 16px; 
 	font-weight: 500;
 	font-family: inherit;
 	cursor: pointer;
@@ -250,15 +250,15 @@ button[type="submit"]:hover,
 .error-message,
 .wpcf7 form .wpcf7-response-output {
 	margin: 0;
-	margin-top: 1.25rem; /* 20px */
-	padding: 1.125rem 1.25rem; /* 18px 20px */
+	margin-top: 20px;
+	padding: 18px 20px; /* 18px 20px */
 	border: 2px solid var(--ps-purple);
-	border-radius: 0.625rem; /* 10px */
+	border-radius: 10px;
 	background: var(--ps-white);
 	position: relative;
 	color: var(--ps-purple);
-	font-size: 1rem; /* 16px */
-	line-height: 1.5rem; /* 24px */
+	font-size: 16px;
+	line-height: 24px;
 	font-family: var(--font-inter);
 }
 
@@ -305,12 +305,12 @@ button[type="submit"]:hover,
 	background: red;
 	color: var(--ps-white);
 	width: max-content;
-	padding: .3125rem .625rem .125rem .625rem;
-	padding-bottom: .25rem; /* 4px */
-	border-radius: .25rem;
+	padding: 5px 10px 2px 10px;
+	padding-bottom: 4px;
+	border-radius: 4px;
 	line-height: 1;
-	font-size: 0.875rem; /* 14px */
-	margin-top: 0.5rem; /* 8px */
+	font-size: 14px;
+	margin-top: 8px;
 	display: block;
 }
 
@@ -330,7 +330,7 @@ button[type="submit"]:hover,
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
-	column-gap: 1.5625rem; /* 25px */
+	column-gap: 25px;
 }
 
 /* Field Width Classes */
@@ -341,11 +341,11 @@ button[type="submit"]:hover,
 }
 .field-half,
 .half-width {
-	width: calc((100% - 1.5625rem) / 2);
+	width: calc((100% - 25px) / 2);
 }
 .field-third,
 .third-width {
-	width: calc((100% - 1.5625rem) / 3);
+	width: calc((100% - 25px) / 3);
 }
 
 /* Select Dropdown Styling - Universal */
@@ -353,9 +353,9 @@ select {
 	cursor: pointer;
 	background-image: url(../svgs/select-arrow.svg);
 	background-repeat: no-repeat;
-	background-position: right .9375rem center;
-	background-size: 0.75rem;
-	padding-right: 3rem;
+	background-position: right 15px center;
+	background-size: 12px;
+	padding-right: 48px;
 	appearance: none;
 	-webkit-appearance: none;
 	-moz-appearance: none;

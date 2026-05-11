@@ -18,33 +18,90 @@ $bnh_author_name      = get_the_author();
 $bnh_updated_date     = get_the_modified_date( 'F j, Y' );
 $bnh_editorial_url    = function_exists( 'bnh_core_get_editorial_guidelines_url' ) ? bnh_core_get_editorial_guidelines_url() : '';
 $bnh_sources          = function_exists( 'get_field' ) ? (string) get_field( 'sources', $bnh_post_id ) : '';
-$bnh_has_list_summary = false !== stripos( $bnh_summary_markup, '<li' );
-$bnh_reviewer_field   = function_exists( 'get_field' ) ? get_field( 'medically_reviewed_by', $bnh_post_id ) : null;
-$bnh_update_history   = function_exists( 'bnh_core_get_post_update_history' ) ? bnh_core_get_post_update_history( $bnh_post_id ) : array();
-$bnh_related_post     = function_exists( 'get_field' ) ? (string) get_field( 'related_post', $bnh_post_id ) : '';
+	$bnh_show_citation    = function_exists( 'get_field' ) ? (bool) get_field( 'show_citation', $bnh_post_id ) : false;
+	$bnh_has_list_summary = false !== stripos( $bnh_summary_markup, '<li' );
+	$bnh_reviewer_field   = function_exists( 'get_field' ) ? get_field( 'medically_reviewed_by', $bnh_post_id ) : null;
+	$bnh_update_history   = function_exists( 'bnh_core_get_post_update_history' ) ? bnh_core_get_post_update_history( $bnh_post_id ) : array();
+	$bnh_related_post_obj = function_exists( 'bnh_core_get_explore_more_post' ) ? bnh_core_get_explore_more_post( $bnh_post_id ) : null;
+	$bnh_topic_context    = function_exists( 'bnh_get_health_topic_context' ) ? bnh_get_health_topic_context() : array();
+	$bnh_topic_color      = ! empty( $bnh_topic_context['active_topic_color_value'] ) ? (string) $bnh_topic_context['active_topic_color_value'] : '';
+	$bnh_manual_guide     = function_exists( 'get_field' ) ? trim( (string) get_field( 'related_post', $bnh_post_id ) ) : '';
+	$bnh_manual_guide_title = __( 'In Our Guide', 'bnh-core' );
+
+	if ( '' !== $bnh_manual_guide && preg_match( '/<h2[^>]*>(.*?)<\/h2>/is', $bnh_manual_guide, $bnh_manual_guide_title_match ) ) {
+		$bnh_manual_guide_title = trim( wp_strip_all_tags( $bnh_manual_guide_title_match[1] ) );
+	}
+
+	$bnh_citation_text    = sprintf(
+	/* translators: 1: Site name, 2: Post title, 3: Modified date, 4: Post URL. */
+	__( '%1$s %2$s %3$s %4$s', 'bnh-core' ),
+	get_bloginfo( 'name' ),
+	get_the_title( $bnh_post_id ),
+	get_the_modified_date( '', $bnh_post_id ),
+	get_permalink( $bnh_post_id )
+);
 
 $bnh_author_context   = function_exists( 'bnh_core_get_person_context' ) ? bnh_core_get_person_context( $bnh_author_id ) : null;
 $bnh_reviewer_context = function_exists( 'bnh_core_get_person_context' ) ? bnh_core_get_person_context( $bnh_reviewer_field ) : null;
 
-$bnh_render_person_meta = static function ( $label, $context ) use ( $bnh_editorial_url ) {
+$bnh_render_person_meta = static function ( $label, $context, $type ) use ( $bnh_editorial_url ) {
 	if ( ! is_array( $context ) || empty( $context['id'] ) || empty( $context['name'] ) ) {
 		return;
 	}
-	?>
-	<div class="entry-meta__item entry-meta__item--person">
-		<span class="entry-meta__label"><?php echo esc_html( $label ); ?>:</span>
-		<button class="entry-meta__person-trigger" type="button" aria-expanded="false">
-			<span class="entry-meta__text"><?php echo esc_html( $context['name'] ); ?></span>
-		</button>
-		<?php if ( ! empty( $context['job_title'] ) ) : ?>
-			<span class="entry-meta__suffix"> - <?php echo esc_html( $context['job_title'] ); ?></span>
-		<?php endif; ?>
 
-		<div class="entry-meta__person-popup" role="dialog" aria-label="<?php esc_attr_e( 'Person information', 'bnh-core' ); ?>">
-			<div class="entry-meta__person-popup-header">
-				<?php echo get_avatar( (int) $context['id'], 120, '', $context['name'], array( 'class' => 'entry-meta__person-popup-avatar' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-				<div class="entry-meta__person-popup-heading">
-					<h2 class="entry-meta__person-popup-title h4-style"><?php echo esc_html( $context['name'] ); ?></h2>
+	$type = sanitize_html_class( $type );
+	?>
+		<div class="entry-meta__item entry-meta__item--person entry-meta__item--<?php echo esc_attr( $type ); ?>">
+			<?php
+			if ( ! empty( $context['avatar_id'] ) ) {
+				echo wp_get_attachment_image(
+					(int) $context['avatar_id'],
+					'thumbnail',
+					false,
+					array(
+						'class' => 'entry-meta__person-avatar',
+						'alt'   => '',
+					)
+				); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			} else {
+				echo get_avatar(
+					(int) $context['id'],
+					64,
+					'',
+					'',
+					array( 'class' => 'entry-meta__person-avatar' )
+				); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			}
+			?>
+			<span class="entry-meta__person-content">
+				<span class="entry-meta__label"><?php echo esc_html( $label ); ?>:</span>
+				<button class="entry-meta__person-trigger" type="button" aria-expanded="false">
+					<span class="entry-meta__text"><?php echo esc_html( $context['name'] ); ?></span>
+				</button>
+			<?php if ( ! empty( $context['job_title'] ) ) : ?>
+				<span class="entry-meta__suffix"> - <?php echo esc_html( $context['job_title'] ); ?></span>
+			<?php endif; ?>
+			</span>
+
+			<div class="entry-meta__person-popup" role="dialog" aria-label="<?php esc_attr_e( 'Person information', 'bnh-core' ); ?>">
+				<div class="entry-meta__person-popup-header">
+					<?php
+					if ( ! empty( $context['avatar_id'] ) ) {
+						echo wp_get_attachment_image(
+							(int) $context['avatar_id'],
+							'bhn-300',
+							false,
+							array(
+								'class' => 'entry-meta__person-popup-avatar',
+								'alt'   => $context['name'],
+							)
+						); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					} else {
+						echo get_avatar( (int) $context['id'], 120, '', $context['name'], array( 'class' => 'entry-meta__person-popup-avatar' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					}
+					?>
+					<div class="entry-meta__person-popup-heading">
+						<h2 class="entry-meta__person-popup-title h5-style"><?php echo esc_html( $context['name'] ); ?></h2>
 					<?php if ( ! empty( $context['job_title'] ) ) : ?>
 						<p class="entry-meta__person-popup-job"><?php echo esc_html( $context['job_title'] ); ?></p>
 					<?php endif; ?>
@@ -80,7 +137,7 @@ if ( '' !== $bnh_sources ) {
 }
 ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class( 'single-article article-content-block-content' ); ?>>
+<article id="post-<?php the_ID(); ?>" <?php post_class( 'single-article article-content-block-content' ); ?><?php echo '' !== $bnh_topic_color ? ' style="' . esc_attr( '--single-article-topic-color: ' . $bnh_topic_color . ';' ) . '"' : ''; ?>>
 	<header class="entry-header">
 		<h1 class="entry-title"><?php the_title(); ?></h1>
 
@@ -111,45 +168,74 @@ if ( '' !== $bnh_sources ) {
 
 		<div class="entry-meta" aria-label="<?php esc_attr_e( 'Article metadata', 'bnh-core' ); ?>">
 			<?php
-			$bnh_render_person_meta( __( 'Writer', 'bnh-core' ), $bnh_author_context );
-			$bnh_render_person_meta( __( 'Reviewer', 'bnh-core' ), $bnh_reviewer_context );
+			$bnh_render_person_meta( __( 'Writer', 'bnh-core' ), $bnh_author_context, 'writer' );
+			$bnh_render_person_meta( __( 'Reviewer', 'bnh-core' ), $bnh_reviewer_context, 'reviewer' );
 			?>
 
-			<?php if ( '' !== $bnh_reading_time ) : ?>
-				<div class="entry-meta__item">
-					<span class="entry-meta__label"><?php esc_html_e( 'Read in', 'bnh-core' ); ?>:</span>
-					<span class="entry-meta__text"><?php echo esc_html( $bnh_reading_time ); ?></span>
-				</div>
-			<?php endif; ?>
+				<?php if ( $bnh_show_citation ) : ?>
+					<div class="entry-meta__item entry-meta__item--citation">
+						<button class="entry-meta__citation-trigger" type="button" data-citation="<?php echo esc_attr( $bnh_citation_text ); ?>">
+							<span class="entry-meta__text"><?php esc_html_e( 'Cite This Webpage', 'bnh-core' ); ?></span>
+						</button>
+					</div>
+				<?php endif; ?>
+
+				<?php if ( '' !== $bnh_reading_time ) : ?>
+					<div class="entry-meta__item entry-meta__item--reading-time">
+						<span class="entry-meta__label"><?php esc_html_e( 'Read in', 'bnh-core' ); ?>:</span>
+						<span class="entry-meta__text"><?php echo esc_html( $bnh_reading_time ); ?></span>
+					</div>
+				<?php endif; ?>
 
 			<?php if ( '' !== $bnh_updated_date ) : ?>
-				<div class="entry-meta__item">
+				<div class="entry-meta__item entry-meta__item--updated">
 					<span class="entry-meta__label"><?php esc_html_e( 'Updated', 'bnh-core' ); ?>:</span>
 					<time class="entry-meta__text" datetime="<?php echo esc_attr( get_the_modified_date( DATE_W3C ) ); ?>"><?php echo esc_html( $bnh_updated_date ); ?></time>
 				</div>
 			<?php endif; ?>
 		</div>
 
+		<?php if ( '' !== $bnh_manual_guide ) : ?>
+			<section class="single-article__mobile-guide" aria-labelledby="single-article-mobile-guide-title">
+				<div class="single-article__mobile-guide-bar">
+					<h2 id="single-article-mobile-guide-title" class="single-article__mobile-guide-title"><?php echo esc_html( $bnh_manual_guide_title ); ?></h2>
+					<button class="single-article__mobile-guide-toggle" type="button" aria-expanded="false" aria-controls="single-article-mobile-guide-content">
+						<span class="single-article__mobile-guide-toggle-text"><?php esc_html_e( 'View', 'bnh-core' ); ?></span>
+						<span class="single-article__mobile-guide-toggle-icon" aria-hidden="true"><?php get_template_part( 'assets/svgs/arrow-down-accent' ); ?></span>
+					</button>
+				</div>
+				<div id="single-article-mobile-guide-content" class="single-article__mobile-guide-content single-post-sidebar__guide-content">
+					<?php echo wp_kses_post( $bnh_manual_guide ); ?>
+				</div>
+			</section>
+		<?php endif; ?>
+
 		<?php if ( '' !== $bnh_summary_markup ) : ?>
 			<section class="single-article__summary<?php echo $bnh_has_list_summary ? ' single-article__summary--collapsible' : ''; ?>" aria-labelledby="article-summary-heading">
-				<h2 id="article-summary-heading" class="single-article__section-title"><?php esc_html_e( 'Article Summary', 'bnh-core' ); ?></h2>
+				<h2 id="article-summary-heading" class="single-article__section-title h5-style"><?php esc_html_e( 'Article Summary', 'bnh-core' ); ?></h2>
 				<div class="single-article__summary-content">
 					<?php echo wp_kses_post( $bnh_summary_markup ); ?>
 				</div>
 				<?php if ( $bnh_has_list_summary ) : ?>
-					<button class="single-article__summary-toggle" type="button" aria-expanded="false"><?php esc_html_e( 'Read Full Summary', 'bnh-core' ); ?> &#8595;</button>
+					<button class="single-article__summary-toggle" type="button" aria-expanded="false">
+						<span><?php esc_html_e( 'Read Full Summary', 'bnh-core' ); ?></span>
+						<span class="single-article__summary-toggle-icon" aria-hidden="true"><?php get_template_part( 'assets/svgs/arrow-down' ); ?></span>
+					</button>
 				<?php endif; ?>
 			</section>
 		<?php endif; ?>
 	</header>
 
 	<?php if ( ! empty( $bnh_toc['items'] ) ) : ?>
+		<?php if ( '' !== $bnh_summary_markup ) : ?>
+			<hr class="single-article__summary-divider">
+		<?php endif; ?>
 		<nav class="single-article__toc" aria-labelledby="article-contents-heading">
-			<h2 id="article-contents-heading" class="single-article__section-title"><?php esc_html_e( 'Article Contents', 'bnh-core' ); ?></h2>
+			<h2 id="article-contents-heading" class="single-article__section-title h5-style"><?php esc_html_e( 'Article Contents', 'bnh-core' ); ?></h2>
 			<ul class="single-article__toc-list">
 				<?php foreach ( $bnh_toc['items'] as $bnh_toc_item ) : ?>
 					<li class="single-article__toc-item">
-						<a href="#<?php echo esc_attr( $bnh_toc_item['id'] ); ?>"><?php echo esc_html( $bnh_toc_item['title'] ); ?></a>
+						<a href="#<?php echo esc_attr( $bnh_toc_item['id'] ); ?>"><span aria-hidden="true">- </span><?php echo esc_html( $bnh_toc_item['title'] ); ?></a>
 					</li>
 				<?php endforeach; ?>
 			</ul>
@@ -169,6 +255,61 @@ if ( '' !== $bnh_sources ) {
 		?>
 	</div>
 
+	<section class="single-article__medical-disclaimer" aria-label="<?php esc_attr_e( 'Medical disclaimer', 'bnh-core' ); ?>">
+		<p><?php esc_html_e( 'This article is for informational purposes only and does not serve as medical advice. The details provided here are not a replacement for, and should never be depended upon as, professional medical advice. Always consult your physician regarding the potential risks and benefits of any treatment.', 'bnh-core' ); ?></p>
+	</section>
+
+	<?php if ( is_array( $bnh_reviewer_context ) && ! empty( $bnh_reviewer_context['name'] ) ) : ?>
+		<section class="single-article__doctor-bio" aria-labelledby="single-article-doctor-bio-title">
+			<div class="single-article__doctor-bio-media">
+				<?php
+				if ( ! empty( $bnh_reviewer_context['avatar_id'] ) ) {
+					echo wp_get_attachment_image(
+						(int) $bnh_reviewer_context['avatar_id'],
+						'bhn-300',
+						false,
+						array(
+							'class' => 'single-article__doctor-bio-avatar',
+							'alt'   => $bnh_reviewer_context['name'],
+						)
+					); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				} else {
+					echo get_avatar( (int) $bnh_reviewer_context['id'], 180, '', $bnh_reviewer_context['name'], array( 'class' => 'single-article__doctor-bio-avatar' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				}
+				?>
+			</div>
+
+			<div class="single-article__doctor-bio-body">
+				<h2 id="single-article-doctor-bio-title" class="single-article__doctor-bio-name h4-style"><?php echo esc_html( $bnh_reviewer_context['name'] ); ?></h2>
+
+				<?php if ( ! empty( $bnh_reviewer_context['job_title'] ) ) : ?>
+					<p class="single-article__doctor-bio-job"><?php echo esc_html( $bnh_reviewer_context['job_title'] ); ?></p>
+				<?php endif; ?>
+
+				<?php if ( '' !== $bnh_reviewer_context['popup'] || '' !== $bnh_reviewer_context['bio'] ) : ?>
+					<div class="single-article__doctor-bio-content">
+						<?php
+						if ( '' !== $bnh_reviewer_context['popup'] ) {
+							$bnh_doctor_bio_paragraphs = preg_split( '/<\/p>/i', $bnh_reviewer_context['popup'], 2 );
+							$bnh_doctor_bio_excerpt    = isset( $bnh_doctor_bio_paragraphs[0] ) ? trim( $bnh_doctor_bio_paragraphs[0] ) : '';
+
+							if ( '' !== $bnh_doctor_bio_excerpt ) {
+								echo wp_kses_post( $bnh_doctor_bio_excerpt . '</p>' );
+							}
+						} else {
+							echo wpautop( esc_html( wp_trim_words( $bnh_reviewer_context['bio'], 36, '...' ) ) );
+						}
+						?>
+					</div>
+				<?php endif; ?>
+
+				<div class="single-article__doctor-bio-links">
+					<a class="single-article__doctor-bio-read-more" href="<?php echo esc_url( $bnh_reviewer_context['url'] ); ?>"><?php esc_html_e( 'Read More', 'bnh-core' ); ?></a>
+				</div>
+			</div>
+		</section>
+	<?php endif; ?>
+
 	<?php
 	get_template_part(
 		'template-parts/sections/single-post-trust',
@@ -180,12 +321,56 @@ if ( '' !== $bnh_sources ) {
 	);
 	?>
 
-	<?php if ( '' !== trim( $bnh_related_post ) ) : ?>
+	<?php if ( $bnh_related_post_obj instanceof WP_Post ) : ?>
 		<section class="single-article__explore-more mt-50 mt-md-70 mt-lg-100">
-			<h2 class="single-article__explore-more-title"><?php esc_html_e( 'Explore More', 'bnh-core' ); ?></h2>
-			<div class="single-article__explore-more-content">
-				<?php echo wp_kses_post( $bnh_related_post ); ?>
-			</div>
+			<h2 class="single-article__explore-more-title h4-style"><?php esc_html_e( 'Explore More', 'bnh-core' ); ?></h2>
+			<?php
+			$bnh_explore_post_url     = function_exists( 'bnh_core_get_topic_post_url' ) ? bnh_core_get_topic_post_url( $bnh_related_post_obj ) : get_permalink( $bnh_related_post_obj );
+			$bnh_explore_excerpt      = function_exists( 'bnh_core_get_topic_post_excerpt' ) ? bnh_core_get_topic_post_excerpt( $bnh_related_post_obj, 24 ) : '';
+			$bnh_explore_excerpt      = str_replace( ' [...]', ' ...', $bnh_explore_excerpt );
+			$bnh_explore_thumbnail_id = get_post_thumbnail_id( $bnh_related_post_obj );
+			?>
+			<article class="single-article__explore-more-card">
+				<a class="single-article__explore-more-link" href="<?php echo esc_url( $bnh_explore_post_url ); ?>">
+					<?php if ( $bnh_explore_thumbnail_id ) : ?>
+						<div class="single-article__explore-more-media media">
+							<?php
+							if ( function_exists( 'bnh_core_render_responsive_picture' ) ) {
+								bnh_core_render_responsive_picture(
+									array(
+										'ID'  => $bnh_explore_thumbnail_id,
+										'url' => wp_get_attachment_url( $bnh_explore_thumbnail_id ),
+										'alt' => get_post_meta( $bnh_explore_thumbnail_id, '_wp_attachment_image_alt', true ),
+									),
+									array(
+										'class'             => 'single-article__explore-more-image',
+										'alt'               => get_the_title( $bnh_related_post_obj ),
+										'sizes'             => '(max-width: 991px) 100vw, 827px',
+										'size_group'        => 'card-4col',
+										'mobile_size_group' => 'card-4col',
+									)
+								);
+							} else {
+								echo get_the_post_thumbnail( $bnh_related_post_obj, 'bhn-405', array( 'class' => 'single-article__explore-more-image' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							}
+							?>
+						</div>
+					<?php endif; ?>
+
+					<div class="single-article__explore-more-body">
+						<h3 class="single-article__explore-more-card-title h4-style"><?php echo esc_html( get_the_title( $bnh_related_post_obj ) ); ?></h3>
+
+						<?php if ( '' !== $bnh_explore_excerpt ) : ?>
+							<div class="single-article__explore-more-excerpt">
+								<p><?php echo esc_html( $bnh_explore_excerpt ); ?></p>
+							</div>
+						<?php endif; ?>
+
+						<span class="single-article__explore-more-cta site-btn btn-secondary btn-radius"><?php esc_html_e( 'Read Now', 'bnh-core' ); ?></span>
+					</div>
+				</a>
+			</article>
+
 		</section>
 	<?php endif; ?>
 </article>

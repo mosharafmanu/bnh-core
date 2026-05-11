@@ -144,7 +144,9 @@ function purple_surgical_render_woocommerce_pagination() {
 	];
 	?>
 	<nav class="woocommerce-pagination pagination layout-padding" aria-label="<?php esc_attr_e( 'Product pagination', 'bnh-core' ); ?>">
+		<div class="bens-container">
 		<?php echo wp_kses( $pagination, $allowed_tags ); ?>
+		</div>
 	</nav>
 	<?php
 }

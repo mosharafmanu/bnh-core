@@ -121,23 +121,108 @@ if ( ! function_exists( 'bnh_core_get_post_summary_markup' ) ) {
 			return '';
 		}
 
-		if ( function_exists( 'get_field' ) ) {
-			$acf_summary = (string) get_field( 'article_summary', $post->ID );
+			if ( function_exists( 'get_field' ) ) {
+				$acf_summary = (string) get_field( 'article_summary', $post->ID );
 
-			if ( '' !== trim( $acf_summary ) ) {
-				return $acf_summary;
+				if ( '' !== trim( $acf_summary ) ) {
+					return $acf_summary;
+				}
+			}
+
+			return '';
+		}
+	}
+
+if ( ! function_exists( 'bnh_core_extract_source_citations' ) ) {
+	/**
+	 * Extract citation text from source list markup.
+	 *
+	 * @param string $html Source field HTML.
+	 * @return string[]
+	 */
+	function bnh_core_extract_source_citations( $html ) {
+		$html = trim( (string) $html );
+
+		if ( '' === $html || ! class_exists( 'DOMDocument' ) ) {
+			return array();
+		}
+
+		$dom = new DOMDocument();
+		libxml_use_internal_errors( true );
+		$dom->loadHTML( '<?xml encoding="UTF-8">' . $html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+		libxml_clear_errors();
+
+		$citations = array();
+		$list_items = $dom->getElementsByTagName( 'li' );
+
+		foreach ( $list_items as $list_item ) {
+			$citation = trim( preg_replace( '/\s+/', ' ', $list_item->textContent ) );
+
+			if ( '' !== $citation ) {
+				$citations[] = $citation;
 			}
 		}
 
-		$fallback_summary = bnh_core_get_post_summary_text( $post );
+		if ( empty( $citations ) ) {
+			$fallback = trim( preg_replace( '/\s+/', ' ', wp_strip_all_tags( $html ) ) );
 
-		if ( '' === $fallback_summary ) {
-			return '';
+			if ( '' !== $fallback ) {
+				$citations[] = $fallback;
+			}
 		}
 
-		return '<p>' . esc_html( $fallback_summary ) . '</p>';
+		return $citations;
 	}
 }
+
+if ( ! function_exists( 'bnh_core_filter_yoast_medical_webpage_schema' ) ) {
+	/**
+	 * Add single-post medical metadata to Yoast WebPage schema.
+	 *
+	 * @param array $data Yoast WebPage schema data.
+	 * @return array
+	 */
+	function bnh_core_filter_yoast_medical_webpage_schema( $data ) {
+		if ( ! is_singular( 'post' ) || ! function_exists( 'get_field' ) || ! is_array( $data ) ) {
+			return $data;
+		}
+
+		$post_id = get_queried_object_id();
+		$medical_condition = trim( (string) get_field( 'medical_condition', $post_id ) );
+		$sources = (string) get_field( 'sources', $post_id );
+		$reviewer = get_field( 'medically_reviewed_by', $post_id );
+		$reviewer_context = function_exists( 'bnh_core_get_person_context' ) ? bnh_core_get_person_context( $reviewer ) : null;
+
+		$data['medicalAudience'] = array(
+			'@type'          => 'MedicalAudience',
+			'requiredMinAge' => 40,
+		);
+		$data['specialty'] = array( 'https://schema.org/Urologic', 'https://schema.org/Geriatric' );
+
+		if ( '' !== $medical_condition ) {
+			$data['about'] = array(
+				'@type' => 'MedicalCondition',
+				'name'  => $medical_condition,
+			);
+		}
+
+		if ( is_array( $reviewer_context ) && ! empty( $reviewer_context['name'] ) ) {
+			$data['reviewedBy'] = array(
+				'@type' => 'Person',
+				'name'  => $reviewer_context['name'],
+			);
+		}
+
+		$citations = bnh_core_extract_source_citations( $sources );
+
+		if ( ! empty( $citations ) ) {
+			$data['citation'] = $citations;
+		}
+
+		return $data;
+	}
+}
+add_filter( 'wpseo_schema_webpage', 'bnh_core_filter_yoast_medical_webpage_schema', 10, 1 );
 
 if ( ! function_exists( 'bnh_core_get_person_context' ) ) {
 	/**
@@ -173,6 +258,7 @@ if ( ! function_exists( 'bnh_core_get_person_context' ) ) {
 
 		$job_title  = function_exists( 'get_field' ) ? (string) get_field( 'job_title', 'user_' . $user_id ) : '';
 		$popup_info = function_exists( 'get_field' ) ? (string) get_field( 'popup_info', 'user_' . $user_id ) : '';
+		$avatar_id  = absint( get_user_option( 'metronet_image_id', $user_id ) );
 
 		return array(
 			'id'        => $user_id,
@@ -181,6 +267,7 @@ if ( ! function_exists( 'bnh_core_get_person_context' ) ) {
 			'popup'     => $popup_info,
 			'bio'       => (string) get_the_author_meta( 'description', $user_id ),
 			'url'       => get_author_posts_url( $user_id ),
+			'avatar_id' => $avatar_id,
 		);
 	}
 }
@@ -255,11 +342,12 @@ if ( ! function_exists( 'bnh_core_get_post_update_history' ) ) {
 					'type'    => 'updated',
 					'heading' => sprintf(
 						/* translators: %s: updated date. */
-						__( 'Updated on %s (Current Version)', 'bnh-core' ),
+						__( 'Updated on %s', 'bnh-core' ),
 						get_the_modified_date( 'j F, Y', $post )
 					),
-					'label'   => __( 'Updated by', 'bnh-core' ),
-					'person'  => $updated_person,
+					'current_label' => __( 'Current Version', 'bnh-core' ),
+					'label'         => __( 'Updated by', 'bnh-core' ),
+					'person'        => $updated_person,
 				)
 			);
 		}
@@ -288,6 +376,49 @@ if ( ! function_exists( 'bnh_core_get_post_table_of_contents' ) ) {
 
 		return $content;
 	}
+
+	/**
+	 * Restore paragraph markup for legacy block content that saved bare text.
+	 *
+	 * Some migrated posts contain wp:paragraph comments without the expected
+	 * inner <p> tag. WordPress skips wpautop on block content, so those blocks
+	 * render as bare text nodes unless we normalize them before rendering.
+	 *
+	 * @param string $content Raw post content.
+	 * @return string
+	 */
+	function bnh_core_normalize_legacy_paragraph_blocks( $content ) {
+		$content = (string) $content;
+
+		if ( '' === $content || false === strpos( $content, '<!-- wp:paragraph' ) ) {
+			return $content;
+		}
+
+		return preg_replace_callback(
+			'/<!--\s+wp:paragraph(?P<attrs>\s+\{.*?\})?\s+-->(?P<inner>.*?)<!--\s+\/wp:paragraph\s+-->/s',
+			static function ( $matches ) {
+				$inner = isset( $matches['inner'] ) ? (string) $matches['inner'] : '';
+
+				if ( '' === trim( $inner ) ) {
+					return $matches[0];
+				}
+
+				if ( preg_match( '/<\s*p(?:\s|>)/i', $inner ) || preg_match( '/<!--\s+wp:/', $inner ) ) {
+					return $matches[0];
+				}
+
+				if ( preg_match( '/<\s*(address|article|aside|blockquote|div|figure|form|h[1-6]|hr|ol|pre|section|table|ul)(?:\s|>)/i', $inner ) ) {
+					return $matches[0];
+				}
+
+				$attrs = isset( $matches['attrs'] ) ? (string) $matches['attrs'] : '';
+
+				return '<!-- wp:paragraph' . $attrs . " -->\n<p>" . trim( $inner ) . "</p>\n<!-- /wp:paragraph -->";
+			},
+			$content
+		);
+	}
+
 }
 
 if ( ! function_exists( 'bnh_core_get_post_table_of_contents' ) ) {
@@ -307,13 +438,15 @@ if ( ! function_exists( 'bnh_core_get_post_table_of_contents' ) ) {
 			);
 		}
 
-		$content           = bnh_core_prepare_html_for_dom_document( (string) $post->post_content );
+		$raw_content       = bnh_core_normalize_legacy_paragraph_blocks( (string) $post->post_content );
+		$rendered_content  = apply_filters( 'the_content', $raw_content );
+		$content           = bnh_core_prepare_html_for_dom_document( $rendered_content );
 		$previous_libxml   = libxml_use_internal_errors( true );
 
 		$document = new DOMDocument();
 		$loaded   = $document->loadHTML(
-			'<?xml encoding="utf-8" ?>' . $content,
-			LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD
+			'<?xml encoding="utf-8" ?><div id="bnh-single-content-root">' . $content . '</div>',
+			LIBXML_HTML_NODEFDTD
 		);
 
 		libxml_clear_errors();
@@ -321,7 +454,16 @@ if ( ! function_exists( 'bnh_core_get_post_table_of_contents' ) ) {
 
 		if ( ! $loaded ) {
 			return array(
-				'content' => apply_filters( 'the_content', (string) $post->post_content ),
+				'content' => $rendered_content,
+				'items'   => array(),
+			);
+		}
+
+		$root = $document->getElementById( 'bnh-single-content-root' );
+
+		if ( ! $root instanceof DOMElement ) {
+			return array(
+				'content' => $rendered_content,
 				'items'   => array(),
 			);
 		}
@@ -329,7 +471,7 @@ if ( ! function_exists( 'bnh_core_get_post_table_of_contents' ) ) {
 		$items = array();
 		$index = 1;
 
-		foreach ( $document->getElementsByTagName( 'h2' ) as $heading ) {
+		foreach ( $root->getElementsByTagName( 'h2' ) as $heading ) {
 			$title = trim( preg_replace( '/\s+/', ' ', $heading->textContent ) );
 
 			if ( '' === $title ) {
@@ -356,10 +498,14 @@ if ( ! function_exists( 'bnh_core_get_post_table_of_contents' ) ) {
 			$index++;
 		}
 
-		$updated_content = $document->saveHTML();
+		$updated_content = '';
+
+		foreach ( $root->childNodes as $child_node ) {
+			$updated_content .= $document->saveHTML( $child_node );
+		}
 
 		return array(
-			'content' => apply_filters( 'the_content', $updated_content ),
+			'content' => $updated_content,
 			'items'   => $items,
 		);
 	}
@@ -379,6 +525,100 @@ if ( ! function_exists( 'bnh_core_get_editorial_guidelines_url' ) ) {
 		}
 
 		return 'https://www.bensnaturalhealth.com/editorial-guidelines';
+	}
+}
+
+if ( ! function_exists( 'bnh_core_get_explore_more_post' ) ) {
+	/**
+	 * Resolve the Explore More post for a single article.
+	 *
+	 * Manual ACF post selection wins. If nothing is selected, fall back to the
+	 * most recent published post in the same child topic, then same parent topic.
+	 *
+	 * @param WP_Post|int|null $post Post object or ID.
+	 * @return WP_Post|null
+	 */
+	function bnh_core_get_explore_more_post( $post = null ) {
+		$post = get_post( $post );
+
+		if ( ! $post instanceof WP_Post ) {
+			return null;
+		}
+
+		if ( function_exists( 'get_field' ) ) {
+			$manual_post = get_field( 'explore_more_post', $post->ID );
+
+			if ( $manual_post instanceof WP_Post && 'publish' === get_post_status( $manual_post ) && (int) $manual_post->ID !== (int) $post->ID ) {
+				return $manual_post;
+			}
+
+			if ( is_numeric( $manual_post ) ) {
+				$manual_post = get_post( (int) $manual_post );
+
+				if ( $manual_post instanceof WP_Post && 'publish' === get_post_status( $manual_post ) && (int) $manual_post->ID !== (int) $post->ID ) {
+					return $manual_post;
+				}
+			}
+		}
+
+		$parent_term = function_exists( 'bnh_get_post_health_topic_parent_term' ) ? bnh_get_post_health_topic_parent_term( $post->ID ) : null;
+		$child_term  = $parent_term instanceof WP_Term && function_exists( 'bnh_core_get_post_health_topic_child_term' ) ? bnh_core_get_post_health_topic_child_term( $post->ID, $parent_term ) : null;
+
+		$query_args = array(
+			'post_type'              => 'post',
+			'post_status'            => 'publish',
+			'posts_per_page'         => 1,
+			'post__not_in'           => array( (int) $post->ID ),
+			'ignore_sticky_posts'    => true,
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+		);
+
+		if ( $child_term instanceof WP_Term ) {
+			$child_query = new WP_Query(
+				array_merge(
+					$query_args,
+					array(
+						'tax_query' => array(
+							array(
+								'taxonomy' => 'health_topic',
+								'field'    => 'term_id',
+								'terms'    => array( (int) $child_term->term_id ),
+							),
+						),
+					)
+				)
+			);
+
+			if ( $child_query->have_posts() ) {
+				return $child_query->posts[0];
+			}
+		}
+
+		if ( $parent_term instanceof WP_Term ) {
+			$parent_query = new WP_Query(
+				array_merge(
+					$query_args,
+					array(
+						'tax_query' => array(
+							array(
+								'taxonomy'         => 'health_topic',
+								'field'            => 'term_id',
+								'terms'            => array( (int) $parent_term->term_id ),
+								'include_children' => true,
+							),
+						),
+					)
+				)
+			);
+
+			if ( $parent_query->have_posts() ) {
+				return $parent_query->posts[0];
+			}
+		}
+
+		return null;
 	}
 }
 

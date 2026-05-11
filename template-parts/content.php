@@ -7,6 +7,7 @@
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'layout-padding mt-50 mt-md-70 mt-lg-75' ); ?>>
+	<div class="bens-container">
 	<?php if ( ! is_singular() ) : ?>
 		<header class="entry-header">
 			<?php the_title( '<h2 class="entry-title">', '</h2>' ); ?>
@@ -24,5 +25,6 @@
 			)
 		);
 		?>
+	</div>
 	</div>
 </article>

@@ -17,8 +17,8 @@ get_header();
 	}
 	?>
 
-	<div class="single-post layout-padding mt-50 mt-md-70 mt-lg-100">
-		<div class="single-post__grid">
+	<div class="single-post-layout layout-padding mt-50 mt-md-70 mt-lg-100">
+		<div class="single-post__grid bens-container">
 			<div class="single-post__content">
 				<?php
 				while ( have_posts() ) :

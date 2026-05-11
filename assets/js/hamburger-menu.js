@@ -53,6 +53,10 @@
             closeMenu(false);
         });
 
+        $('.hamburger-close').on('click', function() {
+            closeMenu(false);
+        });
+
         // Handle submenu toggle for mobile menu - clicking on parent link with submenu
         $('.mobile-menu .menu-item-has-children > a').on('click', function(e) {
             e.preventDefault();
@@ -82,8 +86,8 @@
         $(window).on('resize', function() {
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(function() {
-                // Match the CSS breakpoint: max-width: 1024px
-                if ($(window).width() > 1024 && $('.hamburger-wrapper').hasClass('isOpen')) {
+                // Match the CSS breakpoint: max-width: 991px
+                if ($(window).width() > 991 && $('.hamburger-wrapper').hasClass('isOpen')) {
                     closeMenu(true); // Reset submenus on resize
                 }
             }, 250);

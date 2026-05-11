@@ -84,8 +84,8 @@
               "label": "Heading",
               "name": "heading",
               "aria-label": "",
-              "type": "text",
-              "instructions": "Main section heading.",
+              "type": "textarea",
+              "instructions": "Main section heading. Add line breaks in this field to control the heading wrap.",
               "required": 0,
               "conditional_logic": 0,
               "wrapper": {
@@ -95,9 +95,9 @@
               },
               "default_value": "Built for Long-Term Health. Endorsed by Leading Doctors.",
               "maxlength": "",
+              "rows": 2,
               "placeholder": "Built for Long-Term Health. Endorsed by Leading Doctors.",
-              "prepend": "",
-              "append": ""
+              "new_lines": ""
             },
             {
               "key": "field_leading_doctors_intro",
@@ -443,13 +443,6 @@
         "param": "post_type",
         "operator": "==",
         "value": "page"
-      }
-    ],
-    [
-      {
-        "param": "post_type",
-        "operator": "==",
-        "value": "post"
       }
     ],
     [

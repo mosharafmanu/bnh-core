@@ -23,6 +23,7 @@ $bnh_next_icon = trim( ob_get_clean() );
 
 <main id="primary" class="site-main search-results-page">
 	<section class="search-results layout-padding mt-50 mt-md-70 mt-lg-100">
+		<div class="search-results__inner bens-container">
 		<header class="search-results__header">
 			<h1 class="page-title">
 				<?php
@@ -33,26 +34,40 @@ $bnh_next_icon = trim( ob_get_clean() );
 		</header>
 
 		<?php if ( have_posts() ) : ?>
-			<div class="topic-latest-articles__items">
-				<?php
-				while ( have_posts() ) :
-					the_post();
-					?>
-					<div class="topic-latest-articles__item">
-						<?php
-						get_template_part(
-							'inc/components/cards/topic-latest-card',
-							null,
-							array(
-								'post'  => get_post(),
-								'label' => function_exists( 'bnh_core_get_topic_post_child_label' ) ? bnh_core_get_topic_post_child_label( get_post() ) : '',
-							)
-						);
-						?>
-					</div>
+			<div class="search-results__articles topic-latest-articles">
+				<div class="topic-latest-articles__items">
 					<?php
-				endwhile;
-				?>
+					while ( have_posts() ) :
+						the_post();
+						?>
+						<div class="topic-latest-articles__item">
+							<?php
+							get_template_part(
+								'inc/components/cards/topic-latest-card',
+								null,
+								array(
+									'post'  => get_post(),
+									'label' => function_exists( 'bnh_core_get_topic_post_child_label' ) ? bnh_core_get_topic_post_child_label( get_post() ) : '',
+								)
+							);
+							?>
+						</div>
+						<?php
+					endwhile;
+					?>
+				</div>
+
+				<div class="topic-latest-articles__scroll-ui" aria-hidden="true">
+					<button class="topic-latest-articles__scroll-button topic-latest-articles__scroll-button--prev" type="button" aria-label="<?php esc_attr_e( 'Scroll search results left', 'bnh-core' ); ?>">
+						<?php echo $bnh_prev_icon; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					</button>
+					<div class="topic-latest-articles__scrollbar">
+						<div class="topic-latest-articles__scrollbar-progress"></div>
+					</div>
+					<button class="topic-latest-articles__scroll-button topic-latest-articles__scroll-button--next" type="button" aria-label="<?php esc_attr_e( 'Scroll search results right', 'bnh-core' ); ?>">
+						<?php echo $bnh_next_icon; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					</button>
+				</div>
 			</div>
 
 			<?php
@@ -79,6 +94,7 @@ $bnh_next_icon = trim( ob_get_clean() );
 		<?php else : ?>
 			<?php get_template_part( 'template-parts/content', 'none' ); ?>
 		<?php endif; ?>
+		</div>
 	</section>
 
 	<?php get_template_part( 'template-parts/sections/topic-community', null, array( 'context' => $bnh_context ) ); ?>

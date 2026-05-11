@@ -15,7 +15,7 @@ if ( '' === $bnh_heading ) {
 ?>
 
 <section class="medical-review-process mt-50 layout-padding">
-	<div class="medical-review-process__inner">
+	<div class="medical-review-process__inner bens-container">
 		<div class="medical-review-process__content">
 			<header class="medical-review-process__header">
 				<h2 class="section-title medical-review-process__title h2-small"><?php echo esc_html( $bnh_heading ); ?></h2>
